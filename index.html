@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>佚名 · 作品集</title>
+<meta name="description" content="佚名的公开作品集" />
+<style>
+  :root {
+    --bg:#FAF6F1; --card:#FFFFFF; --fg:#292524; --muted:#57534E;
+    --primary:#5A6E48; --primary-soft:#EDF1E8; --accent:#92400E; --accent-soft:#FBF0E7; --border:#E7DED3;
+    --safe-x: env(safe-area-inset-left, 0px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased; }
+  a { color:var(--primary); }
+  :focus-visible { outline:2px solid var(--primary); outline-offset:2px; border-radius:4px; }
+  .wrap { max-width:1100px; margin:0 auto; padding:32px calc(16px + var(--safe-x)) 64px; }
+  @media (min-width:768px) { .wrap { padding:56px 32px 96px; } }
+
+  /* 头部 */
+  .hero { border-bottom:1px solid var(--border); padding-bottom:26px; margin-bottom:34px; }
+  .kicker { margin:0 0 8px; font-size:12px; letter-spacing:.35em; color:var(--primary); }
+  h1 { font-family:Kalnia,"Noto Serif SC",serif; font-size:clamp(30px,7vw,42px); margin:0; letter-spacing:-0.01em; line-height:1.25; }
+  h1 .dot { color:var(--accent); }
+  .bio { color:var(--muted); font-size:15.5px; margin:12px 0 0; max-width:60ch; }
+  .social { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .social a { display:inline-flex; align-items:center; min-height:40px; padding:0 15px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font-size:14px; text-decoration:none; transition:border-color .2s, color .2s; }
+  .social a:hover { border-color:var(--primary); color:var(--accent); }
+  .hero-stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+  .stat { font-size:13px; color:var(--primary); background:var(--primary-soft); border-radius:999px; padding:5px 14px; }
+  .stat strong { font-size:14.5px; font-variant-numeric:tabular-nums; }
+
+  /* 区块标题 */
+  h2 { font-family:Kalnia,"Noto Serif SC",serif; font-size:clamp(20px,4.5vw,25px); margin:0 0 18px; display:flex; align-items:center; gap:14px; }
+  h2::after { content:""; flex:1; height:1px; background:var(--border); }
+  section { margin-bottom:42px; }
+
+  /* 精选横滑条（移动端横向滚动不折行） */
+  .f-strip { display:flex; gap:12px; overflow-x:auto; padding:2px 2px 10px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; }
+  .f-card { flex:0 0 auto; scroll-snap-align:start; display:flex; align-items:baseline; gap:10px; min-height:44px; padding:11px 16px; border:1px solid var(--border); border-radius:14px; background:var(--card); text-decoration:none; color:var(--fg); transition:border-color .2s, box-shadow .2s; }
+  .f-card:hover { border-color:var(--primary); box-shadow:0 4px 14px rgba(90,110,72,.10); }
+  .f-rank { font-family:Kalnia,serif; font-size:13px; color:var(--accent); }
+  .f-title { font-weight:600; }
+  .f-genre { font-size:12px; color:var(--muted); }
+
+  /* 作品卡片网格：移动单列 → 宽屏自适应多列 */
+  .works-grid { display:grid; grid-template-columns:1fr; gap:16px; }
+  @media (min-width:640px) { .works-grid { grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; } }
+  .work { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:20px; display:flex; flex-direction:column; gap:9px; }
+  @media (hover:hover) and (pointer:fine) { .work:hover { box-shadow:0 8px 26px rgba(41,37,36,.07); border-color:#D8CCBC; } }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:0; }
+  .tags:empty { display:none; }
+  .chip { font-size:12px; color:var(--primary); background:var(--primary-soft); border-radius:999px; padding:2px 10px; }
+  .badge { font-size:11px; background:var(--accent); color:#fff; border-radius:999px; padding:2px 9px; letter-spacing:.08em; }
+  .work h3 { font-family:Kalnia,"Noto Serif SC",serif; font-size:19px; margin:0; line-height:1.45; }
+  .meta { margin:0; font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .summary { margin:0; font-size:15px; }
+  .pubs { border:1px dashed var(--border); border-radius:14px; padding:10px 14px; background:#FDFBF8; }
+  .pubs-title { margin:0 0 4px; font-size:11.5px; letter-spacing:.2em; color:var(--muted); }
+  .pubs ul { list-style:none; margin:0; padding:0; }
+  .pubs li { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; padding:5px 0; font-size:13.5px; }
+  .pubs li + li { border-top:1px solid var(--border); }
+  .pub-platform { font-weight:600; }
+  .pubs time { color:var(--muted); font-variant-numeric:tabular-nums; }
+  .pub-link { margin-left:auto; display:inline-flex; align-items:center; gap:2px; min-height:32px; font-size:13px; text-decoration:none; color:var(--primary); }
+  .pub-link:hover { color:var(--accent); text-decoration:underline; }
+  details { margin-top:auto; }
+  summary { cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:4px; min-height:40px; padding:0 2px; color:var(--primary); font-size:14px; }
+  summary::-webkit-details-marker { display:none; }
+  details[open] summary { color:var(--accent); }
+  .body { margin-top:8px; padding-top:14px; border-top:1px dashed var(--border); font-family:var(--read-font,"Noto Serif SC",serif); font-size:var(--read-size,17px); line-height:1.95; max-width:65ch; }
+  .body p { margin:0 0 1em; text-indent:2em; }
+
+  /* 创作历程 */
+  .tl-year { margin-bottom:18px; }
+  .tl-year h4 { font-family:Kalnia,serif; font-size:17px; color:var(--primary); margin:0 0 6px; }
+  .tl-year ul { list-style:none; padding:0; margin:0; }
+  .tl-year li { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; padding:8px 0; border-bottom:1px solid var(--border); font-size:14.5px; }
+  .tl-year time { color:var(--muted); font-variant-numeric:tabular-nums; min-width:88px; }
+  .tl-year a { color:var(--fg); text-decoration:none; }
+  .tl-year a:hover { color:var(--accent); }
+  .tl-pub { margin-left:auto; font-size:12px; color:var(--muted); }
+  .muted { color:var(--muted); }
+  footer { border-top:1px solid var(--border); padding-top:20px; color:var(--muted); font-size:13px; }
+
+  /* ── 优化层（按收益从高到低，纯 CSS 覆盖，不动白名单/结构/CDN 字体）── */
+  /* 触控目标升 44px（移动端为主的小屏访客） */
+  .social a, summary { min-height:44px; }
+  /* 长外链 / 长标题防横向溢出：文本可断 + 网格子项可收缩 */
+  .pubs li, .pub-link, .social a, .work h3, .f-title { overflow-wrap:anywhere; }
+  .works-grid > .work { min-width:0; }
+
+  /* 编辑式小标签：日期/元信息/标签用系统等宽栈 + 表格数字，与 Kalnia 衬线标题拉开层级（中文自动回落系统栈） */
+  .meta, .chip, .f-genre, .pubs-title, .pubs time, .tl-year time, .tl-pub {
+    font-family: ui-monospace, SFMono-Regular, Menlo, "Cascadia Mono", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 摘要：3 行裁切（优雅省略），替代生硬截半句 */
+  .summary { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+  /* 阅读全文：展开时占满整行、正文居中到舒适行宽，避免在窄卡里读整篇（:has 不支持则退化为原样，安全） */
+  .work:has(details[open]) { grid-column:1 / -1; }
+  .work:has(details[open]) .body { max-width:68ch; margin:12px auto 0; }
+
+  /* 创作历程：竖向轴线 + 圆点节点（用伪元素，不改 HTML） */
+  .tl-year ul { position:relative; padding-left:20px; }
+  .tl-year ul::before { content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--border); }
+  .tl-year li { position:relative; border-bottom:0; padding:9px 0; }
+  .tl-year li + li { border-top:0; }
+  .tl-year li::before { content:""; position:absolute; left:-19px; top:15px; width:9px; height:9px; border-radius:50%; background:var(--primary-soft); border:1.5px solid var(--primary); }
+
+  /* 区块竖向节奏对齐 Token 档位：48（移动）/ 64（宽屏） */
+  section { margin-bottom:48px; }
+  .hero { margin-bottom:44px; }
+  @media (min-width:768px) { section { margin-bottom:64px; } }
+
+  /* 朗读按钮：胶囊样式融入有机暖色；hidden 属性必须显式覆盖 display */
+  .read-row { margin-top:auto; display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
+  .read-row details { margin-top:0; width:100%; }
+  .tts-btn { display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:0 15px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font:inherit; font-size:14px; cursor:pointer; transition:border-color .2s, color .2s, background .2s; }
+  .tts-btn:hover { border-color:var(--primary); color:var(--accent); }
+  .tts-btn:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+  .tts-btn svg { width:18px; height:18px; flex:none; }
+  .tts-btn[aria-pressed="true"] { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .tts-btn[hidden] { display:none; }
+
+  /* 当前句高亮（卡拉OK）：句内联色底，跨行不截断 */
+  .tts-s.tts-active { background:var(--primary-soft); border-radius:4px; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+  /* 底部固定控制条 */
+  body.tts-on .wrap { padding-bottom:104px; }
+  .tts-bar { position:fixed; left:0; right:0; bottom:0; z-index:50; background:rgba(255,255,255,.96); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border-top:1px solid var(--border); box-shadow:0 -6px 24px rgba(41,37,36,.08); }
+  .tts-bar[hidden] { display:none; }
+  .tts-bar-inner { max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:12px calc(16px + var(--safe-x)); }
+  .tts-now { flex:1 1 auto; min-width:0; font-size:14px; font-weight:600; color:var(--fg); overflow-wrap:anywhere; }
+  .tts-ctrl { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+  .tts-bar button { min-height:40px; padding:0 14px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font:inherit; font-size:14px; cursor:pointer; transition:border-color .2s, color .2s; }
+  .tts-bar button:hover { border-color:var(--primary); color:var(--accent); }
+  .tts-bar select { min-height:40px; padding:0 10px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--fg); font:inherit; font-size:14px; }
+  .tts-bar button:focus-visible, .tts-bar select:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+  .tts-grp { display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--muted); }
+
+  /* 阅读设置浮条：右下角胶囊，字号增减 + 字体切换；localStorage 持久化，朗读条出现时上移避让 */
+  .read-ctl { position:fixed; right:14px; bottom:14px; z-index:45; display:flex; align-items:center; gap:6px; padding:6px 9px; background:rgba(255,255,255,.96); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid var(--border); border-radius:999px; box-shadow:0 6px 24px rgba(41,37,36,.10); font-size:13px; transition:bottom .2s ease-out; }
+  body.tts-on .read-ctl { bottom:88px; }
+  .read-ctl .rc-cap { color:var(--muted); letter-spacing:.04em; }
+  .read-ctl button { min-height:40px; min-width:40px; padding:0 8px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font:inherit; font-weight:600; cursor:pointer; transition:border-color .2s, color .2s; }
+  .read-ctl button:hover { border-color:var(--primary); color:var(--accent); }
+  .read-ctl button:disabled { opacity:.4; cursor:not-allowed; }
+  .read-ctl button:disabled:hover { border-color:var(--border); color:var(--primary); }
+  .rc-size { min-width:30px; text-align:center; font-variant-numeric:tabular-nums; color:var(--fg); }
+  .rc-font { min-height:40px; padding:0 8px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--fg); font:inherit; font-size:13px; }
+  .read-ctl button:focus-visible, .rc-font:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+  @media (max-width:420px) { .read-ctl .rc-cap { display:none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    *, *::before, *::after { transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="kicker">公开作品集</p>
+    <h1>佚名<span class="dot">。</span></h1>
+    
+    
+    <div class="hero-stats"><span class="stat"><strong>1</strong> 篇公开作品</span></div>
+  </header>
+
+  
+
+  <section aria-label="作品橱窗">
+    <h2>作品橱窗</h2>
+    <div class="works-grid"><article class="work" id="w0">
+      <div class="tags"><span class="chip">散文</span></div>
+      <h3>通纂</h3>
+      <p class="meta">创作于 2022-10-21</p>
+      <p class="summary">传说，以前岐阳村有个老木匠叫杨荣，方园百八十里他做的木活确是出了名的，附近的同行没有一个人不佩服他，据说有一次他做的马车，在拉粪途中马受惊翻到涝池里泡了三天，捞出来修理时，打开卯榫里边还是干的，没进一滴水。</p>
+      
+      <div class="read-row"><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：通纂"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>传说，以前岐阳村有个老木匠叫杨荣，方园百八十里他做的木活确是出了名的，附近的同行没有一个人不佩服他，据说有一次他做的马车，在拉粪途中马受惊翻到涝池里泡了三天，捞出来修理时，打开卯榫里边还是干的，没进一滴水。</p>
+<p>老木匠不只是木活做出了名，“斜门”上在这附近，十里八乡也是数着的。说是有一年冬季，邻村有一个傻子拿一梱软枣干在他们村边吃，正碰上老木匠等人去沟里抬木枓，见傻子吃那么多软枣干，老木匠就随口对傻子说:“不能吃了，吃完就活不成了”。说来也巧几天以后那个傻子还真给死了，说是肚子给痛死的。此后那几个和老木匠抬木枓的人，见人就说老木匠前几天见到傻子时，就知道傻子活不长了，快要死了。给他们说，他们都听得清清楚楚，老木匠在这方面看的可准了……如何如何，一传十，十传百，添枝加叶，放盐调醋说得是玄乎其玄、有睸有眼，是真是假谁也就说不准了，反正耳音是惯大了。</p>
+<p>岐阳东边有个村庄叫衙益，有一富户人家姓吕，主人精明能干好强，自小他爷就给起小名叫能仁。三伏天，他伐了门前的大青槐树，解成门板准备做一合大车门。几年以后，木板已干到，经多方打听了解，决定让岐阳老木匠来做。</p>
+<p>初夏的一天，风和日丽，艳阳高照，老木匠和徒弟娃带着工具，兴致冲冲应约来到能仁老汉家开始做大门。经过多半响的忙忙碌碌，门枓基本排好，徒弟娃收拾好锯子开始下枓，剩下的小枓老木匠继续，下枓前老木匠格外叮咛徒弟娃，门纂这儿长出一寸多不能锯，一定要操心。</p>
+<p>到吃午饭的时候了，老木匠顺便去看徒弟娃下的枓，一连看了几块都没跑线，很好，老木匠心里美丝丝的，当他看到门纂那块时，心里搁登一下，坏了，坏了，徒弟娃把线看瞎了，把门底线当门纂边线给锯了，你说这事弄的可咋收场呀，一下子把杨木匠给难住了。看那么一大磊板，翻来翻去才免强找出两块做门纂的木枓，虽说伐了一棵槐树因为树太老，中间有的地方都朽了，好板没有几块，不是有毛病就是不够尺寸。因此，未锯前老木匠就怕锯错还再三叮咛，结果还是锯瞎了，老木匠这时是又气又急，他把锯错的那块板看了又看，摸过来翻过去，不知如何是好。真是麻绳偏从细处断，房漏又蓬连阴雨，唉，事情有时候往往就是这样，你怕啥它就偏来个啥，下锯前还特意给徒弟娃交待了又交待，结果……，老木匠思来想去，最后决定错了就按错处来，走到那里就说那里的话，没办法只能做接纂。(通纂，就是从上到下是一块长板做的，接纂，就是从上到下两块板，或三块板接做而成的)</p>
+<p>过了几天，能仁老汉在外面办完事，回来一看怎么是接纂而不是通纂，当时就气冲冲地指着门纂，问老木匠:“你为啥给做成接纂？”老木匠一看能仁老汉黑着脸在问，心里荒一时也不知道说啥好，望了一眼强装出一付稳重的样子，停下了手中的活儿，从衣服口袋里掏出烟㶽装了汉烟，坐在长凳上叭哒叭哒抽了起来。老木匠一㶽子抽完，第二㶽又点着的时候，老木匠望了望能仁老汉那期待回答的目光，这时站起身来拍了拍屁股上的锯沬，不紧不慢走到能仁老汉根前，轻轻的拍了拍能仁老汉的肩膀，温和地说:“先别生气，听我给你把话说完，我做了多半辈子的木活了，大门也没少做，五里一村十里一个乡俗，臭行有个臭规距，这做大门和安大门都有很多忌讳呢。我前天做纂时，把你这院子前后看了看根本就不能安个通纂。”“为啥？”能仁老汉气烘烘地追问。“这你就不问了，不碍大事，你知道有这么回事就行了，不是我不给你说，说明了与你和家人都不好，以后遇到个大小不顺心的事，都会想起它，无形中就给自己加了心理负担，还不如不让你知道，胡里胡涂也就过去了。不然以后办一些大小事本来顺当，你想起有这么个‘档档’，这么一念弄，那么一问侯，弄的弄的有时候就弄的不顺当了，咱做门、安门，一是为了安全，二是图个吉利，通纂好看接纂做好了也一样牢固好看，我说的话你若果不信有凝虑，你可以寻几个内行看看，如果有人说能安通纂，你告诉我，我带上木枓给你免费另做一合。”老木匠这么一说，真觉得还象那么回事。</p>
+<p>能仁老汉半信大凝，还是想不太通。可是老木匠在这“斜行”上的“本事”他也听别人说过，还是不小的，是真是假一时半会也难弄个清楚，过来过去不就是个门纂嘛，细想老木匠也不会无缘无故骗他，况且又不碍啥大事于，是也就随了老木匠说的。大门都安好半年多了，出出进进能仁老汉脑子里还没有忘掉那个通纂。总想找个人给看看。</p>
+<p>有一天，机会终于来了，能仁老汉家隔壁要给儿子娶媳妇看日子，请了个阴阳，事毕以后，能仁老汉把阴阳叫到他家，把屋前屋后让阴阳看了看，说明他想安个通纂大门的意思，看能安不能安。阴阳看了好大一会儿，也没看出个所以然，心里想:说能安通纂，安这新门时为啥做个接纂，说不能安看这坐字啥都好着，又找不出充足的理由，阴阳就觉得有点纳闷，问能仁老汉:“这门谁做的？”“岐阳老木匠做的。”能仁老汉回答。</p>
+<p>阴阳又问:“谁说你这屋大门不能安个通纂？”“这个你就不问了，你看能不能安个通纂就是了。”能仁老汉显得很难为情的回答。</p>
+<p>阴阳听能仁老汉这么一说，心里一下子明白了，他想:老木匠的本事我还不知道，正道斜道方达园都是数一数二的，他能做通纂，为啥不做通纂，况且通纂比接纂还省事，这就说明老木匠葫芦里还有别的东西没倒出来。阴阳，风水这行当，本来就没个深浅，有些人一辈子不论弄啥，都要叫个阴阳，顺至刮胡子都有看日子的，就信那个。反而事后这不顺当那不顺当；而有些人胡里胡涂，啥也不信，却光光园园地没个岔事儿。有些事有人弄一辈子，也弄不明白，弄不明白就不弄它，随方求园，顺其自然。</p>
+<p>“我看还是安个接纂好，通纂多少有点不顺当，也许我看的不准，若不心甘再找个大师傅看看。”阴阳说完走了。</p>
+<p>后来，能仁老汉还先后找过好几个内行看过，同样说不出个所以然，不了了之，随着时间的推移，慢慢的安通纂的欲望也就淡了，但还是没忘。</p>
+<p>十年后的一天，能仁老汉腰疼去青化北巷一个疹所针灸，进门见老木匠也在里边针灸，两人多年没见今日突然相遇，百感交集很是热呼。随后大夫就给他们分别把针扎上。没事，他俩个老汉是无话不淡，你说东他说西说着说着又说起了十年前的门纂上。</p>
+<p>这时能仁老汉看似笑着，确有点悲观地对老木匠说“你看我这也老了，恐怕也活不了多少年了，一辈子屋里的事都随心所欲，要风来风，要雨得雨啥都不缺，就是大门没安个通纂，每次想起了心里总是架架的，你老兄法术大，给念弄念弄，离世前能安个通纂大门也就甘心了。”老木匠听能仁老汉这么问他，心里一酸觉得很不是兹味，感到很惭愧，连忙回答:“我有个啥法术，都是有一些人乱说呢，你喜欢了就换成个通纂，反正也不缺那几个钱”。“你说你没那个本事，那傻子娃的死，你咋看那么准？”能仁老汉有点不解地又问。老木匠解说道:“那天我见傻子拿着那么多软枣干吃，就顺便给傻子说不敢吃那么多，吃多了会把人吃死的，谁知巧合了，傻子患了肺结石，把命丟了，我有个啥本事。”</p>
+<p>“那我的大门安不了通纂又是咋回事？”能仁老汉又在追问。</p>
+<p>“我们都一把年纪了，我也不哄你，今儿就打开窗户说亮话：给你做门的那天，我就怕徒弟娃看不懂线把纂给锯了，还特意给说了几遍，纂这儿要操心，终究给锯瞎了，有啥办法？叫徒弟娃赔，他家里就一个半摊的老母亲，穷的连个烧火棍都没有个长的。我赔吗，上有老下有小一大家子人，就靠我一人养活着，时常吃都吃不饱，拿啥咋赔，不那么说，我两从你屋里能出来吗”。老木匠认真的说。</p>
+<p>“哈哈哈，你那天亏当把我给哄了，要不然我看见门不是通纂是接纂那阵子，我还不把你俩给吃了。哈哈哈……”能仁老汉听老木匠这么一说，不但没有生气，反而高兴地大笑了起来。</p>
+<p>能仁老汉接着又说:“你老兄藏的也太深了，哄了我十几年，当我每次出门进门看见接纂，就想起了你哄我的那些话，老是觉着怪怪的，无形中总觉得好像有个阴影在院里忽隐忽现的，经常弄得我心神不安，有时就像丟了魂似的。其实你老兄那天照实情说了，我也不会难为你的，再买两块板，另做就是了，反正我家里也不缺那几个钱。谁知道你确给我给了个牛笼嘴尿不满。哈哈哈……。”“从那以后，我心里也不好受，经常出门操心躲着你，只觉得没脸见你。”老木匠说。</p>
+<p>这时大夫走进来，给老木匠和能仁老汉拔了针，再一前一后给两人往腰部垫上好多蒜片，然后在蒜片上蹾上艾柱用火点然（就是艾灸），很快艾火透过蒜片，一股股暖流扩散到两人的全身，一切不舒一扫而光，只留下他俩十多年来从未有过，象今天这时的舒适和轻松，很快整个室内全沉浸在他二人的呼噜声中。</p>
+<p></p></div></details></div>
+    </article></div>
+  </section>
+
+  <section aria-label="创作历程">
+    <h2>创作历程</h2>
+    <section class="tl-year"><h4>2022</h4><ul><li><time>2022-10-21</time> <a href="#w0">通纂</a></li></ul></section>
+  </section>
+
+  <footer>本页面由 LitFerry 墨渡于 2026-10-14 生成，仅展示作者公开信息。</footer>
+</div>
+<div class="tts-bar" hidden role="region" aria-label="朗读控制">
+  <div class="tts-bar-inner">
+    <span class="tts-now" aria-live="polite"></span>
+    <div class="tts-ctrl">
+      <button type="button" class="tts-play" aria-pressed="false">暂停</button>
+      <button type="button" class="tts-stop">停止</button>
+      <label class="tts-grp">语速<select class="tts-rate"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option></select></label>
+      <label class="tts-grp">音色<select class="tts-voice"></select></label>
+    </div>
+  </div>
+</div>
+<div class="read-ctl" role="group" aria-label="阅读设置">
+  <span class="rc-cap">阅读</span>
+  <button type="button" class="rc-minus" aria-label="调小字号">A−</button>
+  <span class="rc-size" aria-live="polite">17</span>
+  <button type="button" class="rc-plus" aria-label="调大字号">A+</button>
+  <select class="rc-font" aria-label="正文字体">
+    <option value="serif">默认衬线</option>
+    <option value="yahei">微软雅黑</option>
+    <option value="fangsong">仿宋</option>
+    <option value="kaiti">楷体</option>
+  </select>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var SK = 'lf-read-size', FK = 'lf-read-font';
+  var MIN = 15, MAX = 30, DEF = 17;
+  var FONTS = {
+    serif: '"Noto Serif SC","Source Han Serif SC","Songti SC",SimSun,serif',
+    yahei: '"Microsoft YaHei","微软雅黑","PingFang SC",system-ui,sans-serif',
+    fangsong: '"FangSong","仿宋","STFangsong",SimSun,serif',
+    kaiti: '"KaiTi","楷体","STKaiti",SimSun,serif'
+  };
+  function get(k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } }
+  function put(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var size = parseInt(get(SK, String(DEF)), 10); if (!isFinite(size)) size = DEF;
+  var font = get(FK, 'serif'); if (!FONTS[font]) font = 'serif';
+  var elSize = document.querySelector('.rc-size');
+  var elMinus = document.querySelector('.rc-minus');
+  var elPlus = document.querySelector('.rc-plus');
+  var elFont = document.querySelector('.rc-font');
+  function apply() {
+    size = Math.min(MAX, Math.max(MIN, size));
+    root.style.setProperty('--read-size', size + 'px');
+    root.style.setProperty('--read-font', FONTS[font]);
+    if (elSize) elSize.textContent = String(size);
+    if (elMinus) elMinus.disabled = size <= MIN;
+    if (elPlus) elPlus.disabled = size >= MAX;
+    if (elFont) elFont.value = font;
+  }
+  if (elMinus) elMinus.addEventListener('click', function () { size -= 1; put(SK, String(size)); apply(); });
+  if (elPlus) elPlus.addEventListener('click', function () { size += 1; put(SK, String(size)); apply(); });
+  if (elFont) elFont.addEventListener('change', function () { font = elFont.value; put(FK, font); apply(); });
+  apply();
+})();
+</script>
+<script>
+(function () {
+  var synth = window.speechSynthesis;
+  if (!synth) return; // 不支持：朗读按钮与控制条都不出现，页面零变化
+
+  function allVoices() { try { return synth.getVoices() || []; } catch (e) { return []; } }
+  function zhVoices() { return allVoices().filter(function (v) { return /^zh/i.test(v.lang); }); }
+  function voiceList() { var z = zhVoices(); return z.length ? z : allVoices(); }
+  var voices = voiceList();
+  // Windows/Chrome 首次 getVoices() 常返回空，需等 voiceschanged 异步载入
+  try { synth.onvoiceschanged = function () { fillVoice(); syncVoiceSel(); }; } catch (e) {}
+
+  var rate = 1;
+  var seq = 0;
+  var state = null; // { btn, spans, idx, seq, voice, paused, title }
+
+  var bar = document.querySelector('.tts-bar');
+  var elNow = document.querySelector('.tts-now');
+  var elPlay = document.querySelector('.tts-play');
+  var elStop = document.querySelector('.tts-stop');
+  var elRate = document.querySelector('.tts-rate');
+  var elVoice = document.querySelector('.tts-voice');
+
+  function setLabel(btn, on) {
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    var l = btn.querySelector('.tts-label'); if (l) l.textContent = on ? '停止' : '朗读';
+  }
+  function reduceMotion() { try { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+
+  // 把每段正文按句切成可高亮的 span（仅首次，后续复用）；不引外部依赖，仅用 DOM API 逐节点写入（天然转义，无 XSS）
+  function prepareSpans(article) {
+    var cached = article.querySelectorAll('.body .tts-s');
+    if (cached.length) return Array.prototype.slice.call(cached);
+    var body = article.querySelector('.body');
+    if (!body) return [];
+    var ps = body.querySelectorAll('p');
+    var spans = [];
+    for (var i = 0; i < ps.length; i++) {
+      var p = ps[i];
+      var parts = (p.textContent || '').replace(/\s+/g, ' ').match(/[^。！？；.!?\n]+[。！？.;!?]?/g) || [];
+      p.textContent = '';
+      for (var j = 0; j < parts.length; j++) {
+        var s = parts[j].trim(); if (!s) continue;
+        var sp = document.createElement('span'); sp.className = 'tts-s'; sp.textContent = s;
+        p.appendChild(sp); spans.push(sp);
+      }
+    }
+    return spans;
+  }
+  function highlight(sp) {
+    if (state) { var a = state.spans; for (var i = 0; i < a.length; i++) a[i].className = 'tts-s'; }
+    sp.classList.add('tts-active');
+    try { sp.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'center' }); } catch (e) {}
+  }
+
+  function speakIndex(i) {
+    if (!state) return;
+    state.idx = i;
+    if (i >= state.spans.length) { finish(); return; }
+    var sp = state.spans[i];
+    highlight(sp);
+    var mySeq = state.seq;
+    var u = new SpeechSynthesisUtterance(sp.textContent);
+    u.lang = 'zh-CN'; u.rate = rate;
+    if (state.voice) u.voice = state.voice;
+    u.onend = function () { if (state && state.seq === mySeq && state.idx === i) speakIndex(i + 1); };
+    u.onerror = function () { if (state && state.seq === mySeq && state.idx === i) speakIndex(i + 1); };
+    try { synth.speak(u); } catch (e) { finish(); }
+  }
+
+  function updateNow() {
+    if (elNow && state) elNow.textContent = '正在朗读：' + state.title;
+    if (elPlay) { elPlay.textContent = (state && state.paused) ? '继续' : '暂停'; elPlay.setAttribute('aria-pressed', (state && state.paused) ? 'true' : 'false'); }
+  }
+  function showBar() { if (bar) bar.hidden = false; document.body.classList.add('tts-on'); }
+  function hideBar() { if (bar) bar.hidden = true; document.body.classList.remove('tts-on'); }
+
+  function clearState() {
+    if (state) { if (state.btn) setLabel(state.btn, false); var a = state.spans || []; for (var i = 0; i < a.length; i++) a[i].className = 'tts-s'; }
+    state = null;
+  }
+  function stop() { try { if (synth.speaking || synth.pending) synth.cancel(); } catch (e) {} clearState(); hideBar(); }
+  function finish() { clearState(); hideBar(); }
+
+  function start(btn) {
+    var article = btn.closest('.work');
+    var spans = prepareSpans(article);
+    if (!spans.length) return;
+    var det = article.querySelector('details'); if (det) det.open = true; // 高亮/滚动需正文可见
+    stop();
+    seq++;
+    var h = article.querySelector('h3');
+    state = { btn: btn, spans: spans, idx: 0, seq: seq, voice: voices[0] || null, paused: false, title: (h ? h.textContent : '').trim() || '本篇' };
+    setLabel(btn, true);
+    showBar(); fillVoice(); syncVoiceSel(); updateNow();
+    speakIndex(0);
+  }
+
+  // 换音色/语速：重读当前句；用 seq 自增令旧 onend/onend 回调失效，避免 cancel 引发串读
+  function restartCurrent() {
+    if (!state) return;
+    var i = state.idx; state.seq++; state.paused = false;
+    try { synth.cancel(); } catch (e) {}
+    setTimeout(function () { if (state && state.idx === i) { speakIndex(i); updateNow(); } }, 60);
+  }
+  function fillVoice() {
+    voices = voiceList();
+    if (!elVoice) return;
+    var cur = state && state.voice ? state.voice.name : '';
+    elVoice.textContent = '';
+    for (var i = 0; i < voices.length; i++) {
+      var o = document.createElement('option'); o.value = voices[i].name; o.textContent = voices[i].name + '（' + voices[i].lang + '）';
+      elVoice.appendChild(o);
+    }
+    if (cur) elVoice.value = cur;
+  }
+  function syncVoiceSel() { if (elVoice && state && state.voice) elVoice.value = state.voice.name; }
+
+  if (elPlay) elPlay.addEventListener('click', function () {
+    if (!state) return;
+    if (state.paused) { try { synth.resume(); } catch (e) {} state.paused = false; }
+    else { try { synth.pause(); } catch (e) {} state.paused = true; }
+    updateNow();
+  });
+  if (elStop) elStop.addEventListener('click', stop);
+  if (elRate) elRate.addEventListener('change', function () { rate = parseFloat(elRate.value) || 1; restartCurrent(); });
+  if (elVoice) elVoice.addEventListener('change', function () {
+    if (!state) return;
+    for (var i = 0; i < voices.length; i++) { if (voices[i].name === elVoice.value) { state.voice = voices[i]; break; } }
+    restartCurrent();
+  });
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var btn = t && t.closest ? t.closest('.tts-btn') : null;
+    if (!btn) return;
+    if (state && state.btn === btn) { stop(); return; }
+    start(btn);
+  });
+
+  // 探测通过，揭示所有朗读按钮
+  var btns = document.querySelectorAll('.tts-btn');
+  for (var i = 0; i < btns.length; i++) { btns[i].hidden = false; }
+  window.addEventListener('beforeunload', function () { try { synth.cancel(); } catch (e) {} });
+})();
+</script>
+</body>
+</html>
