@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>佚名 · 作品集</title>
-<meta name="description" content="佚名的公开作品集" />
+<title>杨金海 · 作品集</title>
+<meta name="description" content="岐山县作协会员，丝路都市文化汇签约作家诗人。农闲或工余喜欢读书，偶尔写点乡土散文。所写多是自己经历过的乡村旧事，只想用朴素文字记下乡音、乡情与记忆。" />
 <style>
   :root {
     --bg:#FAF6F1; --card:#FFFFFF; --fg:#292524; --muted:#57534E;
     --primary:#5A6E48; --primary-soft:#EDF1E8; --accent:#92400E; --accent-soft:#FBF0E7; --border:#E7DED3;
     --safe-x: env(safe-area-inset-left, 0px);
+    --glow-sage: rgba(90,110,72,.12); --glow-amber: rgba(217,119,6,.10);
+    --gradient-hero: linear-gradient(160deg, #FDF8F0 0%, #EDF5E5 50%, #FDF4E8 100%);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -19,116 +23,160 @@
   .wrap { max-width:1100px; margin:0 auto; padding:32px calc(16px + var(--safe-x)) 64px; }
   @media (min-width:768px) { .wrap { padding:56px 32px 96px; } }
 
-  /* 头部 */
-  .hero { border-bottom:1px solid var(--border); padding-bottom:26px; margin-bottom:34px; }
-  .kicker { margin:0 0 8px; font-size:12px; letter-spacing:.35em; color:var(--primary); }
-  h1 { font-family:Kalnia,"Noto Serif SC",serif; font-size:clamp(30px,7vw,42px); margin:0; letter-spacing:-0.01em; line-height:1.25; }
-  h1 .dot { color:var(--accent); }
-  .bio { color:var(--muted); font-size:15.5px; margin:12px 0 0; max-width:60ch; }
+  /* ── 装饰背景径向渐变层 ── */
+  body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; background: radial-gradient(ellipse 70% 50% at 15% 10%, rgba(90,110,72,.06) 0%, transparent 70%), radial-gradient(ellipse 50% 60% at 85% 80%, rgba(217,119,6,.05) 0%, transparent 70%); }
+
+  /* ── 滚动进度条 ── */
+  .progress-bar { position:fixed; top:0; left:0; height:3px; z-index:100; background:linear-gradient(90deg, var(--primary), var(--accent), #E8A838); border-radius:0 2px 2px 0; width:0%; transition:width .1s linear; }
+
+  /* ── 入场动画 keyframes ── */
+  @keyframes hero-fadein { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fade-up { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fade-in { from { opacity:0; } to { opacity:1; } }
+  @keyframes dot-pulse { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.8); opacity:.5; } }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
+  .reveal { opacity:0; transform:translateY(20px); transition:opacity .5s var(--ease-out-expo), transform .5s var(--ease-out-expo); }
+  .reveal.revealed { opacity:1; transform:translateY(0); }
+
+  /* 头部：与 .work 同源的真实卡片语言（内缩不贴边 + 四角圆角 + 边框 + 柔光），避免顶部直角“被截断”观感 */
+  .hero { position:relative; overflow:hidden; background:var(--gradient-hero); border:1px solid var(--border); border-radius:20px; box-shadow:0 1px 2px rgba(92,64,51,.06); padding:28px 24px 34px; margin:0 0 40px; animation:hero-fadein .6s var(--ease-out-expo) both; }
+  @media (min-width:768px) { .hero { border-radius:28px; padding:40px 44px 46px; box-shadow:0 6px 24px rgba(92,64,51,.08); } }
+  h1 { font-family:Kalnia,"Noto Serif SC",serif; font-size:clamp(30px,7vw,42px); margin:0; letter-spacing:-0.01em; line-height:1.25; opacity:0; animation:fade-up .5s .15s var(--ease-out-expo) both; }
+  h1 .dot { color:var(--accent); display:inline-block; animation:float 3s ease-in-out infinite; }
+  .bio { color:var(--muted); font-size:15.5px; margin:12px 0 0; max-width:60ch; opacity:0; animation:fade-up .4s .3s var(--ease-out-expo) both; }
   .social { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
-  .social a { display:inline-flex; align-items:center; min-height:40px; padding:0 15px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font-size:14px; text-decoration:none; transition:border-color .2s, color .2s; }
-  .social a:hover { border-color:var(--primary); color:var(--accent); }
-  .hero-stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
-  .stat { font-size:13px; color:var(--primary); background:var(--primary-soft); border-radius:999px; padding:5px 14px; }
+  .social a { display:inline-flex; align-items:center; min-height:44px; padding:0 15px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font-size:14px; text-decoration:none; transition:border-color .2s, color .2s, box-shadow .25s var(--ease-spring), transform .2s var(--ease-spring); }
+  .social a:hover { border-color:var(--primary); color:var(--accent); box-shadow:0 4px 16px var(--glow-sage); transform:translateY(-2px); }
+  .hero-stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; opacity:0; animation:fade-up .4s .4s var(--ease-out-expo) both; }
+  .stat { font-size:13px; color:var(--primary); background:linear-gradient(135deg, var(--primary-soft), #F0F5E8); border-radius:999px; padding:5px 14px; }
   .stat strong { font-size:14.5px; font-variant-numeric:tabular-nums; }
+
+  /* ── 作者主页：头像 / 一句话定位 / 创作领域标签 ── */
+  .hero-top { display:flex; align-items:center; gap:14px; }
+  .hero-id { min-width:0; }
+  .hero-avatar { flex:none; width:76px; height:76px; object-fit:cover; border:2px solid var(--card); box-shadow:0 8px 24px var(--glow-sage); border-radius:26px 30px 24px 32px / 30px 24px 32px 26px; }
+  @media (min-width:768px) { .hero-avatar { width:96px; height:96px; } }
+  .hero-avatar--mono { display:inline-flex; align-items:center; justify-content:center; background:linear-gradient(135deg, var(--primary-soft), #F7EFE3); color:var(--primary); font-family:Kalnia,"Noto Serif SC",serif; font-size:38px; line-height:1; }
+  .headline { margin:6px 0 0; font-size:16.5px; color:var(--muted); max-width:60ch; }
+  .hero-fields { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip--loc { display:inline-flex; align-items:center; gap:3px; }
+  .chip--loc svg { flex:none; }
+
+  /* ── 作品分集导航（V2.8 伪多页）：吸顶胶囊，窄屏横滑不折行；无 JS 时不渲染过滤，退化为全量长页 ── */
+  html { scroll-padding-top:76px; }
+  .coll-nav { position:sticky; top:0; z-index:40; display:flex; gap:8px; margin:-8px 0 24px; padding:12px 0 14px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; background:linear-gradient(var(--bg) 82%, rgba(250,246,241,0)); }
+  .coll-nav::-webkit-scrollbar { display:none; }
+  .coll-tab { flex:none; display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:0 16px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--muted); font-size:14px; text-decoration:none; white-space:nowrap; transition:border-color .2s, color .2s, background .2s, box-shadow .25s var(--ease-spring); }
+  .coll-tab:hover { border-color:var(--primary); color:var(--accent); }
+  .coll-tab.is-active { background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:0 4px 14px var(--glow-sage); }
+  .coll-n { font-size:12px; opacity:.8; font-variant-numeric:tabular-nums; }
+  /* 分集过滤靠 hidden 属性：.work 自身 display:flex 会盖过 UA 样式，选择器级别需显式压回 */
+  .work[hidden], section[hidden] { display:none; }
 
   /* 区块标题 */
   h2 { font-family:Kalnia,"Noto Serif SC",serif; font-size:clamp(20px,4.5vw,25px); margin:0 0 18px; display:flex; align-items:center; gap:14px; }
-  h2::after { content:""; flex:1; height:1px; background:var(--border); }
-  section { margin-bottom:42px; }
+  h2::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--primary); box-shadow:0 0 0 3px var(--glow-sage); animation:dot-pulse 3s ease-in-out infinite; }
+  h2::after { content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--border), transparent); }
+  section { margin-bottom:48px; }
+  @media (min-width:768px) { section { margin-bottom:64px; } }
 
   /* 精选横滑条（移动端横向滚动不折行） */
   .f-strip { display:flex; gap:12px; overflow-x:auto; padding:2px 2px 10px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; }
-  .f-card { flex:0 0 auto; scroll-snap-align:start; display:flex; align-items:baseline; gap:10px; min-height:44px; padding:11px 16px; border:1px solid var(--border); border-radius:14px; background:var(--card); text-decoration:none; color:var(--fg); transition:border-color .2s, box-shadow .2s; }
-  .f-card:hover { border-color:var(--primary); box-shadow:0 4px 14px rgba(90,110,72,.10); }
+  .f-card { flex:0 0 auto; scroll-snap-align:start; display:flex; align-items:baseline; gap:10px; min-height:44px; padding:11px 16px; border:1px solid var(--border); border-radius:14px; background:var(--card); text-decoration:none; color:var(--fg); transition:border-color .2s, box-shadow .25s var(--ease-spring), transform .2s var(--ease-spring); }
+  .f-card:hover { border-color:var(--primary); box-shadow:0 6px 20px var(--glow-sage); transform:translateY(-2px); }
   .f-rank { font-family:Kalnia,serif; font-size:13px; color:var(--accent); }
   .f-title { font-weight:600; }
   .f-genre { font-size:12px; color:var(--muted); }
 
   /* 作品卡片网格：移动单列 → 宽屏自适应多列 */
-  .works-grid { display:grid; grid-template-columns:1fr; gap:16px; }
-  @media (min-width:640px) { .works-grid { grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; } }
-  .work { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:20px; display:flex; flex-direction:column; gap:9px; }
-  @media (hover:hover) and (pointer:fine) { .work:hover { box-shadow:0 8px 26px rgba(41,37,36,.07); border-color:#D8CCBC; } }
-  .tags { display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:0; }
-  .tags:empty { display:none; }
-  .chip { font-size:12px; color:var(--primary); background:var(--primary-soft); border-radius:999px; padding:2px 10px; }
-  .badge { font-size:11px; background:var(--accent); color:#fff; border-radius:999px; padding:2px 9px; letter-spacing:.08em; }
-  .work h3 { font-family:Kalnia,"Noto Serif SC",serif; font-size:19px; margin:0; line-height:1.45; }
-  .meta { margin:0; font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
-  .summary { margin:0; font-size:15px; }
-  .pubs { border:1px dashed var(--border); border-radius:14px; padding:10px 14px; background:#FDFBF8; }
-  .pubs-title { margin:0 0 4px; font-size:11.5px; letter-spacing:.2em; color:var(--muted); }
-  .pubs ul { list-style:none; margin:0; padding:0; }
-  .pubs li { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; padding:5px 0; font-size:13.5px; }
-  .pubs li + li { border-top:1px solid var(--border); }
-  .pub-platform { font-weight:600; }
-  .pubs time { color:var(--muted); font-variant-numeric:tabular-nums; }
-  .pub-link { margin-left:auto; display:inline-flex; align-items:center; gap:2px; min-height:32px; font-size:13px; text-decoration:none; color:var(--primary); }
-  .pub-link:hover { color:var(--accent); text-decoration:underline; }
-  details { margin-top:auto; }
+  .works-grid { display:grid; grid-template-columns:1fr; gap:12px; }
+  @media (min-width:640px) { .works-grid { grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; } }
+  .work { position:relative; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:6px; overflow:hidden; transition:box-shadow .35s var(--ease-out-expo), border-color .25s, transform .25s var(--ease-spring); }
+  @media (min-width:640px) { .work { padding:18px 20px; gap:8px; border-radius:20px; } }
+  .work::before { content:""; position:absolute; inset:0; background:linear-gradient(135deg, var(--glow-sage), var(--glow-amber)); opacity:0; transition:opacity .3s; pointer-events:none; border-radius:inherit; }
+  @media (hover:hover) and (pointer:fine) { .work:hover { box-shadow:0 12px 40px rgba(90,110,72,.12), 0 4px 12px rgba(217,119,6,.06); border-color:#C8B898; transform:translateY(-3px); } .work:hover::before { opacity:1; } }
+  /* 紧凑元信息行：时间 + 体裁 + 精选 ... 朗读按钮右推 */
+  .work-meta { display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:12px; color:var(--muted); }
+  .work-meta:empty { display:none; }
+  .work-meta .tts-btn { margin-left:auto; }
+  .meta-date { font-family:ui-monospace,SFMono-Regular,Menlo,"Cascadia Mono",monospace; font-variant-numeric:tabular-nums; }
+  .chip { font-size:11px; color:var(--primary); background:linear-gradient(135deg, var(--primary-soft), #E8F0E2); border:1px solid rgba(90,110,72,.12); border-radius:999px; padding:1px 8px; line-height:1.6; }
+  .badge { font-size:10px; background:linear-gradient(135deg, var(--accent), #D97706); color:#fff; border-radius:999px; padding:1px 7px; letter-spacing:.06em; box-shadow:0 2px 8px rgba(146,64,14,.15); }
+  .work h3 { font-family:Kalnia,"Noto Serif SC",serif; font-size:17px; margin:0; line-height:1.4; }
+  @media (min-width:640px) { .work h3 { font-size:19px; } }
+  .summary { margin:0; font-size:14px; line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  @media (min-width:640px) { .summary { font-size:15px; -webkit-line-clamp:3; } }
+  /* 底行：发表胶囊 + 阅读全文 */
+  .bottom-row { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:auto; }
+  .bottom-row details { margin-left:auto; }
+  .pub-chip { display:inline-flex; align-items:center; gap:4px; font-size:12px; padding:3px 10px; border-radius:999px; background:linear-gradient(135deg, #FDFBF8, #F5F0E8); border:1px solid var(--border); color:var(--fg); line-height:1.5; }
+  .pub-chip--link { text-decoration:none; color:var(--primary); cursor:pointer; transition:border-color .2s, color .2s, box-shadow .2s; }
+  .pub-chip--link:hover { border-color:var(--primary); color:var(--accent); box-shadow:0 2px 8px var(--glow-sage); }
+  .pub-date { font-family:ui-monospace,SFMono-Regular,Menlo,"Cascadia Mono",monospace; font-variant-numeric:tabular-nums; color:var(--muted); font-size:11px; }
+  .pub-ext { flex:none; opacity:.6; }
   summary { cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:4px; min-height:40px; padding:0 2px; color:var(--primary); font-size:14px; }
   summary::-webkit-details-marker { display:none; }
   details[open] summary { color:var(--accent); }
   .body { margin-top:8px; padding-top:14px; border-top:1px dashed var(--border); font-family:var(--read-font,"Noto Serif SC",serif); font-size:var(--read-size,17px); line-height:1.95; max-width:65ch; }
   .body p { margin:0 0 1em; text-indent:2em; }
+  /* 诗歌：整节居中、不缩进首行（与分行排版配套）；行距紧于散文，诗行是独立单元不靠缩进分段 */
+  .body p.poem { text-indent:0; text-align:center; }
+
+  /* ── 影集：grid 宽屏多列 / strip 移动优先横滑，共用同一份结构 ── */
+  .ph-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  @media (min-width:768px) { .ph-grid { grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; } }
+  .ph-strip { display:flex; gap:10px; overflow-x:auto; padding:2px 2px 10px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; }
+  .ph-strip .ph { flex:0 0 auto; width:min(78vw,300px); scroll-snap-align:start; }
+  .ph { margin:0; min-width:0; }
+  .ph-btn { display:block; width:100%; padding:0; border:1px solid var(--border); background:var(--card); color:inherit; cursor:zoom-in; overflow:hidden; border-radius:20px 26px 18px 28px / 26px 18px 28px 20px; transition:box-shadow .35s var(--ease-out-expo), transform .25s var(--ease-spring), border-color .2s; }
+  /* 偶数张反向圆角：整排不至于像模板生成的统一网格 */
+  .ph:nth-child(even) .ph-btn { border-radius:28px 18px 26px 20px / 18px 28px 20px 26px; }
+  .ph-btn img { display:block; width:100%; height:auto; background:var(--primary-soft); }
+  @media (hover:hover) and (pointer:fine) { .ph-btn:hover { transform:translateY(-3px); box-shadow:0 12px 32px var(--glow-sage); border-color:#C8B898; } }
+  .ph-cap { margin-top:6px; font-size:12.5px; line-height:1.5; color:var(--muted); overflow-wrap:anywhere; }
 
   /* 创作历程 */
   .tl-year { margin-bottom:18px; }
   .tl-year h4 { font-family:Kalnia,serif; font-size:17px; color:var(--primary); margin:0 0 6px; }
-  .tl-year ul { list-style:none; padding:0; margin:0; }
-  .tl-year li { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; padding:8px 0; border-bottom:1px solid var(--border); font-size:14.5px; }
-  .tl-year time { color:var(--muted); font-variant-numeric:tabular-nums; min-width:88px; }
-  .tl-year a { color:var(--fg); text-decoration:none; }
+  .tl-year ul { list-style:none; padding:0; margin:0; position:relative; padding-left:20px; }
+  .tl-year ul::before { content:""; position:absolute; left:5px; top:6px; bottom:6px; width:2px; border-radius:1px; background:linear-gradient(180deg, var(--primary), var(--primary-soft), transparent); }
+  .tl-year li { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; padding:9px 0; font-size:14.5px; position:relative; }
+  .tl-year li::before { content:""; position:absolute; left:-19px; top:15px; width:9px; height:9px; border-radius:50%; background:var(--primary-soft); border:2px solid var(--primary); box-shadow:0 0 0 3px var(--glow-sage); transition:transform .2s var(--ease-spring); }
+  .tl-year li:hover::before { transform:scale(1.3); }
+  .tl-year time { color:var(--muted); font-variant-numeric:tabular-nums; min-width:88px; font-family:ui-monospace,SFMono-Regular,Menlo,"Cascadia Mono",monospace; }
+  .tl-year a { color:var(--fg); text-decoration:none; transition:color .2s; }
   .tl-year a:hover { color:var(--accent); }
   .tl-pub { margin-left:auto; font-size:12px; color:var(--muted); }
   .muted { color:var(--muted); }
-  footer { border-top:1px solid var(--border); padding-top:20px; color:var(--muted); font-size:13px; }
+  footer { border-top:none; padding-top:20px; color:var(--muted); font-size:13px; position:relative; }
+  footer::before { content:""; position:absolute; top:0; left:10%; right:10%; height:1px; background:linear-gradient(90deg, transparent, var(--border), var(--primary-soft), var(--border), transparent); }
 
-  /* ── 优化层（按收益从高到低，纯 CSS 覆盖，不动白名单/结构/CDN 字体）── */
-  /* 触控目标升 44px（移动端为主的小屏访客） */
+  /* ── 优化层（纯 CSS 覆盖，不动白名单/结构）── */
+  /* 触控目标升 44px */
   .social a, summary { min-height:44px; }
-  /* 长外链 / 长标题防横向溢出：文本可断 + 网格子项可收缩 */
-  .pubs li, .pub-link, .social a, .work h3, .f-title { overflow-wrap:anywhere; }
+  /* 长外链 / 长标题防横向溢出 */
+  .pub-chip, .social a, .work h3, .f-title { overflow-wrap:anywhere; }
   .works-grid > .work { min-width:0; }
 
-  /* 编辑式小标签：日期/元信息/标签用系统等宽栈 + 表格数字，与 Kalnia 衬线标题拉开层级（中文自动回落系统栈） */
-  .meta, .chip, .f-genre, .pubs-title, .pubs time, .tl-year time, .tl-pub {
-    font-family: ui-monospace, SFMono-Regular, Menlo, "Cascadia Mono", monospace;
-    font-variant-numeric: tabular-nums;
-  }
+  /* 编辑式小标签 */
+  .meta-date, .chip, .f-genre, .pub-date, .tl-pub { font-family:ui-monospace,SFMono-Regular,Menlo,"Cascadia Mono",monospace; font-variant-numeric:tabular-nums; }
 
-  /* 摘要：3 行裁切（优雅省略），替代生硬截半句 */
-  .summary { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-
-  /* 阅读全文：展开时占满整行、正文居中到舒适行宽，避免在窄卡里读整篇（:has 不支持则退化为原样，安全） */
+  /* 阅读全文展开时占满整行并居中 */
   .work:has(details[open]) { grid-column:1 / -1; }
+  .work:has(details[open]) details { margin-left:0; flex:1 1 100%; }
   .work:has(details[open]) .body { max-width:68ch; margin:12px auto 0; }
 
-  /* 创作历程：竖向轴线 + 圆点节点（用伪元素，不改 HTML） */
-  .tl-year ul { position:relative; padding-left:20px; }
-  .tl-year ul::before { content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--border); }
-  .tl-year li { position:relative; border-bottom:0; padding:9px 0; }
-  .tl-year li + li { border-top:0; }
-  .tl-year li::before { content:""; position:absolute; left:-19px; top:15px; width:9px; height:9px; border-radius:50%; background:var(--primary-soft); border:1.5px solid var(--primary); }
-
-  /* 区块竖向节奏对齐 Token 档位：48（移动）/ 64（宽屏） */
-  section { margin-bottom:48px; }
-  .hero { margin-bottom:44px; }
-  @media (min-width:768px) { section { margin-bottom:64px; } }
-
   /* 朗读按钮：胶囊样式融入有机暖色；hidden 属性必须显式覆盖 display */
-  .read-row { margin-top:auto; display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
-  .read-row details { margin-top:0; width:100%; }
-  .tts-btn { display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:0 15px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font:inherit; font-size:14px; cursor:pointer; transition:border-color .2s, color .2s, background .2s; }
+  .tts-btn { display:inline-flex; align-items:center; gap:5px; min-height:32px; padding:0 10px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); font:inherit; font-size:12px; cursor:pointer; transition:border-color .2s, color .2s, background .2s; }
+  @media (min-width:640px) { .tts-btn { min-height:36px; padding:0 12px; font-size:13px; } }
   .tts-btn:hover { border-color:var(--primary); color:var(--accent); }
   .tts-btn:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
   .tts-btn svg { width:18px; height:18px; flex:none; }
   .tts-btn[aria-pressed="true"] { background:var(--primary); color:#fff; border-color:var(--primary); }
   .tts-btn[hidden] { display:none; }
 
-  /* 当前句高亮（卡拉OK）：句内联色底，跨行不截断 */
-  .tts-s.tts-active { background:var(--primary-soft); border-radius:4px; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+  /* 当前句高亮（卡拉OK）：渐变内联色底，跨行不截断 */
+  .tts-s.tts-active { background:linear-gradient(135deg, var(--primary-soft), #E8F0E2); border-radius:4px; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
   /* 底部固定控制条 */
   body.tts-on .wrap { padding-bottom:104px; }
   .tts-bar { position:fixed; left:0; right:0; bottom:0; z-index:50; background:rgba(255,255,255,.96); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border-top:1px solid var(--border); box-shadow:0 -6px 24px rgba(41,37,36,.08); }
@@ -155,62 +203,651 @@
   .read-ctl button:focus-visible, .rc-font:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
   @media (max-width:420px) { .read-ctl .rc-cap { display:none; } }
 
+  /* ── 照片大图：原生 <dialog>（自带焦点陷阱与 Esc 关闭），窄屏占满视口 ── */
+  .lb { position:fixed; inset:0; margin:auto; display:none; flex-direction:column; width:min(100% - 24px, 1000px); height:min(100% - 24px, 88vh); padding:0; overflow:hidden; border:1px solid var(--border); border-radius:20px; background:var(--card); color:var(--fg); box-shadow:0 24px 80px rgba(41,37,36,.30); }
+  .lb[open] { display:flex; }
+  .lb::backdrop { background:rgba(41,37,36,.66); }
+  .lb-stage { flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(160deg, #FDF8F0, #F2EFE8); }
+  .lb-img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; }
+  .lb-bar { display:flex; align-items:center; gap:8px; padding:10px calc(12px + var(--safe-x)); border-top:1px solid var(--border); background:var(--card); }
+  .lb-cap { flex:1 1 auto; min-width:0; font-size:13.5px; color:var(--muted); overflow-wrap:anywhere; }
+  .lb-cap[hidden] { display:none; }
+  .lb-count { flex:none; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .lb-btn { flex:none; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; padding:0; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--primary); cursor:pointer; transition:border-color .2s, color .2s; }
+  .lb-btn:hover { border-color:var(--primary); color:var(--accent); }
+  .lb-btn svg { width:20px; height:20px; }
+  @media (max-width:640px) { .lb { width:100%; height:100%; border:none; border-radius:0; } }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior:auto; }
-    *, *::before, *::after { transition:none !important; animation:none !important; }
+    *, *::before, *::after { transition-duration:0.01ms !important; animation-duration:0.01ms !important; animation-iteration-count:1 !important; }
+    .reveal { opacity:1; transform:none; }
+    .progress-bar { display:none; }
   }
 </style>
 </head>
 <body>
+<div class="progress-bar" aria-hidden="true"></div>
 <div class="wrap">
   <header class="hero">
-    <p class="kicker">公开作品集</p>
-    <h1>佚名<span class="dot">。</span></h1>
+    <div class="hero-top">
+      <img class="hero-avatar" src="data:image/webp;base64,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" alt="杨金海的头像" decoding="async" />
+      <div class="hero-id">
+        <h1>杨金海<span class="dot">。</span></h1>
+        <p class="headline">文学爱好者</p>
+      </div>
+    </div>
+    <div class="hero-fields"><span class="chip">散文</span><span class="chip">诗歌</span><span class="chip">小小说</span><span class="chip chip--loc"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>陕西岐山</span></div>
+    <p class="bio">岐山县作协会员，丝路都市文化汇签约作家诗人。农闲或工余喜欢读书，偶尔写点乡土散文。所写多是自己经历过的乡村旧事，只想用朴素文字记下乡音、乡情与记忆。</p>
     
-    
-    <div class="hero-stats"><span class="stat"><strong>1</strong> 篇公开作品</span></div>
+    <div class="hero-stats"><span class="stat"><strong>25</strong> 篇公开作品</span><span class="stat"><strong>25</strong> 篇已发表</span></div>
   </header>
+
+  <nav class="coll-nav" aria-label="作品分集导航">
+    <a href="#works" class="coll-tab is-active" data-coll="" data-title="作品橱窗" aria-current="true">全部<span class="coll-n">25</span></a>
+    <a href="#works" class="coll-tab" data-coll="散文" data-title="散文集" data-hash="#coll-1">散文集<span class="coll-n">16</span></a>
+    <a href="#works" class="coll-tab" data-coll="诗歌" data-title="诗歌集" data-hash="#coll-2">诗歌集<span class="coll-n">5</span></a>
+    <a href="#works" class="coll-tab" data-coll="现代诗歌" data-title="现代诗歌集" data-hash="#coll-3">现代诗歌集<span class="coll-n">2</span></a>
+    <a href="#works" class="coll-tab" data-coll="小小说" data-title="小小说集" data-hash="#coll-4">小小说集<span class="coll-n">2</span></a>
+  </nav>
 
   
 
-  <section aria-label="作品橱窗">
+  <section class="reveal" id="works" aria-label="作品橱窗">
     <h2>作品橱窗</h2>
-    <div class="works-grid"><article class="work" id="w0">
-      <div class="tags"><span class="chip">散文</span></div>
+    <div class="works-grid"><article class="work reveal" id="w0" data-coll="小小说">
+      <div class="work-meta"><span class="meta-date">2026-05-18</span><span class="chip">小小说</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：西壕槐香"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>西壕槐香</h3>
+      <p class="summary">上世纪七十年代，关中西壕畔，青年黑娃抱着卷了边的《大学语文》坐在塄坎上，隔着大沟偷偷凝望对面柴门里的羊角辫姑娘。一句《甜蜜的事业》里的歌词成了两人不敢出口的暗号。家穷、路远，他下山西煤矿攒钱三年，回来时姑娘已被逼嫁乔山深处，只留一块攒了三年、本想给她做新衣裳的蓝卡其布，压在槐树底下。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/aePrIL22J5Y78W1kQ479qg" target="_blank" rel="noopener noreferrer" title="打开原文">中乡美视角<span class="pub-date">2026-06-11</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>上世纪七十年代的关中平原，风里裹着黄土的腥气，也裹着洋槐花的甜香。黑娃坐在村西壕的塄坎上，把那本卷了边的《大学语文》摊在膝盖上，眼睛却不往书上看，早飘到沟对面那片庄户院里去了。最南边那户的柴门“吱呀”一声响，他的后背瞬间就绷直了。</p>
+<p>扎着羊角辫的姑娘提着攀笼出来，辫梢上的粉蝴蝶结一颠一颠的。蓝底白花的布衫外头套着半旧的蓝护袖，洗得发白的劳动布裤脚轻轻扫过门槛上的干草。她并不朝沟这边望，低着头慢慢蹲下身子，去捡拾路上遗落的柴草。每拾几把，便不经意似的抬起眼，往对面塄坎上那么一扫。</p>
+<p>黑娃假装翻书，指尖把纸页捏出一层褶皱。他来西壕看书快三个月了。头一个月只当是巧合，后来慢慢摸出了规律——只要他在塄坎上坐下来，不出一刻钟，那姑娘准会出现在门前。有天他等了快半个钟头也没见人影，随口哼了句电影《甜蜜的事业》里的歌：“我们的事业充满阳光”，歌没唱完，那扇柴门就开了。后来他又试了几次，次次都应验。</p>
+<p>有一回两人目光忽然撞上了，黑娃反倒慌了，赶紧低下头去翻书。偷眼再瞄过去，那姑娘非但没躲，反倒定定地站在原地，远远地望着他，眼睛亮得像沟底的清水，烧得他耳根子发烫。那股热劲儿，隔着几十丈的大沟直直扑过来。黑娃摸了摸口袋里瘪瘪的布袋子，心里那团火一下就凉了半截。</p>
+<p>他是陕西青年自修大学的学员，家里穷得连粗粮都接不上顿，住的土坯房年久失修，逢雨就漏，连修补的钱都凑不出来。说亲的媒人踏破门槛，看看家境，转头就走。他哪里敢往娶媳妇那上头想呢。这天散了工，他又忍不住往塄坎上走去。姑娘正坐在门前做针线活儿，看见他来了，手里的活计不知不觉就停了，远远地望着他，足足有好几分钟。几分钟的目光交流，仿佛把什么话都说尽了。风把槐花的香气一阵阵送过来。黑娃站了约有半袋烟的工夫，终究没敢跨过那条沟，默默坐下来，又翻开了书。</p>
+<p>那年冬天，村里招去山西煤矿的工人，管吃管住还发现钱。黑娃收拾了个蛇皮袋子，说走就走。走的那天早上，天还没亮透，他来到西壕的塄坎上，隔着沟往对面望——那扇柴门紧紧闭着，只有一地干枯的槐叶，厚厚地铺在土路上。</p>
+<p>三年下来，他攒了一百多块钱。黑娃揣着钱回了村，鞋帮子上还沾着山西的煤渣，头一件事就是往西壕跑。塄坎上的洋槐还是那么高，只是叶子已经泛了黄。隔着沟望过去，对面那片庄户院早就空了，十来户人家都搬到了塬上的新街。最南边那户的院墙塌了半截，院子里长满齐腰深的荒草，秋风卷着落叶直打旋，一片死寂。</p>
+<p>他站在塄坎上，喉咙一阵阵发紧，鬼使神差地又哼起了那首歌：“我们的事业充满阳光……”歌声飘过大沟，钻进荒草丛里，只有风卷着槐叶沙沙地响。再也没有那扇吱呀作响的柴门，再也没有那个晃着蝴蝶结的身影。</p>
+<p>后来，他向村口放羊的老叔打听。老叔抽了一锅子烟，叹了口气，说：“哦，你说南头那女娃呀？三年前就嫁到乔山深处去啦。听说那家倒是有钱，可女婿有点先天性不足，是个残疾人。她父亲见钱眼开，女娃自个儿不愿意，硬叫她爸给逼着嫁了。我记得——出嫁前那半个月，她天天都坐到这塄坎上来，往你常看书的地方望，一坐就是大半天。”</p>
+<p>黑娃没说话，从怀里摸出那块攒了整整三年、打算给姑娘做身新衣裳的蓝卡其布，轻轻放在了塄坎的槐树底下。风又吹过来，几片泛黄的槐叶悠悠飘落，落在布上，也落在他爬满细纹的手背上。</p>
+<p>五十年过去了，黑娃再回西壕的时候，土塄坎还在，洋槐树还在，花开时节，那香气闻起来还和当年一模一样。他摸着皴裂的树干，望着沟对面早已平作粮田的庄户院，嘴里依然哼着那首没唱完的歌——那是他这一辈子，唯一一段开了花、却没来得及结果，带着甜香的、绵绵的心事。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w1" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2026-03-19</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：苜蓿花"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>苜蓿花</h3>
+      <p class="summary">夏还未立，渭北的苜蓿就开花了，村边路旁一片锦绣，衬得村庄清秀如蒙头纱的新妇。脚被茬子划破才低头看见，苜蓿根下的泥土硬如砖块——被割一茬、两茬、三茬，嫩芽仍从茬口钻出。它不似玫瑰娇艳、不学野菊藏身、不比盆花金贵，一开花就把自己连枝带叶慷慨献作牲畜草料。庄稼人那份不挑、不惧、不图的倔劲儿，就藏在这品格里。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/Trl4FaJDjJiqK_i5PO9pqQ" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2022-10-16</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>夏还未立，渭北一带的苜蓿就开花了。若此时来我们村边瞧瞧，只见一片片苜蓿花如铺展的锦绣花被，覆盖在村旁、路边，将村庄衬得格外清秀灵动，宛如新妇蒙了头纱，别有一番韵致。</p>
+<p>虽是土生土长的农村人，可每当春的脚步刚踏进关中平原，我总免不得闲余时往苜蓿地边踱步。苜蓿花，总是我脑海中先跳出的意象。我爱苜蓿花，不单为其颜色清丽，更因它那令人动容的品格。</p>
+<p>犹记那年花开时节，我散步时脚被苜蓿茬子划破，慌忙寻细土敷伤口。低头间，却见苜蓿根部的泥土竟坚硬如砖块——久未得水，亦无肥滋养。可奇的是，这贫瘠之地，苜蓿却长得蓬勃茂盛。放眼望去，有的被割过一茬，有的被割过两茬，更有被掐过三茬的，嫩生生的新芽仍倔强地从茬口钻出来，绿意如星火燎原。</p>
+<p>我抬头望向辽阔的田野，思绪如风中的麦浪翻涌不息……苜蓿花，既不似玫瑰娇艳灼人，也不若芙蓉亭亭玉立；更不像山沟里的野菊，为避人割采，偏生在人迹罕至处；也不如温室盆花那般金贵，稍遇寒暑便枯黄萎顿。苜蓿花才绽开，便连同枝叶，慷慨地将自己献作牲畜的草料，连一丝迟疑也无。</p>
+<p>恍然间，我懂了。难怪村里人都这般偏爱苜蓿花——它有着与庄稼人一般无二的脾性：不挑三拣四，不惧苦寒，不图回报，只知埋头苦长，将一身筋骨都化作滋养土地的养分。啊！苜蓿花，我敬你爱你，是因你默默咽下风刀霜剑，在瘠土中煎熬生长，却仍将血肉慷慨捧出，不求分毫回馈。这品格，与我们庄稼人骨子里的倔劲儿，竟是一脉相承的魂啊！</p></div></details></div>
+    </article>
+<article class="work reveal" id="w2" data-coll="诗歌">
+      <div class="work-meta"><span class="meta-date">2025-12-24</span><span class="chip">诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：七绝五首"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>七绝五首</h3>
+      <p class="summary">五首七绝皆写乡村：探亲期满被工地电话催回，母亲笑貌只剩余音；街头荒草蔓生、村内人稀少爨烟，十户七家门锁闭；几家门户已颓残，屋挂蛛丝、房倾顶漏见星天；闲来漫步入村庄，野草萋萋，多为耆老少青人；城中车闹月租千金，乡间院静少人临。一&quot;辞&quot;一&quot;归&quot;之间，透出今日村庄空心之叹。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/axDQLhyazsskGJzEWc6JMQ" target="_blank" rel="noopener noreferrer" title="打开原文">大秦文萃<span class="pub-date">2025-09-24</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">七绝《辞》</p>
+<p class="poem">回家探亲日子满，工地来电话上班。</p>
+<p class="poem">娘的笑貌隔房远，只剩余音在耳边。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">七绝《乡村之景其一》</p>
+<p class="poem">街头巷尾荒草漫，村内人稀少爨烟。</p>
+<p class="poem">十户七家门锁闭，猫狗流浪任蹁跹。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">七绝《乡村之景其二》</p>
+<p class="poem">几家门户已颓残，入内蒿藜拂脸寒。</p>
+<p class="poem">屋挂蛛丝如墓霭，房倾顶漏见星天。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">七绝《乡村即景》</p>
+<p class="poem">闲来漫步赴乡村，野草萋萋漫足痕。</p>
+<p class="poem">入得庄中稀见影，多为耆老少青人。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">七绝《城乡之异》</p>
+<p class="poem">城中车闹客相侵，村巷街寒寂莫寻。</p>
+<p class="poem">都市月租逾千金，乡间院静少人临。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w3" data-coll="诗歌">
+      <div class="work-meta"><span class="meta-date">2025-12-24</span><span class="chip">诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：七绝四首"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>七绝四首</h3>
+      <p class="summary">四首七绝：崖畔野杏雨打风欺任岁迁，数载繁枝金果须臾采尽；陶缸豆芽七日鲜嫩，一逢沸水魂消；雁去燕回又一年春，暮岁方觉昔时如痴梦；十载抗癌志若磐石，驱疾终得体康安，从今更炼强身骨。物象与心迹互映，坦荡、豁达，不作怨语。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/SoWJjAckgjWuK-st5AZHHA" target="_blank" rel="noopener noreferrer" title="打开原文">丝路都市文化汇<span class="pub-date">2025-11-01</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">野杏</p>
+<p class="poem">生居崖畔自安然，雨打风欺任岁迁。</p>
+<p class="poem">数载繁枝金果累，须臾采尽梦如烟。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">豆芽</p>
+<p class="poem">陶缸温室自滋长，曲绕勾连意太狂。</p>
+<p class="poem">七日芽成鲜嫩展，一逢沸水煮魂亡。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">叹岁</p>
+<p class="poem">雁去燕回又一春，可教吾再少年身。</p>
+<p class="poem">昔时懵懂如痴梦，暮岁方醒少精神。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">抗癌十载</p>
+<p class="poem">十载抗癌志若磐，驱疾终获体康安。</p>
+<p class="poem">从今更炼强身骨，长保安康岁月宽。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w4" data-coll="现代诗歌">
+      <div class="work-meta"><span class="meta-date">2025-12-24</span><span class="chip">现代诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：未圆的梦"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>未圆的梦</h3>
+      <p class="summary">一首悼母的现代诗。旧时家贫，别家孩子的白馍新衣像明刺扎进眼底，母亲一句&quot;等风调雨顺，都会有的&quot;哄住了哭闹的孩子。日子渐渐有了笑意，兄弟成家、新宅拔地，母亲又念叨想坐一趟火车去西安。儿子在内蒙打工攒够钱准备带母亲圆梦时，她已在时光里悄然远逝——那未圆的梦从此成了心里的刺，每夜每夜地刺痛思绪。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/GISvEWLHVhRgDDx0WgiD2A" target="_blank" rel="noopener noreferrer" title="打开原文">大秦文萃<span class="pub-date">2025-11-27</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">在贫穷织就的旧时光里</p>
+<p class="poem">饥饿如影，紧紧追随</p>
+<p class="poem">别家孩子的白馍与新衣</p>
+<p class="poem">像明亮的刺，扎进我的眼底</p>
+<p class="poem">我哭闹着向母亲索取</p>
+<p class="poem">母亲的安慰似温柔的羽翼</p>
+<p class="poem">“等风调雨顺，等日子富裕</p>
+<p class="poem">白面馍与新衣裳都会有你一份”</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">梅雨季节，漏雨的屋似叹息</p>
+<p class="poem">我哭着渴望安稳的栖息</p>
+<p class="poem">母亲轻抚，话语满是期许</p>
+<p class="poem">“等你长大，新房与好梦都将开启”</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">岁月缓缓，日子渐渐有了笑意<br/>兄弟成家，新宅拔地而起<br/>生活不再有饥寒的痕迹<br/>母亲却有了新的希冀<br/>她念叨着火车的神奇<br/>盼着去西安的那场远行<br/>我承诺着，却被生活绊住步履<br/>困境如网，越缠越密</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">那年在内蒙，打工的汗水有了归依<br/>我计划着，要带母亲圆这梦的轨迹<br/>可命运弄人，未等收工的消息<br/>母亲已在时光里悄然远逝</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">如今，我站在回忆的废墟<br/>悔恨如野草，疯长不息<br/>那未圆的梦，成了心中的刺<br/>在每个寂静的夜，刺痛我的思绪<br/>母亲啊，你在天堂是否安息<br/>我多希望，能弥补这迟来的歉意<br/>可时光不会回头，爱已无处投递</p>
+<p class="poem">这遗憾，成了我一生的悲曲</p></div></details></div>
+    </article>
+<article class="work reveal" id="w5" data-coll="现代诗歌">
+      <div class="work-meta"><span class="meta-date">2025-12-24</span><span class="chip">现代诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：西塬旧梦"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>西塬旧梦</h3>
+      <p class="summary">己巳年冬月写于京当衙里。在西壕剪桃树枝桠，抬眼望见对面西塬的窑庄院——童年那方&quot;食不果腹、衣衫似破麻&quot;却敢&quot;开火&quot;（用土疙瘩打仗）的奇幻天地。柿子树守着&quot;老娃蛋&quot;（方言：甜柿）的甜蜜，衙里娃与西塬玩伴逮鸟撵兔、吼声飘上白云。几十年过去，庄面支离破碎、青壮入城、窑洞坍塌，只有记忆像窖藏的酒，在灵魂深处仍闪着童年的光。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/Bk2ZRWf3b3gmmQJOdQiGNA" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2025-12-22</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">——已巳年冬月写于京当衙里</p>
+<p class="poem">在西壕，修剪着桃树枝桠，<br/>目光飘远，西塬窑庄院入画。<br/>那是童年的一方奇幻天地啊，<br/>沟壑之间，曾留下我疯跑的脚丫。<br/>食不果腹，衣衫似风中破麻，<br/>却有“开火”的勇气，无畏出发。<br/>大小柿树，像沉默的卫士排闼，<br/>只为“老娃蛋”的甜蜜，把它们挨个察。<br/>衙里娃娃的拳头，带着蛮横的霸，<br/>西塬玩伴的家门，常把友谊锁下。<br/>你逮鸟儿，他撵兔，闹声如雷炸，<br/>吼声，直飘到那白云的老家。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">昔日的穷，掩不住精神的挺拔，<br/>娃们脸上，笑容似春日繁花。<br/>可光阴，如闪电般刹那，<br/>几十年，就这么悄然滑下。<br/>如今，把村庄细细地探查：<br/>庄面，已是支离破碎，<br/>不见一户，有炊烟袅袅升发；<br/>青壮们，奔赴城的繁华，<br/>孤寡老人，搬上塬头把岁月打发。<br/>窑洞坍塌，顶破了那片天呀！<br/>当年乐园，已沦为荒草之洼。<br/>幼时玩伴，如今散落在哪？<br/>不知不觉，我们已到耄耋之涯。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">站在这壕旁，喟然长叹，<br/>旧梦如雾，在时光里渐渐虚化。<br/>那些笑声，那些奔跑的步伐，<br/>都被岁月，无情地葬下。<br/>可记忆，却像窖藏的酒啊，<br/>越陈越香，在心底久久驻扎；<br/>哪怕乐园已变，玩伴已天涯，<br/>童年的光，依然在灵魂深处闪华。</p>
+<div class="vspace" style="height:3.0em" aria-hidden="true"></div>
+<p class="poem">注：</p>
+<p class="poem">开火：小孩子用土疙瘩打闹玩耍。</p>
+<p class="poem">老娃蛋：对甜柿子的称呼。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w6" data-coll="诗歌">
+      <div class="work-meta"><span class="meta-date">2025-12-24</span><span class="chip">诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：说媒（组诗五首）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>说媒（组诗五首）</h3>
+      <p class="summary">同题组诗的另一版本：说媒不图酒食、送别霾雾隐啼声、逢友岐山巷陌桃蕊正艳、照壁雄镇庇民千载、酸枣带刺不为害人。以&quot;岁晏&quot;&quot;甲辰龙岁孟春&quot;&quot;三春桃蕊&quot;等时序串起五帧关中乡村小景，诗人愿做那位&quot;甘为鸾凤铺虹路&quot;的月老，也愿做那颗&quot;惟求护己全&quot;的野果。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/5MXnOyS_AuOvUr_V6vNEtQ" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2025-11-26</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">说媒</p>
+<p class="poem">岁晏清闲充月老，</p>
+<p class="poem">岂图杯酒与馐肴。</p>
+<p class="poem">甘为鸾凤铺虹路，</p>
+<p class="poem">唯愿尘间鳏汉消。</p>
+<div class="vspace" style="height:3.0em" aria-hidden="true"></div>
+<p class="poem">送别</p>
+<p class="poem">甲辰龙岁孟春风，</p>
+<p class="poem">霾雾浑吞望眼朦。</p>
+<p class="poem">隐隐啼声随影远，</p>
+<p class="poem">夫行商路妇归农。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">逢友</p>
+<p class="poem">诸般报刊声名显，</p>
+<p class="poem">艺苑文林久仰焉。</p>
+<p class="poem">恰值三春桃蕊艳，</p>
+<p class="poem">岐山巷陌再逢贤。</p>
+<div class="vspace" style="height:3.0em" aria-hidden="true"></div>
+<p class="poem">照壁</p>
+<p class="poem">巍峨轩昂立庄垓，</p>
+<p class="poem">雄镇八荒鬼魅哀。</p>
+<p class="poem">雨虐风饕炎日炙，</p>
+<p class="poem">庇民千载永安哉。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">酸枣</p>
+<p class="poem">扎根崖畔间，</p>
+<p class="poem">锐刺满身缠。</p>
+<p class="poem">无意伤人恶，</p>
+<p class="poem">惟求护己全。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w7" data-coll="诗歌">
+      <div class="work-meta"><span class="meta-date">2025-08-01</span><span class="chip">诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：格律诗三首"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>格律诗三首</h3>
+      <p class="summary">三首格律小诗：为营生计赴天涯，数岁难归旧舍衙，此际徘徊残院落，仅识锈锁已无家；人生似梦疾如矢，醒处方觉晨鼓尽，暮钟催影日两时；独立库边凝望岁华，丹枫叶落、素芦花飞，碧水孤鸭啼夜寒。写漂泊者的归乡与暮年，冷而克制。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/GIBlOLUyLTgqU2YyygTYDQ" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2025-08-18</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">七绝·回乡</p>
+<p class="poem">为营生计赴天涯，</p>
+<p class="poem">数岁难归旧舍衙。</p>
+<p class="poem">此际徘徊残院落，</p>
+<p class="poem">仅识锈锁已无家。</p>
+<div class="vspace" style="height:3.0em" aria-hidden="true"></div>
+<p class="poem">七绝·梦</p>
+<p class="poem">人生似梦疾如矢，</p>
+<p class="poem">混沌流年岁已驰。</p>
+<p class="poem">醒处方觉晨鼓尽，</p>
+<p class="poem">暮钟催影日两时。</p>
+<div class="vspace" style="height:3.0em" aria-hidden="true"></div>
+<p class="poem">七律·寒秋</p>
+<p class="poem">独立库边凝目望，岁华又见木初黄。</p>
+<p class="poem">岸东枫叶飘丹叶，库西芦花舞素芒。</p>
+<p class="poem">碧水随风波潋滟，孤鸭啼夜意凄凉。</p>
+<p class="poem">回头忽觉寒侵体，盼待春归影对双。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w8" data-coll="诗歌">
+      <div class="work-meta"><span class="meta-date">2025-08-01</span><span class="chip">诗歌</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：七律·毛围巾"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>七律·毛围巾</h3>
+      <p class="summary">一首咏物七律。挚友赠的毛围巾接过来还带着旧时的体温，重量不满两斤、情意却似千钧；灯前几夜针影乱，千丝线里岁华痕。寒天旷野行途远，绕颈长留故友恩。以物寄情，把一份清瘦而郑重的友谊写得有分量。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/cR8mScDXR_edGTFDhHLkZg" target="_blank" rel="noopener noreferrer" title="打开原文">丝路都市文化汇<span class="pub-date">2025-08-01</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p class="poem">《毛围巾》七律</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p class="poem">挚友贻吾毛围巾，接来尚带旧情温。</p>
+<p class="poem">质轻未足两斤许，意重犹觉千钧存。</p>
+<p class="poem">几夜灯前针影乱，千丝线里岁华痕。</p>
+<p class="poem">寒天旷野行途远，绕颈长留故友恩。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w9" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2024-12-20</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：上坟"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>上坟</h3>
+      <p class="summary">前年农历二月十一，小侄孙结婚。作者从岐山京当倒四次车到甘肃庆阳县土桥乡碾子庄。第二天与孙儿沿沟洼上五处坟，跪在三妈坟前往事涌上——河南洛阳人，抗战花园口决堤时与家人跑散，十四岁被人贩子带到岐山青化，被三爸用三千六百元领回家；骑驴到庆阳那天她一路哭了七天。此后一辈子劳作不歇、心善助人，一九九一年去世，河南娘家终究无一人来送葬。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/abH50f-Vx3a7bOJFej2a1w" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2024-12-25</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>前年农历二月十一，我小侄孙结婚，我侄儿提前几天就给我发了信息，让我早点来。这是我侄儿操心的最后一件大事，给远近新老亲戚都下了请柬。我侄儿住在甘肃庆阳，离我们岐山很远，去一趟也确实不容易，因为正处疫情期间，虽说困难重重，但即使再不方便，说什么我也得去参加。</p>
+<p>二月初九清晨，我在京当坐上了去宝鸡的班车，在凤翔县纸坊路口下车，换乘了宝鸡去庆阳的长途，途中经过四次的倒车，下午四时许，到达庆城县（原庆阳县）土桥乡西掌村碾子庄的我侄儿家中。</p>
+<p>根据当地的风俗习惯，出嫁女儿、男娃结婚，提前几天都要去给故去的亲人上坟。第二天吃过早饭，侄儿和侄媳收拾好上坟的东西香表和纸钱，让我和小孙子拿上去上坟。</p>
+<p>这里地处庆城县陇东黄土高源中部地带，全县除驿马镇、铜川乡有部分较宽塬面，其余塬面支离破碎，川台狭小，土桥乡梁岇起伏，沟壑纵横，呈残塬沟壑地貌类型。我爷、我三爸（我父亲的三弟）、我哥、我姐姐的坟墓都在土桥，而且还不在一块，分别有五个坟地，都在几处沟洼里，道路崎岖难走，唯有我三妈（我三爸的妻）的坟地在岇顶，一块南北长的牛舌头塬上，比较顺路且也近些，别的坟墓即远又偏辟。我俩上坟时没按辈分作次序，而是随着路经。首先来到我三妈的坟地，地里种的是油菜籽，虽说已是农历二月份，但见这里仍旧是一片枯黄，没有生机。我三妈的坟墓在地的南边，我俩还未走近，老远就看见坟上的枯草有半人高，随风摇摆。仿佛象我三妈在给我爷孙招手打招呼似的。</p>
+<p>我俩跪在坟前，把供品摆好，取出香纸点然，看着香烟枭枭，纸灰随风升空、盘旋，不由使我一阵阵心酸。想起了过去，想起了三妈。</p>
+<p>三妈生于一九三一年，卒于一九九一年，享年六十一岁，河南洛阳人。</p>
+<p>三妈身世坎坷，从小与家人走散，逃荒在外，更是吃尽了苦头。我第一次见到三妈是一九七五年六月份。</p>
+<p>那年因我交不起学杂费无法上学，回到队里干活，每天队里只给我记四分工，干了几天就累倒了，父亲说庆阳碾子庄的我三爸有能力，让我去他那里，看能否给我找个别的事做，于是我收拾了几个干粮馍，拿着父亲给我寻的两块钱就动身了。</p>
+<p>第一天走到了到凤翔的姐姐家，给姐姐说明情况后，她又给我寻了十块钱的路费。第二天从姐姐家不远的汤房庙，坐上了第一趟向北去的班车，途中又倒了好几次车后，终于赶天黑到了庆阳县的驿马镇，但此时已没有去土桥的班车，无奈跟着一个补鞋的师傅在熊家庙住了一晚。次日一早我赶上班车到了桐川，但那时从桐川到碾子庄还没有通车，我第一次来又不识路，只好边问边走。那天烈日当头，娇阳似火，从桐川到碾子庄足有四五十里，我走了整整五个小时，一身粗布衣服全被汉水湿透了，没有毛巾就用手擦汗，把脸抹地花得让路人看见直笑。</p>
+<p>中午的时候，好不容易寻到了三爸家，但当时他家里没有一个人认识我。我走进院子喊，三爸和三妈从中间窑里走出来问我找谁，我作了个自我介绍向他们说明来意。三爸一听我说话的口音，才知道我是从陕西老家来的。</p>
+<p>以前三爸虽曾回过老家几次，但我都没在家，他也从未见过我。</p>
+<p>那年，三爸一家住在碾子庄公路下面，是个窑庄院，坐东面西，正面有三只窑洞。三爸三妈让我进了中窑，“呀，好凉快”，我一进去便感叹道。刚在炕边坐定，三妈随即从柜子上取来一件夹衣给我披上，说窑里是冬暖夏凉，走热的人不披个衣服会感冒。吃过饭后，三爸对我说了他的情况，得知三爸三妈还有孙子孙女住在一起，我哥（上门女婿）我姐还有三个孩子住在老庄。</p>
+<p>晚上，我侄儿、侄女住校没有回家。三爸、三妈和我坐在炕上拉起了家常，三爸问这问那，三妈说东道西，我诉说着来庆阳时一路坐车倒车的艰辛。说着说着三妈扯起了她以前的苦难岁月：在她还小的时候，正处抗日战争期间，蒋介石为了阻止日军的进攻，炸毁黄河大堤，八十余万人惨遭溺死，千百万人流离失所，一夜之间，一家人被突如其来的灾难吓得不知所措，只顾逃命，荒乱中她与家人跑散了，彼此不知去向，她哭着喊着，但却叫天天不灵，叫地地不应，寻找数天没有一点音信。</p>
+<p>几个月来，她四处寻找，却始终没有结果。在这段时间里，她不得不依靠乞讨度日，常常食不果腹。长期的饥饿使得她身形消瘦如柴，几乎只剩下皮包骨头。为了生存，她不得不跟随难民们四处流浪，风餐露宿。有时乞讨无获，她便只能以树皮和草根充饥；口渴时，则仰赖雨水解渴。在这样艰难的环境中，她依然顽强地坚持着，寻找着一线生机。</p>
+<p>十四岁那年沿着陇海铁路向西，扒火车无意间来到陕西省岐山县，蔡家坡火车站。被人贩子带到青化，当时她们一起来了有好多逃难的。经我们村里的人士吕万泰说话（作中介），我们村就那次，一下子领回来八九个女孩子，三妈说她当时是三千六百元被我三爸买走的。</p>
+<p>我三爸说，那些年我爷吸大烟，家里的田地卖了个光净，房屋财产卖的只剩下两间半厦房烂得没人要，屋里徒有四壁，无法生存。那时我爷早已领着家人逃荒到了庆阳土桥，三爸到土桥以后，对那里的一切都不习惯，人生地不熟，我爷一天东一家，西一家只顾寻的吸他的大烟，别的什么事也不管，因此，他有时在庆阳有时在岐山，来回的傻跑。那一次他回岐山京当家里后，正碰上青化来了许多河南逃荒的，我八婆说大家搭伙都给凑一凑，让我三爸跟上村里人士，去青化在逃荒的人中找个婆娘，那天去后还真与三妈就随緣了。</p>
+<p>三妈说，那天我三爸把她从青化领回家，无法安身，后来在户里我八婆（方言奶奶叫婆）家，停留了两天，因为她去庆阳路远走不动，我三爸才买了头毛驴驮着她去的。三妈说去庆阳的那天她骑上驴，看见我三爸拉着驴向北走，她就从驴身上跳下来，怎么也不愿意去，哭着喊着，因为她看见北里是山，她不愿到山里去。再一个原因就是往北越走离火车站就越远，火车站在我们村的南方，以后她想回河南就更远了。三爸说没办法，他最后假装向南走，我三妈骑在驴背上抱住驴脖子，我八婆试着往下拉，都不下来……我三妈说她从家里走时就哭，走了七天才到土桥，她的眼泪流了一路。那晚我们聊得很久很久才睡。</p>
+<p>听我三爸后来讲才知道，我爷在土桥，吸大烟吸的没钱了，烟隐犯了难受的死去活来，实在没办法，把我婆说是他妹子都卖给了窦家，他在那里的死活，我爷从来不闻不问，解放后我爷在附近，又给他认了个干妹子，从来都没个正事。</p>
+<p>三妈说她和我三爸来到土桥后，又没有个家，三爸只能寻的给人做活，她跟着打杂，走到谁家就吃住在谁家。说起来庆阳人好，土桥人更好，心底善良，多少年过去了，三妈说从未有人欺负过她们。时光流逝，岁月任冉，日子以长，他们也慢慢有点积蓄，后来在碾子庄买了块地皮，修了个窑庄，才有了自己的家。</p>
+<p>三妈不识字，却心灵手巧，学啥会啥，不但家务活样样都能做了，还学会了裁剪，更重要地是三妈也学到了为人处世的经验。她勤劳、善良、朴实、尊老爱幼。白天在田地里干活，晚上还加班给乡邻缝衣服。庄里谁家有个大小事情，做饭缝衣总是少不了她。</p>
+<p>三爸和三妈在土桥白手起家，相濡以沫，努力奋斗经营并发展壮大着这个家庭。</p>
+<p>解放后三爸当了农业社的干部，整天忙在外，有时几天都不回来一趟，有些日子根本顾不上家，屋里没水没柴禾，全要靠三妈起早贪黑，从二三里远的沟洼里往回背、往回担。</p>
+<p>三妈在土桥无亲无挂，孤苦伶仃无依无靠，当三爸不在时，一切孤独痛苦向她袭来的时候，不由使她想起娘家，想起娘家那些亲人，不由自主的站在庄畔，向南默默眺望、眺望，常常以泪洗面，</p>
+<p>后来我姐的出生，给这个家带来了无穷的欢乐，才使三妈不在孤单，有了盼头也有了欢笑。</p>
+<p>记得父亲说过，一九七五年春，三爸和三妈去过河南一趟，返回庆阳时还来岐山老家住了几天，那时我不在家，到麟游山上给林场松苗地里吆野鸡。</p>
+<p>说是三妈凭记忆在洛阳找到了久别的娘家，进门才知家里情况不好，生活状况还不如甘肃。她爹妈早己去世，几个姐姐流落他乡，家里只有个妹妹招了个上门女婿。有一男一女两个孩子，那年河南还是吃不饱，没钱花，住了两天就返回了。此后有了通信往来。</p>
+<p>岁月如白驹过隙，眨眼之间，几十年已经过去。农村实行土地承包到户后，三爸家种有四五十亩土地，遍布几个沟洼，为了作务上的便利，姐姐、哥和三个孩子住在老庄。三爸、三妈还有孙子、孙女四个人，住在碾子庄路畔修的那个新庄。一年除碾打收种合在一起外，平时作务上各做各的活路。</p>
+<p>我第二次来三爸三妈家是上世纪，八十年代后期，三爸在村上仍旧当着支书。孙子，孙女都已不在读书，在家种地、放牛、放羊，那时三爸家就有四头牛、六十几只羊。三妈做着家务。家里已不在困难，有余粮有了存款，小日子过的是风生水起。见三妈脸上常常挂有微笑。但是，黑天白日，见她总是仍有干不完的话路，一会儿给牲口添草，一会儿又上炕做起了针线。</p>
+<p>我再一次来三爸三妈家，是 一九九一年二月，参加三妈的葬礼。那年三爸不再担任村支书，在家开了个小卖部，孙子结婚已有两个娃娃，三妈因病去世，据说三爸给河南三妈娘家发了急电，一直等到第七天我们为三妈举行葬礼、送埋，河南也没有一个人来。</p>
+<p>人常说“男活舅家，女活娘家”，三妈一生真是命苦。</p>
+<p>岁爷，你发什么呆呀？纸烧完了，我们叩首、作揖，快些，还有四个坟没上泥！</p>
+<p>一叩首，再叩首，三叩首……作揖……</p></div></details></div>
+    </article>
+<article class="work reveal" id="w10" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2024-01-18</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：七盘岭有个无底洞"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>七盘岭有个无底洞</h3>
+      <p class="summary">京杜公路北望乔山，第二道山梁就是七盘岭，岭上有个无底洞。丢一碗大的石头下去，&quot;克哩倒腾&quot;响一天也不见停。小时候书文老爷爷用&quot;讲无底洞&quot;哄放羊娃帮他撵羊，讲出唐朝薛仁贵征东在此入地穴得鞭、弓、箭、袍、无字天书五件法宝降服盖世文的传说。八十年代作者亲自抱石下洞试过，早晨丢、傍晚经过仍未止。故事是故事，无底洞却是真的，七盘岭承载的周原文脉深得很。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/f5v7bKHEw2cmmixU7JYIMA" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2024-01-22</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>站在衙里村东的京杜公路上，向北边远处的乔山望去，首先看见的是箭括岭东边，那第二道山梁，人称七盘岭。因山高坡陡，上山的路拐来拐去，要盘七次才能到达山顶，因此而得名，以前属扶风县黄堆乡。</p>
+<p>据有关资料记载：周文化是中华文化之根，中华文化之本，谓之根本。古周原是周易的发祥地，境北边有三岭、三山、三洞、三人。三个岭是：箭括岭、七盘岭、瓦罐岭，它们是古周原的龙脉靠山，属六盘山余脉，冠绝古今，海拔一千五百至一千七百米之间。三个山是：西观山、中观山和东观山。三个洞是：箭括岭东边的黑龙洞、七盘岭上的无底洞和附近的人称之为神仙洞的瓦罐岭上的万神洞，洞中有溶洞、水洞、空洞、仙洞、地里、阴阳、传奇，洞中有文化是研究穴居，是穴洞文化的重要依据，更是探索研究解密天道、地道、人道，特别是生存之道、发展之道、自然之道的金钥匙！三个女人是：琼霄、云霄和碧霄。三个男人是：周文王、周公和姜子牙。</p>
+<p>小时候，隔三叉五总能在村头、巷尾，看见大人们三人一伙、五人一堆，在一起谈论一些上七盘岭、过无底洞、去北山八河滩一带割柴、割巴条的事。有时过去凑个热闹，听他们讲一些关于七盘岭、无底洞的奇闻趣事。</p>
+<p>无底洞在七盘岭南坡上边，稍西一点快到山顶的地方，洞口很大，有三米左右。抱一个碗大的石头丟进洞中，随即就会响起“克哩倒腾”石头往洞下滚落遇洞壁碰撞的声响。往洞中丟过石头的人，都说响声时间很长，有人说能响一天，甚至有人说要响一个对时（古时称：一天一夜）。究竟能响多长时间，从无人考究，都是割柴、挖药材的人路过，觉得好奇，走到跟前随便拣个石头丟下去，听一阵始终在响，从来等不到声响消失，也都各忙自己的事情去了。从没有人听谁说，有人从始至终观察过一回。</p>
+<p>相传，村里有一位书文老爷爷，其实只念了个初小会写书信而已，在村里辈分也大、人品好，那时候村上人识字的不多，他经常帮人写信，大人们也很尊敬他，让我们小孩子叫他书文老爷爷。记得上世纪七十年代，书文老爷爷上了岁数，在沟里和我们一起放羊时，羊跑了他撵不上，我们替他撵羊，他给我们讲故事听。开始书文老爷爷的故事，讲得是有声有色，让我们听的着了迷，有时竟忘了饭点。后来慢慢的讲的次数多了，我们也听腻了，故事也就不好奇，没有新鲜感了。有一次书文老爷爷的羊只，跑上沟顶的庄稼地里，若但让群众看见告发，队里会扣书文老爷爷家人的工分的。那时队里的制度很严，这时书文老爷爷看见急了，把我们几个全喊遍，我们彼此相望，偷着“哧哧”地笑，没有一个人答理。这时书文老爷爷急中生智，便大声向我们几个放羊娃说，你们谁今天给我把羊撵回来，我今天就给谁讲咱们能看见的北山上，那个七盘岭和无底洞以前的故事。这时我们一听讲无底洞，新鲜感便来了，都挣着去给书文老爷爷撵羊。</p>
+<p>尽管我们觉得书文老爷爷可能在捉弄我们，说谎是为了骗我们帮他赶羊，不过反正我们也没事儿，就围坐在书文老爷爷身边，盯着他，看他还能耍什么新花招。结果出乎意料，他不仅没骗我们，还真讲了一个关于七盘岭和无底洞的故事。</p>
+<p>说在很早以前，七盘岭是通往南北的交通要道，也是兵家常争之地。七盘岭上并没有无底洞，无底洞听说是在唐朝初期，有个大元帅薛仁贵征东时，遇到个妖魔盖世文，法力无边，处处与薛仁贵作对，残害无辜，使黎民百姓处在水深火热之中。玉皇大帝知道了为扶正除恶，派九天玄女娘娘，有意在此设下的一个洞穴，里边放有五件法宝，它们是：鞭、弓、箭、袍、无字天书，专门助薛仁贵用来降服盖世文，拯救黎民百姓。等待薛仁贵行军途中，从箭括岭去法门寺，路过七盘岭时入地穴取之。</p>
+<p>这天，当薛仁贵一行来到七盘岭上，己是黄昏，不知怎么，天空突然却出现祥光异采，随即路前一道霞光闪过，出现了一个地穴，挡住了薛仁贵的去路。穴内白雾袅袅，仿佛有一股仙气。这时，薛仁贵觉得十分好奇，心想莫非有什么神仙之事，非要下去探个究竟不可，于是便指示军队人马继续南下，自个入了地穴，只留下几个结义弟兄在上边等待。几个兄弟守侯穴口，整整等了七天七夜未果，他们觉得凶多吉少，痛不欲生，决定不在守候。次日天明，准备离去时，穴内突然有了动静，几个兄弟喜出望外。声响越来越大，不大一会儿薛仁贵就跳了上来，几个兄弟一见，薛仁贵毫发未损，而且满脸喜色，几个人高兴的一下子拥抱在一起。</p>
+<p>自从薛仁贵入地穴，得了五件法宝，在后来的征东决战中，对降服妖孽盖世文，起了至关重要的作用，才使得唐朝江山得以永固。</p>
+<p>书文老爷爷的故事讲完了，他说的到底是真是假，我到目前为止，还没有查找到确切的资料记载，无法证实。书文老爷爷讲的的故事，只仅仅是个传说，我们就全当是个神话故事来理解。但是，七盘岭上无底洞却是真的。上过七盘岭的人都见过，这是尽人皆知的事实。</p>
+<p>记得上世纪八十年代，我家里修建房屋，我和吕老师去北山里的八河滩割巴条，路过七盘岭时，我光顾过一次无底洞。那天我俩人上到七盘岭时，天才蒙蒙亮，想拣个石头丟进洞中，听一下响声，无底洞方园四五十米内，根本找不到一个大点的石头，大一点的石头，全让人们丟进无底洞，听了响声。寻来寻去，最终我在离无底洞百十米远的地方，找了个碗口大的一块石头，抱来丟进洞中，随即“克哩倒腾”，石头滚落，碰撞洞壁的声响拉开了序幕。我和吕老师在洞边守了一阵子，声响仍在继续，我们操心去割巴条，也就走了。下午回来，再次经过七盘岭时，日快落山，早晨丟进洞中的石头是否还响，劳累了一天，人闲马乏，况且重担在肩，眼看天黑，离家还有二十多里路程，急着往回赶，根本无暇顾及那些闲事。</p>
+<p>近年来我没有去过七盘岭，也没再看过无底洞，但对那里以前的印象却是十分深刻的，永远留在我的脑海里。这座山承载了无数中华文明的内涵，诞生了太多的圣人、先贤，值得我们敬重、歌颂。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w11" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-11-18</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：往事回忆"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>往事回忆</h3>
+      <p class="summary">一抬头看见蓝天白云就想起乔山脚下那个秀美的村庄——三村八姓、沟壑纵横、柿树林密布。六十年代初出生的他记忆最深处是饥饿和贫穷：春吃榆钱、夏折槐花，秋在柿树林里寻&quot;老娃蛋&quot;（生虫早红的甜柿）。他讲涝池、白杨、乌鸦、麻雀；讲饲养室里跟父亲睡、跟小牛犊小马驹做&quot;朋友&quot;；讲拔麦秆串起白净的柿花当零嘴；讲雨坑泡水脱涩吃硬柿子的诀窍。柿子树下那片快乐，是贫穷岁月里最富有的时光。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/bAujHWrGJnwVQSmS-Tqfuw" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2023-11-21</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>每当我看见蓝天白云，小时候的生活情景就会浮现在眼前。在蓝天白云下，我仿佛又在柿树林里穿柿花、拾吃糖化了的软柿子；和小朋友们在树下愉快的玩耍、摘老娃蛋（柿蒂生虫，提前红了软了的甜柿子。方言称之为老娃蛋）。虽然食不饱腹，衣难遮体，但是只要天晴，蓝天就是我们的，白云也是我们的，在蓝天和白云的陪伴下，我们度过了一个个快乐的春秋。</p>
+<p>我的家坐落在乔山脚下，一个秀美的村庄。这里虽然沟壑纵横，却林木葱郁，空气新鲜，水源纯净。沟里、塬上自古到今，到处都生长着柿子树。我的童年，大多时光就是在沟壑和田野、柿树林之间，悠然度过。记忆中最鲜明的画面就是村子的旧貌：村庄周围、西塬沟、冯家沟一带，那些柿树林里鲜红的甜柿子。</p>
+<p>小时候，最刻骨铭心的记忆就是饥饿和贫穷。</p>
+<p>我出生在上世纪六十年代初，从开始记事起便是:春季吃榆钱，夏季折槐花，秋季还要和小伙伴们成天在庄村周围四处跑，只为找几个软柿子吃。印象中我们这个生产队就是个穷队，土地少人口多，多姓氏，居住分散。是由三个自然小村（吕家、张家、和李家）组成。方达园的人，都知道衙里队是三村八姓。以前的居住面积很小，也很零乱。有些社员穷到三分院里，竟然住有三四户、十几口人，无经济能力修建新庄基、盖房屋。邻居之间常为一点地方放柴火等乱七八糟的东西吵闹。现在队里的人口、庄基或者是居住面积，不论从哪个方面，都比以前增加了三四倍都不止。那时，吕家村只有一个东西双面街道，从东边胡同、北涝池，到西沟边，住有三四十户人家。从南巷下去，路东边也就住了七八户，那个小街道叫南场。再往南走，有个陡坡，下去是个涝池，人们把这个坡叫涝池坡。涝池很大，涝池岸上面长有好多的柳树、白杨。看起来年代久远，大树粗得需要两人接手才能合围。一到春季，早早发绿，且枝繁叶茂。到了酷暑仍是绿荫袅袅，杨柳依衣。白杨树顶住有好多乌鸦，一年四季经常听见它们哇哩哇啦，不知都谈论些什么。一到傍晚，树上栖息的麻雀多得无数，老远就能听见叽叽喳喳，一直叫到天黑。涝池经常有水，岸边小草掩映。白天青蛙嘻闹，互相追跳。到了晚上整个村子沉浸在蛙鸣声中。涝池里的水面总显得绿汪汪的，上面漂着一层浮游生物。洗衣服时，用盆子将水面划开，舀上一盆却是清澈见底，无有异味。涝池坡下不远，就是南壕的饲养室，我对那些地方印象较深，父亲在那里喂过牲口。因为我家困难，只有一个炕，姊妹多，睡不下，我常跟着父亲睡在饲养室里，所以经常到那里去。饲养室周围打有院墙，院子很大，里边还有队里的养猪厂和豆腐坊。记得每年腊月二十七八，队里在这里给社员户分猪肉、豆腐，热闹的和赶集一样。家里人口多的，每户每样能分到三四斤，人少的也就二三斤。每回分东西我是第一个站队，最后一个离开，因为我家是短款户，长款户优先。</p>
+<p>南场西边原来是碾麦场，后来盖了仓库，面东安装了大车门。仓库背后是一大片的柿树林，一有空闲我和小朋友们就经常光顾那些地方。</p>
+<p>吕家村的东边是张家村，在离吕家村约有三百米的山路（上山割柴的路，称之为山路）跟前，是个窑坑庄，住有十几户人家。庄南有个涝池，用于牲畜饮水、群众冼衣、队里欧麻。</p>
+<p>李家村在张家村的正南方，相距有半里路，只有二十来户人家，居住不整。村南靠东低凹处，也有一个大涝池。</p>
+<p>我家在吕家村中间，是个两间宽的小院，住了两户。我家住前边，有二间半厦房还是老先人时期盖的。</p>
+<p>我八婆（方言，把奶奶叫婆）的家住在庄背后，从西沟边向北有一条去八婆家的路。八婆家有老小十几口人，在队里算得上是个大户。大门朝西，门前有个大土堆，上边长了个大青槐树，远看像个绿色的巨伞。一到夏季枝叶茂盛，花开时节香飘很远，招蜂引蝶。人未走近，老远就能闻到花的芳香，听见嗡声不息。树下浓阴，凉风习习。闲时老人小孩搬上凳子，来到树下休闲乘凉，再爽快不过。记得以前常来八婆家和哥哥弟弟们玩耍，八婆也很爱我，有时碰到饭点，八婆总是给我吃饭吃馍。特别是冬季，八婆隔三叉五给我送甜柿子吃，那个香甜至今优在。</p>
+<p>我八婆家北边有条小路，向东走五十来米，还住着几户人家，大门却朝东。门前不远处就是队里饲养室垫的大郎圈，上面栽有木桩用来拴高脚牲口（指的是骡、马、驴），放有牛锤石（石头一端，石匠打个孔，拴牛。叫牛锤石）拴牛。郎圈北边的饲养室，是五间大房，里边喂养着牛马驴二十多头匹牲口。父亲和一个姓吕的叔叔在那里喂过牲口。那时我和父亲在饲养室里睡，饲养室里虽然常年很少有小朋友来玩，但对我来说却感觉一点都不寂寞，乐趣无穷。夏天父亲在苜蓿地割草时，经常给我逮蚂蚱。秋天，我可以在父亲给牲口割的草里，寻的吃甜玉米杆、高梁杆。冬季，爬在饲养室的热炕上暖和无比。下雪了星期天，还能在饲养室的草房里，用筛子扣麻雀。平时还能和初生的小牛犊，小马驹一起玩耍。它们也成了我的好“朋友”，每当我去饲养室它们一见到我，总是高兴的跑来用头轻轻的犄我、伸出舌头㖭我，我走到那里它们就跳跳蹦蹦撵到那里。有时我坐着看书、写作业，它们就跑到我跟前，非要挨着我身子站、或卧下，时不时的嗅一下我的手、舔一舔脚……特别友好。</p>
+<p>在饲养室西北方向，凹凸不平的地里，全是柿子树。有些是大馍葵（大于馒头的柿子），有的是小火罐（小时候对小柿子的称呼）。一到能吃的时候，每当我来饲养室睡觉，刚一进门，把书包往炕上一扔，首先趁没人注意时，一溜烟地跑进柿树林，先寻着吃些软柿子后才回来。有时夜里刮了大风，就会吹下不少软柿子，还没等我睡醒来去拾，天刚蒙蒙亮，父亲就给我拾回好多软柿子放在书包上，等我醒来再吃。</p>
+<p>更让我难忘的是 六七十年代，物资极其匮乏，社员家里普遍都很贫穷，多数人几呼吃不饱，穿不暖，有些困难户甚至吃了上顿没下顿，我家就是其中一户。那时候是按劳分配，多劳多得。我家吃饭的人多，做活的人少，小孩子多，经常少吃缺穿，是队里出了名的短款户。记得一年中最难熬的就是二三月，青黄不接，饭里面食少，多为汤菜充饥，一顿赶不上一顿，没到饭时，肚子就饿得咕咕叫。不知为什么，也不懂事，小时候一年四季总觉得肚子经常都是个饿的。饥饿的日子好长呀！长得就像一条走不完的路，永远看不到尽头、看不到一座茶亭、一个能够歇足的地方，总得不停的走呀，走呀，永无尽头。论聪明才智，在小朋友面前，碰上一些小问题，他们解决不了找我，我一去基本都会解决。有时碰到一些难度较大的问题，知道了我也能想方设法把它克服掉。唯独在饥饿面前，我显得多么的无能，一点本事也没有。有一次我饥饿难受，想去南弯地边，寻的拔些学而苔（一种野菜，生能吃。有些地方叫学蒿）充饥，无意中来到庄前柿树林，正是柿树花开的时节，见树下落有不少柿花，又白又净，当时饥肠膔膔，不知能吃不能吃，就拾的吃了起来，虽然有点涩，却越吃越觉得香，吃多了还顶饱。想多拾些带走，可手里拿不多，得想个法子，于是就走到傍边麦地边，拔了几根带穗的麦杆，捋掉叶子把柿花窜了起来。</p>
+<p>后来，我每天放学，一有空就和小朋友，一起跑到柿子树下，捡吃柿花、玩耍，回家时再用麦杆，窜上几窜提在手中。那时我们觉得自己是多么的富有。过了一段时间，柿花开败了，太阳晒干的也拾的吃没了，耍饿了没奈何，我们就拾的吃落下的小柿子。晒黄、晒黑、晒软的慢慢糖化，吃到嘴里还甜甜的。刚落地的绿柿子没有糖化，却不能吃，塞进嘴里一咬，那个汁子涩得连舌头都无法动弹。</p>
+<p>随着时间的推移，柿子一天天往大长，落下的软柿子越来越好吃，我和小朋友们就像走顺了腿似的，一有空便来到柿树林，每个树下挨个寻找一遍，见有能吃的拾上就吃，不能吃的涩柿子，硬柿子带回家，摆在窗台上，让太阳晒，过上几天糖化了就挑着软的吃。</p>
+<p>每年进入秋天，柿子慢慢临近成熟，队里嫌小孩子们经常摘老娃蛋，为吃一个软柿子，上树摇、下树打要遭塌好多硬柿子，就派有专人看护。此后，平时我们要去柿树林转上一遍，寻找个软蛋柿子充饥、解馋，也就没有没看护时那么随便，得找机会。发现看护人有事了，或者不在队里的时候，我们就偷偷的跑进柿树林，摘的吃上几个，然后得马上跑远，不然别人看见给看护的说了，会扣大人的工分。那时队里的制度很严，为了不给家里人带来麻烦，大多数是去沟里，沟里的柿树没人看护，也属邻村。放学后吃过午饭，我和小朋友们，打着给猪羊割草的晃子，提着鋬笼拿上镰刀，有些小朋友还拿有弹弓，三五成群的从西沟边下去，过盆客窑时，老远就能看见庙窑里的神像、壁画，我们害怕的走在一起。沿着崎岖的羊肠小道，再过瀑布山旁的小河，来到西塬沟，从沟底柿树林开始，向冯家沟寻找软柿子，吃老娃蛋。从西塬沟到冯家沟有二三里长，柿树很多，大馍葵、小火罐都有。人能上去的就爬到树上摘，抓牢树枝摇。上不去的就拾石头打，过高的就用弹弓。只要树上有能吃的柿子，一旦被我们发现，千方百计都会把它弄下来。</p>
+<p>柿子是热性，有时吃多了会引起便秘，大便困难。小时候的我们，都有过被涩柿子吃得拉不下的经历。</p>
+<p>去的次数多了，老娃蛋也就满足不了我和小朋友的需求，有时候我们实在太饿了，只要能下肚的东西无一幸免，即便是硬柿子也难逃被吃的命运。但吃多了嘴里涩，舌头搅不动，十分难受，甚至会让胃里不舒服，需要好长时间，才能自愈。难受归难受，饿了还是吃，有些小朋友涩得龇牙咧嘴，看着彼此的模样傻傻的笑着，但还是舍不得吐掉。有些小朋友吃多了还会引起呕吐。因为穷但从没见有谁吃药，也没见有人去医院治疗，过一段时间都会不治而愈。贫穷和贪嘴催生了我们的聪明和智慧。日子一长，窍门也就出来了，后来无意中，我们也发现了一种，使硬柿子脱涩的简便方法，既充饥也解馋，不再吃涩柿子充饥、受罪。</p>
+<p>那是连阴雨后的一个上午，星期天，天气放晴，风和日丽，秋风送爽。我和小伙伴们商量好要去沟里美美的吃一回老娃蛋解解馋。吃过早饭，在蓝天白云下，我们早早出发，来到沟里的第一件事就是抢着摘吃软柿子。从西塬沟开始一直到冯家沟，每个柿树从上到下挨着寻找。由于下雨时间太长，多数软柿子被大风吹落树下，摔烂，好多己被雨水泡坏，能吃的没有几个。硬柿子被风吹落的却不少，有些泡在水坑里，看起来有绿有黄，由于在水里浸泡的时间长了，有些柿蒂已被水都泡成碧绿，和成熟后集市上卖的脱涩的甜柿蒂有点相似，在水里显得特别大，越看越觉得香甜、眼馋，直流口水，很是诱人。那时，我们只知道柿子成熟后，在锅里添上水，把柿子放进去，加温在特定的条件下，一个昼夜后才能脱涩，才能变成甜脆的。不知道冷水里泡的柿子，是不是也会脱涩。但是忍不住饿，我伸手涝出一个，塞进嘴里咬了一口。呀，真是不尝不知道，这一尝瞬间满口的香甜，太好吃了！把我高兴得大呼小叫，小朋友们听见，个个跑来捞，吃得是津津有味。此后，我们每年在这个季节，经常在僻静的地方，挖些水坑（地下有水源，沙石滩挖个坑，一会儿就有水了），摘些柿子放进去，水面扔些小草伪装下，泡上几天以后，我们就来捞着吃。吃了泡、泡了吃，一直持续到柿子被卸完。那些日子，玩的最开心、最快乐、也最有意义。</p>
+<p>每年小麦种上到霜降前后，生产队就开始卸柿子，从北向南或从南往北，队里统一管理，卸完后按柿子的多少，人均分配。柿子成了，每户还分到两三筐。但若收成不好，每户也就分那么一半筐，甚至只有几斤。按人按户在地里分成小堆，每堆上边压有二指宽的纸条，写着姓名斤数。分多的时候拿回家，母亲首先把卸时打有伤的，挑拣出来，晚上在锅里用温水暖熟（指的是脱涩），第二天拿一些，分给我们兄弟姊妹。我们一边吃着甜蜜的柿子，一边哼哼唧唧高兴得手舞足蹈，唱着那连字音都送不准确的歌谣。那年月那样的日子不多，剩余的柿子，母亲到庄上借来梯子，搭到房檐口，人上到房上用玉米杆围个圈，铺上麦草把柿子放进去，再用玉米杆盖好。过上一段时间柿子就会自然糖化，变得既软又甜。房高我们偷吃不了，到了冬季，母亲将粗粮收拾在一起拣净、炒熟，然后磨成炒面，每人碗里舀些，再到房顶取些柿子分给我们，剥皮摘蒂，然后放进炒面里，用筷子搅匀拌均后吃上一口，那个香甜至今难忘，回味无穷。分的少了，舍不得暖的吃，放到筐里挂在空中，等不到放软一尝两尝，过不了几天也就尝完了。</p>
+<p>时光流世，岁月如梭。觉得眨眼之间，己是几十年过去，当年的玩童，早已长大变老。老人离世，己二十多个春秋，坟上栽的柏树，也都几把粗了。记忆中村子的旧貌及大片的柿树林，早己消失不见。随着社会的发展进步，国家对农村政策地不断更新、完善，过去一院住几户，少吃缺穿的时代己成为历史。但我心中对童年的那些往事，却始终记忆犹新，从未消失过，仿佛就在昨天。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w12" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-09-03</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：磨面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>磨面</h3>
+      <p class="summary">中伏高温妻子催磨面，作者懒得动，一时想起六七十年代的难。短款户向队里借粮要遍找管事的说个遍，好不容易借下还得寻磨子问牲口；七八岁第一次跟父亲推石磨，转到头晕呕吐；锻过的磨子留下沙石，一碗兵豆拌汤&quot;磕碜&quot;好几回牙。后来队里按上电磨，一百斤磨四五毛，两人循环倒麸子一个多钟头。如今十里八村只剩一两家磨坊，年轻人进城，磨坊冷清了。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/MG5_D7_LCoG802Clz2UQ-g" target="_blank" rel="noopener noreferrer" title="打开原文">大秦文萃<span class="pub-date">2023-09-05</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>前几天，妻子说吃的面粉不多了，该去磨些了。我嘴里答应着：“对对，好好。”然而，几天都过去了，我就是懒得怕动。这晌正是中伏天，高温三十五度以上，看见室外火一样的太阳，做点活还真是愁人的。</p>
+<p>提起磨面，不由使我想起上世纪六、七十年代的情景。那时多数家里没余粮，直到实在没啥吃了，才去队里借粮。长款户还好说，短款户欠着队里的，又要向队里借粮食，本身就觉得短精神，不好开口，不到实在没办法的程度，是不会轻易给干部下话的。下了话有些干部明亮一点的还好，知道社员的命运一切全靠队里，有时还会帮你寻人、帮腔，让队里给你借些，很温和。而有些干部就不一样，知道你是短款户，一听到你说借粮，不管三七二十一，先训你一番，给你个脸色，仿佛向他私人家里借似的，当时就让人难堪，无法接受。无奈，只能自己怨自己：谁让咱家吃饭的人多、做活的人少成了短款户。人家有权有势，只能泪水往肚里流。总之向队里借粮食，需要给所有的管事者说，缺一不可，不然他就嫌你把他没当人，在有些事上故意刁难你。因此，既要找张三、还得寻李四，今日会计不在，明日保管员有事。有时三五天甚至半个月，也没个结果，没啥吃，把大人急得坐卧不安，跑出跑进，孩子饿了哭闹不止，实在可怜。</p>
+<p>粮食好不容易借下了，还得寻磨子，问牲口（就是找饲养员借磨面的牲口。方言称之问牲口）。有时候是有磨子没牲口，或有牲口没磨子。有的户等着磨面吃，等不住牲口了，就用人推着石磨磨面。磨一斗（一斗等于三十斤）粮食就得多半夜、一晌时间，有时把人都转晕了也磨不了多少。</p>
+<p>我小时候就跟着父母亲磨过面，亲身经历过那年月磨面的艰难。曾记得七八岁那年，是我第一次磨面。是个青黄不接的三月，家里的面缸里只剩下，能吃几顿的面粉了。看见父母提前几天就找队长，寻会计向队里借粮食，就怕晚了接济不上，跑了好几天，求婆婆告奶奶，好话说了一河滩，还好，借下六十斤麦子。记得那次磨面没问下牲口，我和父亲推着磨，母亲还要箩面，做些别的。刚开始推着磨棍一圈圈地走，像钟表一样，觉得好玩，磨顶上的粮食被母亲拨弄得像个巨形“宝塔糖”（过去小孩子吃的一种驱虫药，上小下大似个锥形）。随着磨盘的转动，上空横绑的铁丝上，固定的拨山拨着粮食，通过两个磨眼粮食流进磨堂，再经过磨盘的研磨成粉渣，顺着磨口，像微小的瀑布一样，沙沙地落在磨台上。母亲用小簸箕一边收，一边倒进旁边的蒲篮（一种竹篾编的用具，园形，直径约一米二三，深四十公分左右，上大下小有底，多为箩面所用）里、箩床上的箩里，反复着前后推拉箩下面粉。每遍磨完要分清楚，不然，有的粮食磨的遍数多，有些磨的遍数少，就会出现磨不尽面粉的现象。</p>
+<p>推着推着我就转晕了——只觉天旋地转，一下子推不成了。踉踉跄跄跑到磨坊外，坐到一块石头上，好像头重脚轻，时不时还带有恶心。母亲见我晕的不轻，将我抱起靠墙放着睡下。不知过了多久，清醒过来时，在昏暗的油灯光中，见父亲佝偻着身躯，仍在一圈圈地推，母亲箩面的蒲蓝里，己有好多白花花的面粉。一时想起了热气腾腾的面条，和那诱人的香喷喷的白馍，顿时觉得有了精神，一轱辘爬起来，跑进磨道推起磨来。到半夜时分，麦麸少的没法磨了，这次磨面也就结束了。</p>
+<p>用石磨磨面，一次只能磨一斗（三十市斤）多些，多了条件不允许，施展不开。石磨用的时间久了，磨面速度自然也就慢了。但是，磨的面粉又细又白更好吃了。石磨用的太久，磨不烂粮食，就得找石匠锻磨子。磨子煅后磨面速度是快了许多，然而，前几次磨的面里有沙石，做的饭吃时，有时整得人哭笑不得。</p>
+<p>记得有一年夏天，母亲去庄里有磨的家户，问磨子，是个中午，母亲头顶烈日，跑了几个街道问了几十户人家，也没问下一户磨子，在往回走的途中，巷口碰见个叫姨的，说她家的磨子刚锻，闲着让用。母亲知道刚煅的磨子磨的面不好吃，可是跑遍了整个村子也没问下个磨子，再不磨面明天就没啥吃了，明知不好吃，但是没有别的办法只能将就了。磨子问下了，母亲又去庄背饲养室问牲口，饲养员吕叔叔说：“有个偷吃的驴没人问，套磨时要弄个撑棍（用七八十公分长个木棍，一头绑在磨盘上，一头绑在驴嘴上，就偷吃不上磨台上的粮食了），不怕麻烦了到时拉去用就行了。”</p>
+<p>那天，套磨子前父亲把磨盘抬开，把磨里用麦草擦了又擦，扫了又扫，再铺上一层麸皮，合上磨盘磨了几遍，然后再抬开扫尽，铺上麦粒，一切弄好开始磨面。经过父母这样那样的收拾了再收拾，我想磨的面粉可能就不存在沙石了，其实不然。</p>
+<p>第二天早饭，母亲做的是兵豆拌汤（面粉里和些水，用手搅成面嗦嗦，下到兵豆汤里，就是兵豆拌汤），那时候好长时间难得吃上一回。吃着吃着当你吃得正香的时候，小石渣时不时地“磕碜”一下，顶的牙齿既疼又酸，那种痛苦无法言喻。轻者过一会儿就好，重者有时要停好久才能恢复接着吃。一碗饭磕碜那么一半回，还则罢了，有时一碗饭要碰上几回，疼得不敢咬，吃到嘴里就直接咽下去。那年月物资匮乏，有这吃都是好的。</p>
+<p>到了上世纪七、八十年代以后，生产队按上电磨子，给农户磨面。和石磨子相比，就是一大飞跃，先进了许多。磨一百斤面也就四五毛钱，一切既经济也实惠。要和现在相比，毕尽还是落后了许多——没有脱皮机，不是自动化。磨面前还得收拾粮食，把粮食里的石头、土块等杂质拣尽，然后加水，放一两天才磨。那时磨子安装好，靠着出麸子出面这边，挖个半人深的坑，放有两个木槽，一个接面，一个接麸。坑上边也有一个长方形大木槽。磨子有专人看管，管磨子的站在上边大木槽根前，既要管磨子，又要把木槽里的麸子用搓箕，不停的倒在磨子上边的斗里。磨面的站在坑里把磨下的麸子，同样也要倒在上边的木槽里。一遍又一遍，两人循环着同样的动作。百十斤粮食磨完需一个多小时。这一个多小时下来，俩个人也累得够呛。那时磨子封闭又不好，磨一回面就让粉尘把衣服弄成白色。</p>
+<p>光阴荏苒，转瞬己是几十年过去。磨面在我们这里，己发生了意想不到的变化，从以前的人推石磨、牲口拉磨、到电磨。从以前借粮磨面，到现在的家家户户有余粮。再从电磨人工操作，人工拣磨，到今天的磨面自动化，拣磨有脱皮机……所有这些变化不仅解决了，人们生活上的困难，还减轻了人们的劳动负担，也提高了群众的健康水平。</p>
+<p>现在原来每个村庄的小磨坊己被淘汰，十里八村就剩下那么一两家大一点的磨坊还在经营，已不像前几年那么人多拥挤，磨一回面得跑几趟。随着时代的进步发展，城镇化步子的加快，近几年来，青年人己拥进了城市，农村的人口急剧下降，越来越少，剩下的都是些孤寡老人和留守儿童。曾经一度热闹的磨坊，已是冷冷清清，逐渐走向没落。</p>
+<p>前两天的一个傍晚，我拉一袋粮食到磨坊，脱皮加水后，管磨的说让明天早晨来磨。第二天早晨我因事去的有点迟，到磨坊时管磨的己给我磨好，装起来放在一边，还收了白面。我一问管磨的才知，好长时间没人磨面了，那天就磨了我一家粮食，早早磨完他急着去村里干活，这晌跟着盖房的当小工泥。</p>
+<p>回到家里，妻子一看有点惊讶：“咋这么快？还收了白面，很是高兴。”我说：“不是我磨的，我到磨坊时，管磨的己磨完、装好放到那里。”妻子说：“我就觉得今天太阳从西边出来了，经常都是一混子面，今天我又给你没说，咋还收了白面。”</p>
+<p>妻子后来说:磨坊不经常磨面，会招虫子、落灰尘，就不干净了。我看你磨一回面，也像老牛愁刀子呢，胆怯的。以后咱们不磨面了，把麦子拉到京当直接换，南边街傍有一家换面的，听换过的人说，换的面也好着呢，擀的面条既光又筋道，做的馍也很白。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w13" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-08-28</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：一把理发推"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>一把理发推</h3>
+      <p class="summary">收烂货的吆喝声里翻出一把锈透了的&quot;孔雀&quot;牌理发推。小时候母亲用刀剃头总刮破头皮，同学借推子才解了围，从此他发誓要买一把。为凑三块四的双箭牌价钱，放学后、星期天他挖了两年药材：柴胡、菌陈，一次卖五毛已高兴得半夜攥钱睡不着。同学撺掇去北山，五个娃走十几里翻老虎顶、过刀背山、探黑龙洞，滑了四五跤，最后只卖七毛。钱总差一点，最后买了二块八的&quot;孔雀&quot;牌，此后几十年家里六个男人的头发全靠它。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/dmDgjHSB-_05fmkIthcJEw" target="_blank" rel="noopener noreferrer" title="打开原文">大秦文萃<span class="pub-date">2023-08-30</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>中午，街上来了个收烂货的吆喝着，妻子听见让我把她前几天，在屋里收拾到一块儿的烂东西拿去卖掉。在装袋途中，我无意间看见了小时候买的理发推也在里边，已是锈迹斑斑。当年在我们一家人的生活中，它却是立下了汗马功劳的。虽说现在已经没什么用，但把它当烂货卖掉，我真舍不得，便拣起擦干净又放回桌兜。小时候为买这把理发推，上山下沟，利用星期天、放学后（那时学生下午不上学）的时间，挖了近两年的药材，才买了这把理发推。</p>
+<p>曾记得上小学的时候，头发长长了，都是母亲给我用刀剃。不知道是母亲手艺不高，还是剃头刀不快，每剃一回头就像受刑，那个痛苦有时让人真是哭笑不得。刀在头上剃不下多少头发，刮得头皮又烧又疼，有时头皮割烂了鲜血直流。因此，每次提起剃头、见母亲收拾剃头的东西就害怕。不是有意躲避，就是趁机逃跑。时间久了，头发越长越长，作为男孩子这样长下去，总不是个办法。况且头发长了既脏也难剃，无奈，整得母亲有时候，只好先是用剪刀剪短后再剃。</p>
+<p>有一次，母亲刚给我粗枝大叶剪短，头太脏了母亲让我先进屋去洗，洗后再剃。洗完头趁母亲不注意，我就偷偷的跑了。第二天去了学校，老师和同学的笑话，让我羞得恨不得有个地缝钻进去才好。那天在学校虽然只有半天时间，可我觉得时间慢的就像是过了多半年。中午放学后，我不敢走人多的地方，回到家饭都没吃，扔下书包，跑到本村的一个同学家里，让他千方百计给我想办法。最后同学偷偷拿来他岁爸的推子，才给我理了发，解了“围”。</p>
+<p>用推子理发和剃头相比，推子理发要适服的多，首先不伤皮肉，再者不疼，还能留发型。此从同学给我理了发以后，我就暗暗发誓：一定要努力攒钱，给自己也买个双剪牌理发推，以后将不再为理发而发愁。</p>
+<p>那些年弄几个钱真难，当年我只有十来岁，靠干啥能挣来钱？农业社时期，既没有塑料瓶捡，也难找些纸箱一类的烂货。不像现在，只要勤快，不怕吃苦，这些烂货街道、路边、垃圾坑……总是有的。虽然便宜，捡的时间长了，积少成多，也能卖几个钱。那时候小孩子唯一能挣钱的途径，就是国药店收购中药材，多少都收，种类也多。本地沟里、塬边和远处的山里都有。中午放学吃完午饭，拿上小镢头，背上个包包到沟里、洼里挖柴胡，拔菌陈……只要是收购的药材都弄，晒干收拾净，拿到药部去卖。挖上一两个星期，一次才能卖上个几毛钱（那时药材的收购价格普遍低，一般都几毛钱一斤，上一元的不多），最多一次卖了五毛钱。就这高兴得半夜睡不着觉，在炕上滚来滚去，把钱往兜里都不装，攥在手心里……</p>
+<p>每次卖药回来，一毛也好、两毛罢，用个小木箱装好攒下。后来，只要学校一放学，家里没事打扰，就去沟里挖药材。头一年下来除过买铅笔、本子和学习用具花了的以外，才攒了不到两块钱。那时双箭牌理发推，一把价格是三块四角钱，还差一块多。眼看头发又长了，沟里的药材越来越不少，更不好挖了，几个月才能卖下二三毛钱。像这样下去，买一把理发推得等到何年何月。</p>
+<p>一个星期六的下午，我们几个同学在沟里，跑了一下午也没挖下一把柴胡。往回走的路上，有个姓张的同学就提出个大胆的想法，说去十五里以外的北山上挖药材。说星期天高年级同学也有人去，还挖的不少，卖了八九毛钱哩。后来姓吕的同学也说：“明天就走，怕啥，能挖了更好，不能挖了全当玩耍呢。”于是我们几个决定，星期天上山，先试探一回，天一亮到西沟边集合。</p>
+<p>第二天，天刚蒙蒙亮，我们几个人背上包包、带着镢头，都早早来到西沟边集合点，等人员一到齐，我们兴高采烈地踏上进山的道路。一路上我们五个，欢歌笑语无不快乐。记得那是农历三月，刚起身时，天还是有点冷，经过一个多小时的步行，我们都走得满头大汗，终于来到北山脚下的大石沟口。这时，东方的太阳已有一杆子高，眷恋着青山的乳白色的晨霭，慢慢散去，青山在阳光的照耀下，显得格外青绿。我们几个都没有来过山里，站在桥头，你望望我，我看看你，不知道进哪条沟合适、上哪座山好，更不知哪里有药没药。我们正愁着不知往哪里去时，从北边山梁上有个大叔蹒跚着，拉了一只羊羔走了下来。我们上前向大叔打招呼，问了问情况，说明来意。大叔说：“你们娃娃伙就别进深沟了，太远，从这道梁上去，到老虎顶、簸箕庄一带挖就行了，到处有药，能满足你们的。”</p>
+<p>我们沿着大叔指的这道山梁，向上攀爬。当经过大石沟村，过崖背上边时，见下边的村庄上己是饮烟袅袅。快到了吃早饭的时候了，这时我们还没有上到老虎顶。向上继续攀爬，当离老虎顶不远时，就有同学发现路旁的草丛里有了柴胡。于是我们分散开来，顺着山坡边挖边向上走。虽说是浅山，但比起塬边、沟里，药材就多的多了。上到了老虎顶的时候，我们不但挖了好多柴胡，还挖到不少黄苓……</p>
+<p>从老虎顶到簸箕庄（大王队的山吊庄），梁上有条小路，我们在小路两侧的山坡上，向里边走边寻的挖，药材还真不少。刚开始我们见到药材，都还踏实、卖力。那时，毕竟年龄都很小，除过我家里太穷，指望着挖药卖钱，买理发推、学习用具外，他们几个家里情况较好，也不指望挖药赚钱，挖多挖少都无所谓，只是买个糖果啥的罢了。记得老年人常说：“小孩子，猴性子，不论干啥一阵子。”时间短还行，时间长了就熬不住。到中午以后，他们几个就不好好挖药了，一会儿你吃馍呢，一会儿他喝水哩。拔小蒜的到处跑，摘杏儿（那时杏只有指头蛋大）的坐在树叉上边不下来；一会儿你吆喝胳膊疼，过一阵子他说脚上扎了刺……全成了玩耍的借口。影响得我也不能很好地挖药。离他们近点挖，这个叫你看山呢，那个让你看云哩……全是打挠。离他们走远点挖，空山矿野，无有人烟，一个人又害怕，就这样一直到下午。</p>
+<p>时候不早了，爱耍的也耍够了，挖药的也挖困了，我们来到一块儿，开始下山回家。走在路上我看了看他们几个装药的包包，都装不多。我的包包虽没装满，却鼓鼓的。这时，猪娃（同学的乳名）看见了我的包包说：“呀，今日只有金海挖的药多，我们和他不走了。走在一起大人们一看，就会骂我们，说我们几个是懒怂。金海能挖那么多，你们几个就挖那么一点？金海成了“如倒人”（方言，意思就是我的行为，影响到别人）。”这时黑娃也说：“我们和他不走了，分开走。”于是头里跑了，他们几个也根着跑，边跑边喊着“如倒人、如倒人……”。喊声和着笑声漂在空中，洒了一路。</p>
+<p>几天后的一个下午，我们几个去京当药部（那时药部也收药材）把药卖了，结果都还不错。有三个人卖了四毛，一个人卖了五毛，我的最多卖了七毛。出了药店门，不知是哪个同学出的鬼点子，他们几个悄悄围住我，笑着不让走，说我卖的最多，得请客，给大伙买糖豆豆吃，不吃就不让走，不吃下一次挖药就不要我。无奈，我笑着掏出一毛钱给了他们，名名到商店买了十个糖，我们五人每人两个。回家的路上我们吃着糖，商量着再次上山的时候，名名说：他舅舅家在大王村，他舅舅说村里的学生，常在黑龙洞那山上挖药，每次都卖一块多。听名名这么一说，于是，他们几个怦然心动，不去上次的浅山了，这次非要进大山不可，我也只能服从。</p>
+<p>星期天早晨，我们一行五个人，去了韭沟的黑龙洞山里挖药。我们想的太简单了，去黑龙洞那山，山大沟深，其实并不是件容易的事情。我们按照打听好的路线，沿着大山中的羊肠小道，行走了近两个小时后，终于攀爬到韭沟，看见东边半山腰黑呼呼的洞口，名名说是黑龙洞（他舅说沟里只有一个洞子）。这时我们几个，己是气喘吁吁，汗流满面，坐下来休息。我们几个谁也没走过这么长的路，更没上过这么大的山，看见满坡的灌木、荆棘，阴森森的……都后悔不该来这里，害怕起来。</p>
+<p>歇了一会儿，名名带我们上到黑龙洞口，喝了些泉水，随后开始挖药。没来以前听人说这里药材好挖，把人高兴的不得了，来时还专门挑了个大包包，就怕挖多了装不下。谁知道，实际来到这里一看，大山上的药材，并不像想象的、听说的那样好挖：一来是茅草高的找不着，二来是山坡上的草比冰还滑，一不留神就滑倒。黑娃穿的是布鞋，走了没多远，才挖到几根柴胡，先后滑倒四五次，摔得直喊叫。只有猪娃穿的是胶鞋，还则罢了没有滑倒。我们几个滑得没法走。</p>
+<p>这样下去不是个办法，别说挖多少药材，就连安全也保证不了。我们几个都觉得，这山上的药材挖不成，不如往回走去上次挖药的浅山。但是，又不知从哪里能走到簸箕庄那个浅山。这时黑娃说：“现在马上就到山顶，我们站在山顶一看，不就知道从哪道梁上，能下到簸箕庄了吗？”其实也是，我们听黑娃的，上到山顶望下看，一眼就认出南边山梁下的簸箕庄住房，由于太远看去就像个乌龟，爬在山梁上一动不动。顺着簸箕庄那道梁一直向上，不就通到我们西边这个山顶吗。这下我才看明白了，听隔壁的大叔曾经说过，从簸箕庄往上走就是刀背山，过了刀背山，向西北下去是倒回沟（在箭括岭北），向东边下去就是韭沟、黑龙洞，他割柴上下走过几回。</p>
+<p>我们上到刀背山顶，这时，一阵凉风扑面而来，很是爽快。抬头望去，瓦蓝的天空，飘着几朵白云，悠闲自在，低的仿佛触手可及。无形中往山底看了一眼，哇，我们感觉站得太高了，简直就像上到了天上，与白云为伴。向北看，是无边无际的群山，山恋起伏绵延。向南远望：广袤无垠的田野，绿一块，黄一块，如同织锦一般。身旁花草丛生，蜂飞蝶舞，散发着一股淡淡的幽香。我们站在这么高的山顶，都还是第一次，望向深谷，真有点害怕。也无心欣赏这美丽的景色与风光。站了不大功夫，我们顺着羊肠小道，向山下走去。刚开始还好走一些，不大一会儿梁顶越来越窄，越来越难走，偶尔朝下一望，立陡的山坡让人毛骨悚然，浑身上下直打寒颤。不慎就会有滑下山谷的危险。这时不由使我想起，有一次，我问隔壁大叔到哪里割柴？大叔说在刀背山上。那时我就不解的问：“怎么个刀背山？”大叔说：“那山梁窄的难走，就像刀背一样，所以割柴人都叫它刀背山。”今日一见果然名不虚传，断断续续还出现了巨石卧在路中，横七竖八把路堵死的场面。无奈我们只好一上一下互相挽扶，抓荊拽棘爬崖寻路躲开……</p>
+<p>一路上提心吊胆，把人吓得差点尿裤子。经过千难万险，我们总算是没有受伤，下来到簸箕庄。已是吃过午饭的时候，山庄的社员己经上工，房门锁着，想在屋里歇休一下也没有指望。我们五个不知是累得、还是刀背山路险吓得，衣服全湿了，这时都才觉得又渴又饥。我们向老虎顶那边走了走，找了一块适坦的地方坐下休息，吃起了干馍。看见身边的柴胡，黄芹谁也没有心劲去挖，只是瞅瞅，仍旧坐着、吃着、喝着。</p>
+<p>坐了好大一会儿，我们才从刀背山那梦幻般的险境中，慢慢回过神来，有了精神，开始挖药。</p>
+<p>那次，我们都挖的不多，还是我的最多卖了三毛一分钱。</p>
+<p>从那次挖药回家后，他们几个好长时间，再没有上过山、也没有挖药。我的推子钱仍然不够，还差几毛，一个人没伴儿不敢上山，只好在离村庄不远的冯家沟、西塬沟，北沟、南沟慢慢的寻、一根两根的挖，一分二分地攒。</p>
+<p>日子好长呀，长得就像一条走不完的路，永远看不到尽头、一座茶亭、一个可以避足的地方，总得不停地走呀走，永无停歇。</p>
+<p>几个月过去了，买理发推的钱仍旧没有攒够，还差两毛，实在没有办法，后来和同学去供俏社看了几次，问过几回仍旧是原价，差一分钱都不行。最后在同学的参谋下，买了一把“孔雀”牌的理发推。那时“孔雀”牌的最便宜，二块八角钱。听用过的人说弹簧有点软，有时头发厚了剪不断，只要推窄点还是可以的。</p>
+<p>此后，家里六口人，除过母亲外，父亲和我们兄弟四人的头发全靠它。长长了再也没为理发而发愁，有时，还给近邻右舍的小朋友们理发。</p>
+<p>时光飞逝，岁月如流。在这把“孔雀”牌理发堆的伴陪下，不知不觉，一晃就是几十年过去。随着社会的进步发展，在电动工具日新月异的今天，那些老牌手工理发工具，早已跟不上人们的需求而被淘汰，多数做为废品被处理，留下来的已是廖廖无几，无人再用。</p>
+<p>现在屋里只剩下我一个人需要理发，家里电动理发推就买了有好几把，有时还在理发馆理发。今天重见“孔雀”牌理发推，打开了一个封存已久的回忆，也勾起了儿时的点点滴滴，和小伙伴们玩耍、挖药时的情景浮现眼前。那是一段不可抺去的记忆，不论是岁月流逝，还是斗转星移，将伴随我的记忆永存。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w14" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-06-03</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：吃西瓜"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>吃西瓜</h3>
+      <p class="summary">中午从冰箱端出剩半个西瓜，勾出九十年代一桩事。那年作者在小水库夜钓鳖，一百多钩撒下去，一只田鼠窜出来咬坏了干粮和水瓶。从下午忍渴到深夜查钩收网，钓到三只鳖，其中一只吞钩伤重。凌晨两点收摊赶班车到灵台甲鱼研究所卖了二百多块；纸坊路口、灵台桥头、凤翔东关三次眼看西瓜摊都因赶车、遇同学拉走而没吃成。背两个西瓜到家切开咬下第一口就眼前一黑晕过去。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/vaxsZBWlkHL1QiPOnHDPmg" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2023-06-05</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>中午，从果园回来打开冰箱，我端出昨天吃剩的半个西瓜，切了一点，将剩下的又放回冰箱，因为一次吃不完那么多。吃着吃着不由使我想起，上世纪九十年代的一些事来，说起来也与吃西瓜有关。</p>
+<p>曾记得是一个夏季，赤日炎炎、艳阳高照。那天，我正跑着在小水库里钓鳖。午饭后我装好鱼具，手提灯，防水衣……骑着自行车前往莆村镇，黄家庄水库钓鳖。那一带有水的沟里，基本上都有鳖活动。那年那个水库没人看管，自己随心所欲，看哪合适就在哪下网，看哪觉得有鳖，就在哪下钩。那年鳖价也特别高——蔡家坡、宝鸡一百五六十元一斤，带到甘肃甲鱼研究所（在灵台县）每斤能卖到二百多，而且大小一样价。来到沟边，自行车没法下去，因为路太陡也太小，因此只能找个地方，放到沟上边，便急匆匆背着行里下沟。</p>
+<p>下沟时看见有几个小孩，正在水库尾巴游泳玩耍，水声和着笑声、喊声响成一片，玩的是不亦乐乎。见我往下走只是抬头看了一眼，也没人搭理，还是继续玩他们的。我顺水边向南走，拐远了些，免得互相打挠。一到水边我就忙活起来，取出汽车内胎，开始用嘴吹气。几分钟后内胎己吹满，拧紧气门，我拿来四角绑有绳子的木板，绑到内胎中间，脱掉衣服换上防水衣，把内胎放到水边，我骑坐在轮胎中间的木板上，开始撒网……</p>
+<p>小网眼撒中间，其次是稍大一点的网眼撒两边，最大的网眼撒在小网眼的最外两边，一次撒五条网。网撒好后，网两头在岸边不能拴的太紧，要留得松一点，不然鳖上网后网不牢固，挣扎就会跑掉（这样撒的网大小鳖都会逮住）。网与网之间隔四五米，六七米都行，看水面的具体情况而定。网撒好后，接着就是下钩，钩线要有长有短，钩上挂上饵料扔进水里，另一头绑有竹棍扎进土里弄固牢。顺着水边十米左右下一个，要有深有浅，有远有近。钩上挂的饵料一般都是蚯蚓，水大沟大，一次能下二百多钩，两小时左右换一次饵料。这个沟小下了一百多钩。</p>
+<p>一切做好，己是下午六、七点钟，上岸后，脱去防水裤，望了望水里下好的网和钩，满怀希望的坐下来休息，等待着鳖上网、吃钩。这才觉得又渴又饥，于是取包里带来的食品和水。正当我手伸进包时，一只好大的田鼠跳了出来，一看它糟蹋了吃的，也咬坏了喝的（水己漏完）。饿还罢了，就是口渴难忍，于是寻找库尾巴下沟时玩耍的那些岁娃，看有没有带水要的喝些。走到库尾已是一片宁静，岁娃们早已走得无有一人。</p>
+<p>到了傍晚时，听见沟上公路那方有吆喝卖西瓜的，紧撵慢撵跑上去，没撵上，卖西瓜的己无影无奈。只有去庄里的小卖部，卖些吃的喝的，走到小卖部一看，门锁着无人，无奈只好下到沟里，忍着。</p>
+<p>己是晚上九点多了，也该到查看网子有无“动静”，给下的鱼钩换饵料的时候了。</p>
+<p>我带上头灯，忍着口渴，走到北边第一个大眼网根前时，拴网的绳子动劲很大，绳子忽高忽低，不由使我兴奋起来，饥渴全撂倒一边。换上防水裤，搬来内胎带好网兜下水查看，来到浮子沉下去的地方，把网子拉上来看时，呀，网住了一只有斤半重的大鳖，还在网上挣扎，我一下高兴的忘了口渴。己是好多天没有收获了，今天网了只大鳖，我特别用心，生怕有什么闪失让鳖跑掉，我小心奕奕地把鳖取下装进网兜。</p>
+<p>几条网子查完，又网住两只小鳖，重新下好网子。回到岸上，脱掉防水裤（查钩一般不下水），带上蚯蚓，开始查钩，换饵料。己是晚上十一点多了，公路上的车辆这时己定很少，几个小时也过不了一趟，沟里很是寂静，鸦雀无声，一片漆黑。唯有小青蛙的跳水声由远变近，不好，凭一前的经验告诉我，有蛇。我忙用头灯搜寻，在离我不到三米远的水草中，果然发现有条黄瓜粗一米多长，身上有黑圈和红圈的蛇，正向我这边爬来。我将手中的木棍在草中摔打了几下，蛇随既哧溜一下钻进水里不见了。</p>
+<p>查换到快有六七十钩的时候，有个钩不知是小鱼吃蚯蚓，把钩拉在杂物上挂住了，还是鳖吃钩后钻进泥里面，线拉得很紧，不用劲拉不动。我凭着以往的经验，没敢硬拉，硬拉线会拉断。慢慢试着拉了几次，果然有感觉，凭手感便知道是鳖。我打起百分之百的精神来，全袖贯注收拽着手里的尼龙线，很快一只碗口大的鳖就拉到水边，我随手一把刨上岸，掀翻，用脚踩住，拽出鳖头一只手捏住脖子，另一只手取钩。一看不好，这钩没法取，己吃到喉咙，稍微一拽嘴里全是血，伤的很重，这样流血活不了多长时间，只好剪断鱼线装进网兜。</p>
+<p>我既高兴又灰心，高兴的是这鳖有一斤多重，难得。灰心的是卖到钱卖不到钱还是俩回事，因为血流的太多了，伤过大没人要，有的会死。这时口渴得实在难忍，也顾不了干净不干净，能喝不能喝，爬到库边喝了起来。随后，继续查看鱼钩，换饵料。</p>
+<p>查完，换完鱼钩，己是清晨一点多，还钓到一只小鳖。往网兜里装时，在灯光下看见没有取下鱼钩的那只鳖，在网兜里胡钻，嘴上也不在流血，，那个脖子一伸一缩可爱极了，像这状态就能卖掉。二百多块钱也不是个小数目，那几年干小工一天才挣四五块钱。明天不去卖掉，伤势发展到后天，好与坏就不好说了。去甘肃甲鱼研究所卖，就必须坐青化去宝鸡北线第一趟车（别的班车都赶不上），到风翔纸坊路口，再倒乘宝鸡去灵台的班车。青化到宝鸡第一趟车是早晨五点半发，到祁家沟就是五点四十。从家里到祁家沟步行得半小时，从这沟里往回骑自行车，最快也得一个多小时，这收钩收网也得一个多小时。现在收钩收网，回家，再到车站，就得三个半小时，现在马上两点，算时间十分紧张，但是，还来得及。</p>
+<p>主意己定，明天去卖，立即收摊……</p>
+<p>当一切收拾完毕，背到沟上自行车跟前，绑好东西，又饥又渴，准备去南边商店买点吃的，喝的（商店灯己亮）。一看表，来不及了，快到四点，就马不停蹄的骑上自行车往回赶，指望到家时间早了再吃饭。</p>
+<p>谁知到家己是五点，根本没时间吃饭了，取下鳖，装了个蛇皮袋子，打开橱柜，见里边还有点西瓜，都顾不上吃一口，拿了个馍和一条黄瓜，就往出跑。这时听见母亲在身后说:还给我留有西瓜，让吃了再走。</p>
+<p>我提着鳖，吃着馍和黄瓜，一路小跑（那时京当没有这么早的班车，更没有出租车），刚跑到祁家沟桥头上，青化至宝鸡的班车鸣笛就过来了。不到八点就到了纸坊零号路口，这里西瓜还真不少，来回问了几家，却都不零卖，而且都是二三十斤重的“大家伙”。哎，别的地方又不敢去。去灵台的车到这儿一般都是八点，现在己快八点了，车马上就来。忍着吧，到灵台再吃，若大个县城还怕吃不了西瓜。</p>
+<p>正在心里安慰着自己，随着一声汽车的喇叭声，灵台车转过湾靠路边停了下来。没有多少乘客，纸坊路口就上了两三个人，车里也没坐满，我找了个合适的位子坐了下来，车就开了。从夜里二点开始赶时间，到八点以前一直都是个紧、紧、紧，简直就是“接力赛”。正想好好的放松放松一下，鳖这时却不安宁了，在蛇皮袋子里翻动起来。我怕司机听见寻事，赶忙拉到位子内侧用腿挡住。</p>
+<p>己是十分的困倦，怕有小偷，一路我也没敢合上一眼。</p>
+<p>十点过几分到了灵台，我提上鳖在灵台桥头下车，卖鳖是头等大事，别的事想都没想。从城南向东有条没有修好的土路，往里走就是甲鱼研究所。昨晚灵台下过雷雨，路上的水坑到处都有，我走到一个大一点的水坑根前，取出鳖放到水里。让鳖喝足了水，几只鳖增加上一两，就能买一个西瓜。</p>
+<p>走进研究所院子，看见有好几个人在池塘边上转悠。有几只狼狗用铁链拴着，见我进来狂咬几声，见没有人理，仿佛觉得没啥意思也不咬了。这时余海燕，和曹小春（研究所管事的）从房里出来，把鳖取出验收。当余海燕验收到那只没取出钩的鳖时，我的心跳得就像打鼓，就怕验收不上。真没想到她看了看鳖，也看了一眼池塘边那几个人，草草看了一下就过了。消毒称重后，连发票直接送给池塘边的一个人。我明白了，原来客商就在院里等“货”。余海燕给我开了票，付了钱，让我在办公室休息，喝茶。我一看表马上十一点，那几年灵台发宝鸡，风翔的车都在上午。庆阳去宝鸡的过往车，是向南去的最后一趟，到灵台大约十一点半左右。赶早不赶迟，喝了一杯茶，没再停留，我向余海燕她们打了个招呼，就赶车去了。</p>
+<p>来到灵台南边的桥头，正想进街道、去市场吃西瓜。走了几步远，吃不成了，庆阳车从北边开了过来，停在路口下人。我走到车前问卖票的，车停多长时间，想去吃些西瓜。卖票的说下了人就走，我也只好上车。</p>
+<p>两点左右车到风翔，我在东关下了，这时又渴又饥，看见东边电线杆旁边有个西瓜摊，正向跟前走去，忽然听见有人喊我，顺声音望去，见是邻村的初中同学。我走过去，他问我回不回，我说吃个西瓜再回，他又说:吃啥呢！不甜，我刚吃过，这儿的还贵，到咱京当吃，既甜还便宜，不到一个小时就到了，渴不死也饿不死。说着将我拉上面包车，就走……</p>
+<p>其实一个多小时就到了京当，买了两个西瓜，离家近了没舍得吃。背回家里，我迫不及待的切开西瓜，刚端上吃时，只觉眼前一黑，一切什么也不知道了。</p>
+<p>不知过了多久，我清醒后，第一眼看见的是我身旁，母亲那焦急、腊黄、吓得失去血色的面容……</p>
+<p>那些年，上有老下有小。女儿上小学，儿子还在吃奶。种有三亩多地，还要给国家交公够粮。记得那年天雨太多，麦子生芽，捡好的拉去粮站几回，还嫌不好验收不上，没办法只好拉回。后来队里干部来家里收差价款（粮站价低，市场价高），因当时凑不到钱，干部催的没办法，装了几袋子麦过称，折价给了收款的。那时外面打工，一来是活不好找，没有现在这么多。二来是没有一定的关系，活好干但钱不好要。至今庄子里干了活，没有要回工资的还大有人在。为了这个家，碰上个挣钱的机会，有时候真是没黑没明连轴转，顾不上吃，顾不上喝，废寝忘食。那些年，平时吃西瓜的机会很少很少，除非孩子闹的久了，或者来个亲戚，实在是过不去了，拿些腾草麦换上一两个吃一半次。</p>
+<p>那天钓鳖、卖鳖一路寻找吃西瓜，主要是止渴充饥比吃饭方便实惠。</p>
+<p>事情己经过去了三十多年，想起来好象就在昨天。现在儿女己长大，情况也好了，一年四季也不缺西瓜吃。但是随着年龄的变化，一次也不敢多吃，吃多了甜食反而胃里还不适服。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w15" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-05-12</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：春游小柴沟"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>春游小柴沟</h3>
+      <p class="summary">吕老师写了一篇《小柴沟的垦荒岁月》，队里八旬老人读后都点头——那是上世纪五六十年代&quot;远耕队&quot;战天斗地开荒的地方，也是作者一九六〇年农历六月初四出生的地方。第一次与好友宝同、发小安兴翻山过去，怕沟里护林员的狼狗半途折回；第二次从后坪开车进山，才走到草房旧址和东岭背后的尖草湾。当年垦荒四百余亩、养活全队六百口人的&quot;南泥湾&quot;，如今只剩几片杏李树、几棵老核桃、几个碌碡在草丛中忽隐忽现。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/ajLQ5HszozVAaSRNR8NBKA" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2023-05-15</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>前一响，在队里的微信群里，看到了吕老师撰写的一篇记实散文《小柴沟的垦荒岁月》。文章后边附文：希望大家看后，没有去过小柴沟垦荒的人，读给上世纪五、六十年代，去过小柴沟垦过荒的老年人听一听，问一下写的内容是否合乎实情，或者还有那些不足，需要扑充。<br/>因为吕老师从未去过小柴沟，对那里的情况和环境一概不知。文章的内容都是吕老师听他父亲，生前讲述过的一些人和事所写。当年，吕老师的父亲是小柴沟山庄的创造者——“远耕队”队长。记得我父亲以前在世的时候，也曾给我讲述过那些“远耕队”的事情，那时我还太小，对这些事的记忆也己经模糊不清。<br/>我看了吕老师的文章后，先后跑了几家，找了几个老年人，年岁都已八十有余。他们几个人说，不但到小柴沟垦过荒、干过活，而且都还干过好几年，做的时间也长。我把吕老师文章的内容，讲给他们一个一个听，听后有个吕姓老人说：“咱们队那时候多亏做了小柴沟山庄，不然会把人饿死的”。</p>
+<p>有个杨姓老人也说：“虽然说去小柴沟山庄做活的人，把力吃尽了，但也确实给咱队把粮打咋咧。没胡写，都是事实”。<br/>“小柴沟那地方看起来和别的地方，没有多大差别，可是，只有你努力了，种啥啥成。我曾记得种的南瓜有磨盘大的，白萝卜有十几斤重的，抱上象个娃娃”。新庄基一位姓张的老人给我说。</p>
+<p>“你爹、你娘也在小柴沟做过好长一段时间的活。那是你们“逃荒”才回来的时候，你屋里你爸（户里的）住着，当时你们没处住，队里就让你们暂时去了小柴沟，等你爸修好地方挪出去后，你们才回来的。你们到小柴沟后，住在沟上边的尖草湾，那里有房。你知道吗？你就是在那个房里生的”。和张姓老人在一块儿的另一个老人接着说。</p>
+<p>以前父母在世的时候，我也听父母曾经说过，我是在小柴沟尖草湾出生的。虽然我七、八岁的那年秋天，跟着父亲背粮食（就是为去吃个白馍），去过一次小柴沟。至今只记得吃了一个白馍，路上摘了好多毛桃。小柴沟究竟是怎么个山形地貌，到底是个啥模样，现在我的脑海中已没有丝毫印象。我曾经多次想过，以后有机会，有闲暇，一定要去小柴沟，尖草湾看个究竟。看看我的出生地是个什么样的地方，父母以及乡亲，当年在那物资匮乏，经济条件十分落后的年代，他们为了大家也为了小家的温饱，不怕艰苦，来到怎么样一个陌生的山沟里，垦荒度日的……</p>
+<p>新庄基张姓老人，今天又提起我是尖草湾出生的那亊，加之我这晌闲着没事，不由使我想去小柴沟的欲望，以下越发迫切和强烈。晚上我匆忙在微信上给吕老师，回复了我问的结果后，就一股脑儿的想着怎么去小柴沟的事情。</p>
+<p>人常说：“岐山地方邪，说啥啥就来”。正当我为去小柴沟，一筹莫展的时候，小柴沟西边的西坊村，有个叫宝同的朋友给我打来电话，说他明天来山外去益店镇，联系买种玉米的化肥。再来“祝家庄辉辉车行”买些三轮车配件，问我在不在家，好久未见，他想过来看看。我赶忙回答，在家，你一定要来约，我在家等你。</p>
+<p>过了几天，宝同办完事情，开车来到我家，晚上，我把想去小柴沟的事提了出来，说明意图，向他请教，求他帮助。希望他能给我做个向导，了却我这桩心事。宝同说他虽然近居，无事他也是多年未去，具体路况和原址旧貌，也不是那么熟悉。但是，还是答应和我一同前往。那晚我俩聊得很久很久，才睡。</p>
+<p>第二天八点左右，正当我俩出发的时候，同村的发小安兴，来说他近日无事，也要一同去玩。于是我们俩人便兴高彩烈的，坐上宝同的汽车，向麟游县九成宫镇白杨木村的小柴沟出发了。</p>
+<p>我和安兴己是好多年没有去过麟游县，当汽车开上眉麟公路，眼前的情景让我俩一路兴奋不已——宽敞的柏油路面，通畅的路傍水沟，石枓厂的楼房建筑，以及石崖上的防护网，格格层层看起来让人目不暇接，百看不厌。</p>
+<p>映入眼帘的，远处眷恋着青山的乳白色的晨霭，时浓时淡。山间的阳光忽影忽现，公路在山间就象个飘带，盘来绕去……一切都是那么的如诗如画。和我以前来这里见到的情景，真是千差万别，大不相同了。</p>
+<p>记得上世纪七十年代，初夏的一天，我和父亲去黑山头割柴火，俩人拉了一辆架子车，走的就是这条路。那时一路上路面宽窄不一不说，还坑坑洼洼，高低不平，全是石渣铺垫。有段是在悬崖峭壁之间，有处道路侧面，是悬崖倒挂“呲牙列嘴”的山石，看起来随时都有掉落的危险。路中路边，晚上掉落的大小石块，随处可见，颠得车子无法走快，只能走慢。看见汽车行驶，更是艰难，一不留神就出危险。加之水泥厂取枓，路旁山体被炸得“大坑小窖”不堪入目。</p>
+<p>汽车行驶到九成宫镇栗川村，上、下永安（上永安，下永安地名）路段，车外的景色更是让人感叹：崭新的排排小楼，整洁的街道广场，水泥路四通八达。小河流水，潺潺作响，旁边有鸡有鸭。河边绿柳袅袅，山坡上野花蓼蓼。路上虽然行人不多，偶见妇女儿童，个个穿的花枝招展，漂亮的像只蝴蝶。山上树木参天，山下温室大棚随处可见。</p>
+<p>改革开放的春风吹绿了祖国大地，也把麟游吹得山青水绣……处处旧貌变新颜。</p>
+<p>汽车似一匹脱缰的野马，在公路上一路狂奔，不到十一点钟就到西坊村的屯头。</p>
+<p>我们打开导航，屏面现示翻过屯头北边这道梁，就是小柴沟。距离屯头两三公里，没有车路只好步行。我们三个人在宝同的引导下，劈荊斩棘经过半个多小时的艰难跋涉，终于爬到山梁上面。一股股凉风扑面而来，带着山野无名花的淡淡幽香，沁人心肺，令人陶醉。</p>
+<p>山梁上边有条大路，宽约两米左右，顺着梁顶盘来绕去。来时路上听村民说：皮卡车经常在上面行驶。一切都是割罐机所为，用来围护山间栽植、防火、修林……工作的快捷方便。<br/>宝同凭着以前的记忆，领着我们找见了去小柴沟的道路（小柴沟沟老），路不宽皮卡车能走。我们顺路进入沟林，满坡全是杏树和李子树，杏花己开败，李子花含苞待放。看树冠不是很老，正处盛果期。山坡平缓不是很陡，觉得好奇，我顺着路傍的林地走，用脚踢开落叶，呀，全是黑土，很是肥沃，脚踏在上面软绵绵，湿碌碌的。<br/>来到沟底是一大片玉米地，地里遗留的荐子有镢把粗，从茬子上可以断定，去年的收成肯定不错。上世纪五六十年代“远耕队”开荒时期，栽的核桃树仍旧还长在地边，有六七棵，都很粗大茂盛（因为看树龄，都是六七十年的老树）。</p>
+<p>河滩有水，不是很大，均为积水。<br/>顺着河滩继续往北走，西坡全是刺槐林。我们三个人边走边看，走了近一个小时，没有碰见一个行人，也没看见过去盖过房子的痕迹，更不知道那里是尖草湾。这时问宝同，宝同看看这，又看看那，也糊涂了，说不上个所以然。多年没来也辨不清了。我打开导航没有信号，他俩己走的腿疼，坐下休息。<br/>我一个人继续往前寻找，走了有一公里左右，仍一无所获。这时我突然想起，来时屯头有人说，他去年到小柴沟栽树，沟里住着一个护林员，养了八九个狗，也狠凶猛。我害怕了，不敢往前再走，因为我一个人，万一碰上狗又没拿个棍。己是下午三点多了，只好返回。<br/>我还没有走到，安兴和宝同休息的地方，就听到他俩已在返回的路上喊叫。昨晚看天气预报，从今天下午开始，有三天的降雨，如果下到山上，出行也不方便，无奈只好回家。<br/>我们回去的第二天就下雨了，一直下了好几天，雨天无事，我去了一户吕姓老人家中（他原来在小柴沟开荒时间最长），把我们去小柴沟的事，一路上的所见所闻，向老人从头到尾说了一遍，问老人山庄的旧址和尖草湾到底在那里？</p>
+<p>吕姓老人说：小柴沟和水堆是一条沟，那沟大着呢，听你说的那些地方，还没走到一半。再往北继续走，西边有条小岔沟，沟口附近就是原来的草房，有四五座呢，根前有个大桑树。顺沟再走就是水堆。从草房对面东岭上去，梁背后就是尖草湾。听吕姓老人这么一说，我心里彻底明白了。准备天睛后晒几天（不然，山上路滑），再去一趟小柴沟。<br/>一个礼拜后，正当我准备动身坐班车去的时候，电话响了，一看是宝同打来的，说他因事来到流龙嘴（和我队隔了个沟），还说他把小柴沟的草房位置，和尖草湾都打听清楚了。那次咱们没走到，就是那个沟。问我还去吗？若是去，这回保证能找见，能看个明白。要去明天早晨就翻沟过来，他等我。我回答说去，正准备明天坐班车去呢！那好我明天翻沟过来。</p>
+<p>第二天早晨我翻沟到流龙嘴，坐上车到西坊宝同家后，这次去小柴沟没有翻山，宝同开了个三轮摩托车，我们是从后坪进去的，和上次去的方向相返。全是石子铺的路，虽说路况不好，但是要比翻山好多了。不到十二点钟，就到白杨木村的水堆组，是个林场。我们把车停到林场院里，正想问一下情况，听到摩托车声响，林场房里有人出来，问是做啥的，我俩回答说去一下小柴沟和尖草湾，问狗拴着还是没拴。林场人说一个小狗，见生人就跑到坡上去了，大狗去年因伤了人卖完了。<br/>这时，我俩才放下心来，下了车在院子里转了转，因为一路的颠簸腰腿有点疼。宝同顺便向那人问了问路况，那人说路没问题，皮卡常走。也问了问离小柴沟远近，林场人说不远，往前走西边有个岔沟就是。于是我俩开车继续前行，走了没多久，西边果然出现一条小沟，我们找了个梢平的地方，停车下来。见一溜长满酸枣刺的崖畔下有几只，坍塌的窑洞，上面己是灌木纵生。</p>
+<p>听当年“远耕队”的老人说：他们刚来小柴沟，无处安身，就是先住在这里的窑洞里，安营扎寨，开始修房基，盖草房……那时，小柴沟没有一分能种的土地，全是荒野，豺狼经常出没无穷。后来经过“远耕队”十余人几年的边垦，边种，边建设。共盖有草房五座，开垦荒地四百余亩，繁殖牲口二十多头、匹，羊有一百多只，还有猪、鸡好多。所产粮食从未统计。总之，一年四季全队六百多口人的生活口粮，基本上都是来自小柴沟所产。衙里群众称小柴沟，为惜日的“南泥湾”。</p>
+<p>我和宝同继续向前走着。一阵阵风吹来，沟里的茅草，就象大海的波涛，此起彼伏。山上的树木随风起舞，好像在给我俩不停地打招呼：欢迎光临，欢迎光临……。<br/>走了还不到两个小时，就走到我上次返回的路旁，再没必要继续向前。<br/>小柴沟现在只有几片耕地，其余全是果树（杏树，李子树）和刺槐林。当年熙熙攘攘的“远耕队”院落，一座房屋的影子也没有，早己倒塌。旁边的那棵大桑树不知道啥时候，被谁砍伐，根上新生的桑树也有三四把粗大。更看不到“远耕队”所说的，人见人爱的大玉米楼。唯有几个碾场用的碌碡，仍旧站在草丛中随风忽隐忽现，仿佛向我俩不速之客，诉说着它们多年来的寂寞与无奈。<br/>休息了片刻，我俩顺坡爬上东岭，翻过梁来到尖草湾。这里，就是我的出生地，我们一家人住过的地方。以前父母健在时常说：一九六0年农历四月，我们一家人来到小柴沟后，就住到尖草湾。那时，只有哥哥姐姐，我是六月初四在这里出生的。当时，一家人免强能把肚子填饱。母亲奶水不够吃，我成天的哭，没办法母亲含泪把我抱在怀里……。<br/>听垦过荒的一位老人说：几天后，白杨木队有位老家是山东的老姨知道了，她给母亲在手怕里提来几个鸡蛋。桐树院有个大妈给母亲拿来半斤红糖。当时母亲一见到她们，感动的泪流满面，好久说不出话来……那一点东西，放到物资充足的今天，实属“九牛之一毛”，走到跟前看都不想多看一眼的东西。那时候，却是想都不敢想，十分希缺且金贵的东西。<br/>一个在“远耕队”干过的吕叔说：父亲经常省吃俭用，尽量来满足我们母子俩的需求。有一次他们刚把拌汤（一种面食）舀到碗里，一只臭班虫掉到一位叔叔的碗里，没法吃了——嫌臭，让父亲回家时顺路端去喂牲口。父亲没赊得，半路上用草棍剥掉虫子，自己吃了。<br/>……</p>
+<p>从前的老屋从前的我们，在这里度过了五六个春秋，这个家里曾经是多么的热闹温馨。有父母哥哥姐姐，屋里屋外生机勃勃，烟火沸腾。我们一家人生活的喧闹声，永远定格在那个贫穷的年代。<br/>心里所想，都是过往。<br/>那时家里虽然穷，但手足间的亲情是淳朴的甘甜，是我们几兄姐共同的，永远都无法替代的精神家园。在父母的庇护下我们慢慢的长大。重温旧地，多想再回到以前。<br/>而今父母变成两堆黄土，孤眠地下，阴阳相隔近二十个春秋，无处话凄凉。坟堆上的荒草在寒风中摇曳，就象我无尽的思念。<br/>“唉，这尖草湾己有很多年没人来过”。这时，宝同自言自语，从北边走来，将我驰骋的神经捞了回来。<br/>以前母亲生我养我，居住的房子也己消失，只有残墙在蒿草中半淹半露。风儿轻轻的吹着，无声无息，却是那么地情意绵绵，而我的心就象大海的波涛，怎么也无法平静。望着眼前的一切，不知为什么我想哭一场才好……。<br/>两次来到小柴沟，今天站在这东岭上，总算是看到了小柴沟的全貌，看到惜日“远耕队”战天斗地，垦荒，种地，搞生产的山山水水，林和地，一草一木。我虽然找不出恰当的语句，赞美它们描写它们，但通过眼睛这个特殊的镜头，己把它们深深的收藏到记忆深处。望着这里的一切，心中有无限感概：“远耕队”的先辈们，昔日虽然没有“北大荒”，那样轰轰烈烈的英雄气概，也没有打破郝世才，每天开荒四亩二分三的纪录，但是，十余年来，垦荒，种地……在那物资匮乏，经济十分落后的年代，为衙里队六百多口人的生活，生存，吃力，流汉，做出的贡献是衙里队上辈人，有目共睹，尽人皆知的事实。<br/>“远耕队”，衙里队的人们会永远记住你们的！<br/>己定是下午四点多了，准备返回。宝同说：从我们三个人上次来的路线走，上了梁往南边走，前几天推了一条路，种玉米的车往上走来，下去就到屯头水库傍的公路上。说着宝同就让我上了车。不大一会就开上梁顶……。<br/>再会吧，小柴沟！再会吧，尖草湾！我以后还会再来，次数肯定会更多。</p>
+<p>（一九七0年初，国家有政策，“远耕队”必须返回原籍，七一年队里无奈撤了小柴沟山庄。）</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p>2023年5月写于京当</p></div></details></div>
+    </article>
+<article class="work reveal" id="w16" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-04-14</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：基坑支护"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>基坑支护</h3>
+      <p class="summary">二〇〇八年秋孩子都在上学急需用钱，邻村工友劳劳邀他去西安干基坑支护，一天五十、年底结清。岳家寨队部装机械、拉锚杆、搭架子；两人一副洛阳铲打六米、九米深的孔，手上磨出大血泡；穿锚杆、注水泥浆、绑网片、监理验收合格才许喷浆。喷浆最脏最苦，五小时下来满身灰泥，痰是黑的，汗流到眼里的蜇得泪如泉涌。帐篷支在没电没水没厕所的坑里。做四个工地共一百一十三天，扣伙食余下八千五百三十元，腊月二十五大老板派大巴送回家。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/ROUE_vwwCUZ_x6aPS8nQNw" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2023-04-25</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>二零零八年秋，邻村的工友劳劳叫我和他去干活，说是这个活和搞建筑差不多，技术含量也不高，一般人都能干，一天还能挣个五十元左右。我问啥活工资这么高，劳劳说是搞基坑支护，他也没干过，只是听干过的人说，既脏又累，有些工地还很危险，塌伤摔伤工人的工地，己是屡见不鲜。只是图比别的活路能多挣几个钱，平时收种、学生报名时，也能借给一部分钱，而且年底还能完全结清工资，不欠工人一分一文。听工友这么一说，我怦然心动答应下来。</p>
+<p>那几年打零工，一般人每天就挣二三十元钱，况且有些包工头、有些工地，几年的帐也不给你结。脏累不怕，只要钱给的差不多，帐清，就行。没手艺，没有技术的人，做个小工的活路，能挣个做大工的钱也就满足了。就是安全上得多操心，再退一步说，事故只是及少及个别的。那年，我俩个孩子都在上学——女儿上大学，儿子上初中，急需用钱。<br/>第二天我们带好行里，按照带班的所说的路线，我和劳劳来到西安市南郊，一个叫岳家寨的村子，支护队的大队部就设在这里。听干过的一个祝家庄的乡当说，大老板是扶风县降状人，手下有十几个工队。劳劳说我们工队带班的姓张，他已给打了电话，带班的说正忙着等会就过来。</p>
+<p>听工友说，队部是老板租来的一所闲院。</p>
+<p>大门面南，南边远处是片荒地，草木长得有一人多高，近处堆放着一留支护的“家具”。见院里有好多人走出走进，也不知道他们都忙些什么。因天气太热，我们也没进队部里边去，在门外树阴下找了块干净的地方座了下来。</p>
+<p>看门前这“家具”，这老板也不是一年两年就能这么大个滩子。门前几十米长，全是堆放些新旧不一的机械、钢管、水管、竹杆、长板、洛阳铲……和一些叫不上名字的东西。</p>
+<p>没坐多久，带班的就从队部出来，和我们打了个招呼，说是晚上就进工地，现在开始领东西准备装车。</p>
+<p>我们把行李放到一块，连带班的一共七个人，除劳劳外我都不认识，听说大多数也是附近的人。这时拉东西的汽车，己从东边开始倒进“库房”，带班的招呼车到空压机不远处停了下来。</p>
+<p>司机打开车门，让我们从车里取下两块很结实的长木板，把带钩的那头挂在车箱后门缝中，另一端放到地上，测量好空压机轮距和木板之间距离，我们七个人全部上阵，推的推，用大绳拉的拉，把空压机从“堆”里弄到汽车后边的木板跟前。这时，司机用遥控器把卷扬机开起，挂上空压机牵引，随着卷扬机咕噜咕噜的声音，空压机就慢慢的拉上了汽车，我们给空压机前后轮子都垫了木块，以防前后移动。第一个大机械算是装上车了，没装前还使人愁了好久，其实有卷扬机大机械还好装，就是弄不到根前，只要能弄到车根前，把心用上装车很轻松。</p>
+<p>接下来第二个重机械就是喷射机，看起来不大却很重。在土地上没有四五个人是拉不动的，还要有人用钢管别。弄到车根前还得用卷扬机往车上拉……大东西装上车，剩下的东西全部是人工装。有水管，电线，电箱，洛阳铲，竹杆，状蓬，枓管，床板……</p>
+<p>经过两个多小时的扛、拉、背、抬……设备和工具总算是装上汽车了，最后装上行里再用绳子绑紧，完事。车里坐了两个人压车到工地，别的人或者坐公交车，或者队部用面包车送。具体事宜带班的才和老板商量。</p>
+<p>那次进工地工人是队部的面包车送的。到工地己是晚上九点多钟，拉机械的汽车开的快，我们到工地时拉机械的车，早己停在坑边。那个工地没有围墙也没有门，更没有电，黑乎乎的。借着远处的灯光，看见两个压车的工友己取下床板和行里，放在坑旁。<br/>一到工地我们又忙火起来，所有人首先统一卸车。接下来搭帐篷的，接电的，收拾东西的……各负其责。</p>
+<p>等把一切收拾好休息时，已到晚上十一点多、十二点了。这时，工友们才觉得又饥又喝，人闲马乏。有些工友出去到街道上买馍、买水，经打听附近沒有饭馆也没有商店，没办法只好忍着，回来倒在床上咽几口吐沬，便呼噜呼噜地睡着了。</p>
+<p>第二天清晨，还不到六点，带班的己从北沈家桥买回早餐，喊叫着起床吃饭。然后打开一卷资料，给我们前不答三，后不答四地念叨着，讲解着，我们边吃边听，他说：“来的新工友有些可能不知道，啥叫基坑支护？基坑支护，就是为了保证地下结构的施工，以及基坑周围环境的安全，对基坑侧壁以及周边环境采用支挡，加固与保护的措施……”</p>
+<p>听带班的讲话后，我们才知道这工地是在齐王村，建的是居民住宅楼，坑深有四米多五米，支护侧壁面积有三千多平方，全部是土钉墙，三排孔，上下两排孔深6米，中间一排孔深9米，6米锚杆18直径罗纹钢，9米锚杆22直径罗纹钢，6米锚杆3道支架，9米锚杆4道支架。</p>
+<p>早晨六点半上班，中午十二点下班吃饭，每天干活十个小时。那天，两个人去修坡，我和一个工人调整钢筋。就是把园盘钢筋通过调直机拉直，按照所需的尺寸剪断，帮网片。带班的收拾电箱，还要收拾洛阳铲，两人去焊接锚杆。</p>
+<p>零活做了一天，就开始打孔，三副洛阳铲六个人，两个人一副铲，剩下带班的一个人焊毛杆。我们六个人找来钢管，扣件，四米长，六公分厚的木板，按照坡面孔位的上下，左右距离搭架子。打一排孔升一层架子，边搭边打孔。担上木板，两个人一前一后站在上面，前面的人管铲头，还要记住铲口反正，后边的人用力拉送，拧转，拉出来后，前边的人还要用铁棒打铲倒土。这一系列的动作过程，看起间单实际操作起来还是不容易的。打孔，我以前见都没见过，幸好我工友以前还打过炮眼，还能凑合。刚开始每一排，每一架我俩总是落在后面，我的手上不久就起了几个大血泡，一拧杆子疼得要命。那两付铲的工友是老工人，支护这活已干过几年，打起孔来非常熟练，每排总是提前把孔打好了，已坐在架子下边吸烟，喝茶，而我和劳劳还在架上“踢腾”。打过几天之后我和劳劳也慢慢的能跟上了。</p>
+<p>一般铲头和焊接的铁杆约七米左右长，孔深了就用竹杆接，接茬一般都用自行车内胎缠扎，一根竹杆不够就再接一根，听干过的人说：二十多米深的孔，要接三、四根竹杆。</p>
+<p>孔打好后，接着就是给孔里穿锚杆（不能穿完外留二十公分，为的是后边还要在上边压网）、注水泥浆，给坡面上绑扎网片，压网（压网有横拉，斜拉，有些工地横斜都压）。按图纸要求依次焊接在锚杆上，然后还要在毛杆上焊上五公分长的“指弹头”，这个工地只是横拉。听干过的工友说有些工地深孔还有“井字架”，上钢梁……</p>
+<p>一切做好后，喷水泥浆前，带班的要自验后，通知项目部，项目部再通知监理验收，查看网片间隔距离是否规范，锚杆钢筋是不是合乎要求，孔里水泥浆注满没有……如果有一项不合格，返工，直到查验合格才行。</p>
+<p>给做好的坡面喷水泥浆，一般需要七个人就行，一个人握枪头，一个人拉枓管。四个人换着给喷射机上料，两人一组，换下来未上料的两个人，不论谁，始终要有一个人注视握枪头人的动态，如见堵管，立刻放开空压机气阀，或者关掉空压机，否则将会爆管，甚至伤人。剩下最后这个人倒水泥和料。配比是：十方石粉，两吨半水泥。大约喷百十个平方面。</p>
+<p>坡面过高，一般都要搭架子，做两次喷，上边的在架子上喷，然后再喷下边。</p>
+<p>喷水泥浆是一项最脏最苦的活，石粉梢微干一些，天气炎热，上一阵料，呛得人有时连气都出不急。干过一个班（五个小时）全身上下都是灰泥，一个大花脸，就连吐出来的痰都是黑的。鼻孔里有时塞严了，就用嘴呼吸。头上的汗水顾不上擦，流进眼睛里，一下子蜇得人泪如泉涌，这时，只好取下毛巾擦擦，然后继续。</p>
+<p>我们这个班进工地第二天，就搭起了锅灶 。做饭的是工友的媳妇，她人勤快也干净，“㶽灶”也好。早饭，灌灌馍就的凉拌黄瓜和洋葱丝，还熬有白米稀饭。中午，西红柿鸡蛋面，有时还做扯面。一个礼拜左右吃一次臊子面，或吃吨大肉烩粉条。晚上，炒菜馍馍汤。有时，晚上加班吃的是放便面，管饱（不限量）。每天每人扣十一二块钱的生活费。</p>
+<p>我们带班的不论干啥，都是以身作则，虽然不会“说话”，有时听起来粗鲁，但从不骂人训人、给工友脸色看，对工友也很和气。因此，我们几个干活的工友， 也很听话，齐心协力，听从他的安排，团结得如同兄弟一般。</p>
+<p>我们做的活路也从未犯规，多次受到项目部的表扬，也得到了大老板的认可。每次进工地大老板优先安排我们这个班。</p>
+<p>基坑支护是盖大楼开工前的准备工作，支护是盖大楼的先遣队。</p>
+<p>那时， 每进一个工地，第一件事是选好地方支帐篷。坑小，帐篷会支在坑边或一个不碍事的角落里。坑大的话，就支在坑中间高凸而平坦的地方，这样既不影响坡面施工，也不会下雨被淹。帐篷内高过人头处，横绑几根铁丝在支架上，用来搭谅工友的换洗衣物，挂吊碗筷，日常用品。</p>
+<p>每进一个新工地，多数都是没电、没水、没灶、没厕所。夜里手机、衣服、东西……被盗的事件常有发生。有时晚上睡觉时把衣服脱下，放到身边，而第二天醒来就找不到了。有时小偷把东西一掏，就地一扔，还能找见。有的就撂得很远，一时半会难一找见，只好另穿。</p>
+<p>做一段时间，条件差不多好了，有厕所，有商店，也有开水喝了，也就又得挪工地，得走了，因为活也就完了。</p>
+<p>通过这次支护，留给我的印象是：不论干什么，只要大伙团结互让，就一定能把工作做好。一但心情好了，时间也都象过得快了，而再脏、再累的活，也都觉得就无所为了。</p>
+<p>不知不觉己到腊月二十五，今天放假，中午回家，大老板叫来大巴车专程送我们。</p>
+<p>昨天晚上，带班的让我们盯了工：大小做了四个工地，我的出勤工日是113天，扣过伙食费一千多元后，余八千伍佰三十元工资。<br/>天刚亮大老板就派小车把我们从工地接到队部，给我们结了账，一分都没欠。还叮咛我们把钱装好，并鼓励我们明年再来。<br/>这是我的第一次基坑支护。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w17" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-02-19</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：上坳人的吃水与驮水路"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>上坳人的吃水与驮水路</h3>
+      <p class="summary">上坳指张家、中何、西坞一带，地下无水源，历朝历代打井皆不成。祖辈吃下雨水、窑水，天旱窑空就得鸡叫起身，搭木梢、拴牲口走十几里&quot;之&quot;字驮水路下衙里沟泉子担水、驮水，大王队、张家队往返两小时。当地流传&quot;能给你多吃几个馍，不给你喝一碗水&quot;。八十年代建小高抽通水，鞭炮锣鼓比唱大戏还热闹；二〇〇〇年后深井自来水接到灶台前。近日散步北沟，那养活几辈人的泉子已被塌土埋平，驮水路荆棘纵横连小动物都爬不上去。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/XnvGKiNm8vmdQiHq2a8HmQ" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2023-02-27</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>夜，己经是很深了，然而，我在炕上辗转反侧，却怎么也无法入睡，往事的波涛，就象那奔腾咆哮的海潮，呼啸着不断冲击着我的心田。真想不到啊，从很早以前上坳（指张家大队、中何大队和西坞大队一带，称之为上坳）人，吃下雨水、窑水，到十里以外的衙里沟里去担水、拉着牲口驮水吃，再到现在的锅台上手拧水龙头吃自来水，那是多么大的变化啊！</p>
+<p>记得上世纪六七十年代，人们的作息时间和现在是不一样的，天明不吃饭就上工地干活，到九点吃早饭，下午一点吃中午饭，晚饭仍旧没变，和現在一样。那时学生下午是不上学的，也没有家庭作业。放学后吃过午饭，提个鋬笼，三人一伙四人一帮，拿上镰刀有羊的拉上羊只，借着割草、放羊的名义，跑到沟里劳鱼，逮鸟……随心所欲，尽情玩耍。</p>
+<p>我们衙里队的娃娃伙，向西走出街道，沿沟朝北那条小路来到北弯（地名），站到沟边，就有一条通往沟底的羊肠小道，拉羊的小伙伴，首先解掉羊脖子上拴着的绳索，这时羊只就毫不客气的抢先“噔噔噔”头一歪一歪的，顺着小路连蹦带跳下沟去了，我们也不怕羊只蹬起土雾的熏呛，根随其后。</p>
+<p>这条沟叫北沟，南边那条大沟叫南沟，就是現在的祝京水库，南沟北沟以堡堡山为界。到了河滩，我们把銴笼、镰刀往不碍事的地方一扔，便开始玩耍起来，捞鱼的、打扑克牌的……羊只爱到哪儿吃草，就去哪儿吃，我们只顾自己玩个通快，也没人管它了。</p>
+<p>河滩是南北方向，宽窄不等，南宽北窄，最宽处有百八十米，窄处也有五十多米。耕地不多，大多都在崖根。河滩有条小溪，随着地形盘东绕西流淌不息。南边溪傍，绿柳袅袅，白杨依依。河滩里大多数是石头，有些比辗盘还大——小伙伴们四个人常坐在上面打补克牌。有的小如沙粒，有的大如牛锤石（四五十公分大的石头，在凸起处打个眼，放在郎圈拴牛，叫牛锺石）。</p>
+<p>我们下去的小路口向西，有一口清泉，不怎么大，水却很旺，取之不尽，用之不竭，水质也好。泉边青草淹映，湛篮的天衬着清澈的水，白云从水底怱怱掠过，偶尔还有翠鸟惊起“喳喳喳”的飞去。这，就是上坳人经常担水、驮水的泉子。</p>
+<p>北边顺沟望去，不远处看见有百十来米高的悬崖，上边前凸，下边洼进，当地人叫它滴水崖（实际上它就是西周第一大瀑布）。记得上世纪七十年代，正月的一天清晨，电闪雷鸣，天降暴雨，滴水崖上的瀑布，水花四溅，吼声如雷，十里八乡都能听得见。</p>
+<p>滴水崖南边不远处的东坡上，有条“之”字路，直通沟上到石沟桥大路，这就是千百年来远近闻名的驮水路。听老年人讲：上坳一带地下没有水源，打不出水井（每朝每代都有人勘探过，最后均以失败而告终）。自古以来，人们以吃雨水为主，趁天下雨时窑藏储存起来，平日里人畜饮用。天旱时间长了，窑水干了，上坳人的罪也就根着来了。为了不影响白天干活，每天鸡叫了就起身，给驴撘上木梢（过去牲口驮水的专用工具，比桶大，口小扁形），担上木桶拉着牲口，披星戴月，行走十几华里路程，顺着这衙里沟坡上的驮水路，来到泉子跟前，放下桶担，拴好牲口（泉边栽有木桩），用桶先给木梢里灌满水，用木塞堵住梢口，然后人再担两桶（给水面洒些树叶或短草，防止水向外酒），牲口走在前面，人根在后边向回返。大王队、张家队的人家，距离衙里沟最远，往返一次大约需要两个小时左右。一担水六七十斤，回到家里人困马乏，还没来得及休息，差不多也就到上工的时候。人少家畜少的家庭，一天一担水也就基本够用了，人多家畜多的家庭可能一天担、驮两三回也不够用。下午收了工，喝完汤（那时粮食紧缺，晚饭一般都吃的浠，把吃晚饭称之为喝汤），还得继续挑水、驮水。</p>
+<p>在我们这一带从古到今，留传着这么一句话说是：走到上坳过事、干活，能给你多吃几个馍，不给你喝一碗水（因为上坳土地多，粮食就比南乡宽余一点），由此说明上坳人祖辈的艰辛，以及水的希缺和金贵。</p>
+<p>曾记得七十年代，十年九旱，有一年（具体是哪年记不清了）天气特别干旱，一年也没下过几场透雨。割麦时节，有些麦子才长得一拃高，镰刀没法割，只能用手拔。天不下大雨窑里就无法收水，那年月驮水路上黑明有人，把驮水路踏的既宽又大，最宽处己达到两米，汤土（细土）就有一拃厚。就这，上来下去挑水、驮水的人太多，互相碰撞的事常有发生。有一次是星期天，我们六七个娃娃伙在驮水路下畔找野鸡娃（小鸡）捉，突然看见驮水路上边跑下来一个麻驴驮着梢桶，正好有人担着水，赶了一个黑驴驮着水向上走，担水人见驴往下跑，就怕相撞，紧“𠰻”慢“𠰻”没“𠰻”住，把上坡的驴撞了个“趔趄”，梢桶上的绊绳撞断了，梢桶顺坡“咣啷，咣啷”地往下翻滚，水也随着“沙啦，沙啦”地倒了出来……我们几个见势不妙，撒脚就往远处跑。当赶驴的主人担着桶担赶到驮水路半坡时，见驴己在沟底泉边喝起水来……</p>
+<p>那时候，我们一放学，经常来到驮水路方达园放羊、玩耍，这里成了我们娃娃伙的乐园，也成了我们校外的“根据地”。经常看见驮水路上因牲口咬仗，碰撞，倒水，吵架……的事，次数多的也记不清了。也看见驮水路先后多次被人维修过，拐弯处加宽修大了，坡中间也修复了从前的几道巷子，为的是上来下去的牲口好躲辙，尽量避免碰撞。</p>
+<p>大约到了八十年代以后，上级有关部门对农村人畜用水进行改造，上坳群众的人畜用水工程就成了头等大事。在水利部门的勘察，规划和指导下，先后在衙里队的北沟，驮水路西面，挖大口井，顺着呼家嘴梢修管坡、做管道……建起了数座小高抽，将水一直抽到山脚下的大王村，途径村庄都建有蓄水池。</p>
+<p>通水那天，上坳各村比唱大戏还热闹，鞭炮齐鸣，锣鼓喧天，人人脸上堆满笑容。人畜用水得到满足，既方便也卫生，更实际的是减轻了人们的好多负担，加快了农、牧、副方面的发展。上坳人起早贪黑担水，驮水吃的日子终于落下唯幕。</p>
+<p>岁月如歌，光阴荏苒。一晃近二十多年过去，随着时代的发展，二〇〇〇年后，全乡又迎来人饮工程的实施，上坳人和全镇（乡已改成镇）人一样，家家户户都吃上了深井自来水。并且将自来水接到自家灶台前，上坳人从此也吃上了日思夜盼、放心、方便的深井水。</p>
+<p>想到这里，时近五更，只觉睡意渐浓，很快就进入梦乡……</p>
+<p>前几天闲来无事，前去北沟散步，看见耕地早己退耕还林，树木参天。养活了上坳，人老几辈人的泉子，己不复存在，不知什么时候崖土塌落，将泉子埋平，上面杂木丛生。当年熙熙攘攘的“之”字驮水路己是荆棘纵横，灌木丛生，現在不要说驮水，走人，就连小动物也难爬上去了。</p>
+<p>千百年来，上坳人祖辈吃下雨水、窑水、到十里以外担水吃、驮水吃的经历，己成为记忆和历史。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w18" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-01-11</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：一封没有起诉的状子"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>一封没有起诉的状子</h3>
+      <p class="summary">腊月初十扫社，妻子从书柜翻出一份发黄的册子——九二年为老宅纠纷找人写的《民事诉状》。作者家与刘青家共住一院，前后两家挤一米宽的走道，母亲被打、盖房受阻。队长吕梁、唐兴多次调解，两家写约按印，一悔再悔，五年多挤在小屋里没处建灶房。姐夫托懂法的朋友写好状子，作者拿着去三爸家商量，三爸一句&quot;就是赢了你们弟兄四个还是住不下&quot;，让这纸诉状终没递到益店法庭。几十年过去，兄弟四处新宅都起了小楼。状子塞进炕洞烧了。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/s0rC-TV1IgOuSc732S3xUA" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2023-02-09</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>人常说：小孩小孩你别馋，过了腊八就是年。三年来，受疫情影响，连年都没过好，不能聚会，不敢待客……今天己是腊月初十了，趁着天气暖和我和妻子扫了个社（腊月打扫室内卫生我们这里称之为扫社），把几年来陈旧的、不用的东西，该扔的扔掉。清理打扫一下，今年放开了，说不定远方的亲戚来走访，收拾干净来了也好看，觉得适舒。在清理书柜的时候，妻子翻出一个陈旧泛着黄的册子给我，让我看有用没用，没用了就塞进炕洞烧了。我接过一看里边是一份状子，九二年为老宅纠纷而找人写的一份《民事诉状》。看见这份没有起诉的状子，不由使我想起了过去。</p>
+<p>那是上世纪九十年代以前的事了。曾记得我家老宅和刘青家共住一院，我家住前，他家住后（两半截住），我家约住全院面积的三分之一。十八年年景时期，我们一家逃了个风落雨散，只留下院子、住房二余间。慢慢地刘青家的出入也就无人阻拦（原来他们走北边）。直到一九六零年我父母才归家院，旧居、房屋同前，只是刘青家人出进走路，直接影响得我家的生活无法正常运转（院子和房沿台一共就一米宽），有时放个东西、弄个啥的躲不开，出进受阻，因而，我们两家的吵闹也就成了家常便饭。我父亲老实，我母亲好说话，见刘家人出进走路，早早躲开，不是进屋，就是出去站到没有房子的宽处，等刘家人过去以后才能返回原处。记得有一次天快黑了，我母亲忙于烧炕低着头，没有看见，刘青扛着半代子粮食进来，刘青走到我母亲根前没有说话，就狠狠踏了母亲一脚……打他打不过，告他没人管，只好忍气吞声，过一天是一天。</p>
+<p>大约到了一九七六年左右，在规划新农村时，队里也看到了我们的难处，正好我们东边挨着一所空院，有五米宽，主人年景时期逃出去再也没有回来，至今杳无音信，队里准备上报批给我们。当时的队长吕梁让我们都写了庄基“申请书”。<br/>一年后的一天我们正吃午饭，队长吕梁来我们家，对我们说：“那个空院批下来了，以后就可以盖房子了。”说完就走了。究竟是咋批的？队长没说，总面积两家各半吗，还是那空院两家各半呢？没有问（因为我父母都是老实人，那时我们弟兄都小）。只记得一九七八年我家翻修房屋时，队长吕梁来我们院中，把我们俩家人叫到一块，对我们说：不管你们谁家原来占的多少，为了解决刘青家的水路（因为后边高雨水只能向南淌）和杨家的后路（指我们的厕所），从今往后你们的院子是一家一半，一家一面（就是两半各住）。当时刘青家同意住东边，我们家就只能住西边。当时我们把心思全放在翻修房屋上，的的确确也顾不了许多，一没叫人立据，二没找人写约，只是相信队长的一句话，就原房原向盖了起来。<br/>自后刘青家曾为这院子的位置变动多次：隔一段时间要占东边、过一段时间要住两半截。他们家想占那边就在那边裁树盖房，整个房前屋后几乎让他们占完。就连我们房山墙之间的夹道，他们都不肯放过，裁上树木。这些事我们没有胡说，他们家裁的树、盖的房、安的头门、后门，便是铁证。<br/>几年以后，我们兄弟几个慢慢的长大，住房确实紧张，加之还要结婚。想盖房，我们对刘青家协商，他们说西边的房没钱挪不起，东边还是他们的。总之仍是提起一长条，放下是一滩。胡搅蛮缠，不上“伴伴”。多年来整得我们厕所没处建，猪圈没法搭。</p>
+<p>八五年三月十一日，我只好叫来原来的老队长吕梁、当时的队长唐兴说话，商量其事，其间刘青家又几次扯到原来的老份上，都被老队长吕梁给顶了回去，面积仍是原来的两家各半，当时刘青家被两位队长说得站不住脚，又要住两半截，说是他们开北门。我们也就随了他们，刘青家在南边我们的地方上，所有住房，九零年以前搬完，并写了约，我们两家和两位队长都填了字按了手印。<br/>九零年初我们备好了砖瓦木枓……准备盖房，刘青家却丝毫未动，我又请队长去问话（因为多次为地方吵架，我们两家不说话）后，才知道刘青家又变了卦，说是两半截又不住了，又要住两半个。一听这话我肺都能气炸，为了那点地方，我们在这小屋里面挤呀挤，挤了整整五年不说，自从刘青家要住两半截后，我们在前边盖的房就有好几间。开什么玩笑，放到谁根前都不会答应的。</p>
+<p>为这事我们几次找人调解均无效，一直扯皮半年多，原计划我三弟后季结婚，现在还和我四弟住在一起没有房子。前年我分家到现在还没处建灶房，我们确实是火烧睸毛。在万般无奈的情况下，两半个、两半截我家只好再次由刘青家选择，其结果刘青家仍是没睸没眼，这样不行，那样不好，全成了他们的事。由于我家急于建房，不得不于三月二十四日，再次找来村干部李明，贺三生，组里干部唐林、王春来调解。村组干部一致认为：面积划分维持前几次的两家各半，但是有一点不同往常：院子里让我家随便建房，先让我们把婚房盖好，我明年宅基批下来了让给刘青家（我已写了宅基申请），让他们挪出去住（迟早搬都行），我们家适当的给负担一些庄基费，何况刘青家的几间厦子，己年久失修，也快到倒堒的地步。当时我们两家都同意这个建议，左邻右舍知道后都很赞成。并立了字据，按了指印。<br/>过了几天，我们在里边准备开挖房基时，刘青家又来阻挡，不让施工，说他们又不愿意了。我们问原因，刘青说：老先人留下的不愿丟。哎，遇上这么一家人，不讲道理，不知好歹，真能把人给气死。无奈我又厚着脸皮去找村组干部，给村组干部把情况说明后，村组干部商量了一下，对我说：你们两家的事情，村组干部都调到这份上了，刘青家又悔约，再没法调解了，写份状子到益店法庭去起诉好了。<br/>那时，我还不会写“状子”，只好骑自行车到风翔姐夫那里求智，我把事情的经过说给姐夫，姐夫找了个懂法律的老师，把事情的经过和我们的要求说明。那位老师同意给我们写，但要等几天。</p>
+<p>几天后的一个中午，姐夫拿回“状子”给我，我看后觉得写的很好，当天下午就回了家。晚上我拿上“状子”，到三爸（户里的）屋商量去益店法庭起诉的事情。我把状子递给三爸看，说明来意，三爸接过状子没看，却放到桌子上，他坐思良久，一言不发。过了好大一会儿，终于开口对我说：这官司咱们不打了，没有任何意义。我前思后想，就是赢了咱们还是住不下，比方说把刘青家的全部给咱们，你们弟兄四个都大了，何况你哥也分了家，几年后光你们就是四户，还是住不下。你想咱们村就咱们这个院子住了三、四户，村上一院住两户的也没有几家了，我想你先到村子里租个闲屋住一半年，把你那房子给你弟腾出做婚房，等你新宅批下来了一次盖好，你弟的婚房也解决了，你弟跟着申请新宅。这几年政府给批（指的是宅基）呢，那几年不批咱们没办法，你看如何？听三爸这么一说，我觉得很有道理。决定听三爸的话，不打这个官司，确实没有必要，拿了桌上的状子，告别三爸回家了。<br/>岁月如梭，光阴似箭，一晃就是十几年。我们兄弟先后批了四处新宅，并盖起了小楼，日子一家比一家过的好。而刘青家仍旧住在老宅，至今还没有脱贫，吃着低保。</p>
+<p>妻子提着拉扱桶从楼上下来问我：有用没用，拿着半响发啥呆？我赶忙回答：是过去为院子纠纷，写的那份没有起诉的状子，没用、没用，随后我就塞进炕洞烧了。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w19" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2023-01-08</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：糁子面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>糁子面</h3>
+      <p class="summary">妻儿外出，一个人住，中午忽然想吃玉米糁子面。自己下的怎么调都不香，勾出七十年代的记忆：十五六岁那年家里长天买不起盐，借了同学家的架子车，鸡叫三遍起身，走夜路到十五里外的乱石山拉石头，公社水泥厂一斤三块钱付现钱。长江胡同陡坡上下，千斤石头一人扛辕一人踏刹，走了快两个钟头，中午卖两块八毛。回家饿得肚子直叫，母亲端出姐姐拿来的糁子和面做的一碗热饭，那个香是后来任何时候都复现不了的饥荒年代的味道。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/hjwzEAUx-ft71jZYKJFOzg" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2023-01-08</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>啥叫糁子面？糁子面就是在玉米糁子，快煮熟的时候，再往里边煮些面条。我们这一带人称之为糁子面。</p>
+<p>女儿，儿子都在外，各忙各的。今年妻子也去了县城，给旁人带孩子，做家政。除礼拜天回来外，其余时候就我一个人在家，一天三顿饭自个儿做，把锅上灶，想吃个啥就做个啥。以前没有做过饭，开始还有点不习惯，日子一长也就惯了。不知何故，今天中午刚一进灶房，忽然想起吃糁孑面，过去吃糁子面那个味道，越想越香，越想越烈。</p>
+<p>中午就吃一顿玉米糁子面。锅里添好水，烧开后下了半勺玉米糁子，用勺搅一下，不然会炝成疙瘩，用慢火煮，大火会溢出。当到玉米糁子快煮熟的时候，下了些面条，水烧开就熟了，糁子面就做好了。这时，我调了盐，放了昨天炒好的下锅莱（炒的葱和蒜苗，我们这儿人称之为下锅菜），油泼辣子当然是少不了的……一碗饭没吃多少，就不想吃了，觉得不香。又调了几次，怎么调，就是偿不出过去记忆中那个糁子面的香味道。</p>
+<p>记得上世纪七十年代，我年龄小，一年四季以秋粮为主食，早起萝卜菜就糁子，上午高粮面打搅团，这还是好日子，有时，是吃了上顿没下顿。学马苔芯子，蔓青，洋槐花，还有落下的小柿子，灰灰菜……，能吃的啥都吃。记得我们队仓库院里，每年三四月做好多个红芋苗床，拔完苗后，我们偷着拨开马粪（苗床里埋的马粪）掏出红芋，拿回家洗净切掉坏处，或煮或烙都成了好吃的。就这，还不敢让干部看见。</p>
+<p>最难忘的是，有一次，公社水泥厂收石头，一千斤三块钱，付现钱，要去北边十五里外的乱石山上拉，山高路陡，往返一次得四五个小时。在路上看见拉石头的都是些大人，那时我就只有十五六岁，那年家里还置不起个架子车。父亲常年忙在队里的饲养室，哪里也去不了，哥哥不在家，家里已好长时间买不起盐吃。星期六下午，我约了姐家队的同学安兴，我俩商定，星期天去上乱石山拉石头。我同学家有架子车，我借了姐家的架子车。我同学比我大两岁，家里兄弟姐妹多，情况也不好，有时也是吃了上顿没下顿。我同学给我们收拾好车子，绑好拉绳，轮轴里加了机油（他父亲到综合厂拿的），轮胎打足了气。</p>
+<p>我和同学约好，鸡叫三遍起身，在石沟桥上会合。家里没啥吃了，父亲那天下午才借回二斗玉米。鸡叫三遍了，我赶忙起来，舀了半碗玉米在锅里炒熟，装进衣服口袋，喝了一碗凉水，吃着玉米豆，拉着车子就出发了。到石沟桥时间不大，我同学就来了。我们拉着车，一前一后边走边说（说着闲话），向乱石山进发了。	夜不太黑，灰蒙蒙的，天上斜挎的三星，陪着我俩走了一路。</p>
+<p>到了豆腐窖（村庄名），我俩人拉得都出了一身汉，因为一路全是上坡，稍微休息了片刻，开始上山。往上有个大胡同全是陡坡，有一里多长，当地人叫它长江胡同。胡同里，被下大雨时山上的洪水，冲的一道一道，高低不平，坑坑洼洼。我同学壮实身体好，劲大，有些很陡的坡，也能免强把车子拉上去。可我不行，既瘦又小我拉不上去了叫一声，我同学把他的车子放好，车轮子前后放个石头（把轮胎堵住，不然车子会自动跑），来给我帮忙。</p>
+<p>上到乱石山茬窝，天己渐亮，架子车只能到此。放到路边的平处，我俩开始寻找石头装车。这里到处全是大得不能动的石头，能搬动，抱动的全己被人拉走，只留下大小不等的土坑，和石头搬走后的印子。没有拿锤，我们只能上山，边寻边上，见能装上车子的石头就往下面滚。</p>
+<p>一夜过去了，东方露出了曙光，美丽的朝阳唤醒了沉睡的山坡，新的一天开始了。拉石头的陆续上来，不大一会儿，路上就放了好多架子车，山坡上也站了很多寻石头的。有人的地方不能往下滚了，怕滚下去的石头砸着人，只能一块一块往下抱……</p>
+<p>太阳已有一竿子高，眷恋着青山的乳白色的晨雾，渐渐退去，山上人们的说话声，和着石头从坡上往下滚动碰撞时的“咣啷”声，此起彼伏。一切都沉浸在喧闹的气分中。</p>
+<p>一个多小时的功夫过去了，我俩山上山下不知跑了多少回，终于把车子装满了，开始往回拉。好长时间没有下雨了，路上被拉石头的架子车轧的，细土有一拃厚，车子拉着格外费劲。遇到上坡，一人拉不动，我俩合作，一个一个往上拉。遇到立陡的下坡，一人不敢拉，怕扛不住，还得合作。一个人在车子前面用肩膀扛住车辕，把车后尾放到路上，另一人站在车后桄上踏住，增加车子后边的重量，后边重了阻力和摩擦力就大，自然能慢一些。慢慢地往下拉，我同学劲大，每次下坡他都扛车子辕。听说前几天有人拉石头，在立陡坡坡上没扛得住，车子翻了摔坏车子是小，还把人砸伤了。一车子石头差不多都在千斤左右，能不危险吗！我俩把这个车子往下拉一段子，见能放住的地方把车子放稳，又返回去拉另一个。就这样反反复复，把两车子石头拉出长江胡同，我两全身衣服都湿透了。往下路就平坦的多了，稍微休息了一下，我同学架起车辕又出发了，我也紧随其后。</p>
+<p>我早晨没吃饭，只吃了些玉米豆，喝了一碗凉水，肚子早己饿的咕咕叫，满脸虚汉，又渴又饥。有时心慌得很了，把车子放到平处，只好停下来休息一阵，我同学见我离的远了，返回来又帮我一阵。</p>
+<p>从上何队到卢马窖水泥厂，不到五里的路程，我们走一阵歇一阵，歇一阵又走一阵，走了快两个小时。就这样经过不懈的努力，中午的时候，我俩终于拉到了水泥厂。我同学卖了三块二毛钱，我卖了二块八毛钱。</p>
+<p>“呀”，二块八毛钱，我想都没想过的事，当我拿到钱的那一刹间，只觉一股热流从脸上流下，不知是汉是泪……卖到钱肚子似呼也不咕咕，感觉精神好了许多。我同学比我更高兴，看见他拿到钱的那一刻，就“嘿嘿、嘿嘿”个不停。我们相互告别后，我同学架子车一拉，小跑着回家了。</p>
+<p>我回到家，洗了洗躺在坑上，肚子就咕咕叫个不停，我知道没啥吃的，就掏出钱看着，咽着口水……不一会儿，母亲在灶房喊我吃饭，我没在意，以为是幻觉，母亲又一次喊我吃饭，听的真真切切。我进灶房见母亲做的是玉米糁子面，热气扑面而来，呀，好香！我很惊奇，问母亲咋回事，母亲说是姐姐上午拿来的糁子和面。我把钱给了母亲，端起碗就吃。好长时间没有吃过糁子面了，吃在嘴里香甜可口，咽在肚里温热舒服……总之，那种香的滋味无法形容，也没法描写，只有经历过饥荒年代的人，才会有痛彻心脾的感受。</p>
+<p>时过境迁，几十年己定过去，生活发生了翻天覆地的变化，温饱己不再是人们村头、</p>
+<p>巷尾谈论的话题。可是，母亲做的那顿糁子面，那个香味，仍旧深深地留在我的记忆里，回味无穷。</p>
+<p>星期六，妻子从县城回来了，中午做饭时问我吃啥，我说：“想吃顿糁子面，前一天我做了一次，吃起来怎么一点也不香？”妻子笑着说:“你做饭那手艺，把肉做出来也不会香，今中午我继续给咱做糁子面，保证叫你解馋。”	不一会儿，妻子的糁子面做好了，喊我吃饭，进了橱房一看，果然不错：色香味俱全。吃完饭后，还是觉得没有偿到以前母亲做的，那糁子面的味道。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w20" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2022-12-27</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：母亲"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>母亲</h3>
+      <p class="summary">母亲生于一九二七年五月初六，金源人。外婆外公早亡，六〇年大饥荒带着哥哥姐姐随父亲走两个多月回岐山。跟外婆行医出身的她不会做针线，为缝一件棉袄点灯熬油一天一夜；冬父亲忙饲养室，她起早贪黑去二十里外的大小石沟割柴；一次饭做好她自己那碗被哥哥误吃，她连喝两碗面汤撑着——这件事儿子记了几十年。她学了接骨、针灸、艾灸，替乡邻治疗分文不取，大雪天感冒着走几十里去西坞给小伙接手腕，回来只揣回两个玉米饼。二〇〇六年二月去世，享年八十。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/2Om-ZTbyISGRbHbbXEOqfA" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2022-12-29</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>上篇</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p>母亲出生于一九二七年五月初六，金源人。听母亲说，外婆、外公解放前就先后去世，一个舅舅战乱中被抓兵，一直无有音信。六零年低标准时期金源一带饥饿难熬，为躲饥荒母亲领着哥哥姐姐随父亲，历经两个多月的长途跋涉，回到岐山，后来从没回过金源。</p>
+<p>母亲自幼就根随外婆在外行医，受外婆影响，母亲很少做过针线、把锅上灶的活，在缝衣做食上，就显得很是艰难。刚来那几年，家里人的过冬衣服常要靠乡邻和叫姨、叫嫂子的帮忙完成。有一年农历十月，正逢换季时节，队里也正在兴修农田基本建设的风口浪尖上：一天干三上，早晚加两班。活路一紧张，就没有人来帮母亲缝换季衣服，母亲平时做个单衣还则罢了，做棉衣有的方面还是生梳，为了不让我们受冻，早早穿上棉衣只好努力。就我一件小棉袄，母亲缝了折，折了缝，点灯熬油苦苦缝了一天一夜，我穿上试时还不合适，领子没剪好前襟翅的老高。后来我二妈知道情况后，挤了个时间才帮忙缝好。</p>
+<p>那些年，父亲常年不是给生产队喂牲畜，就是被队里派去几十里外的北山抽南干渠，冯家山、工地上干活、修水库。家里的活根本顾不上，也没时间做。那时候物资匮乏，吃了上顿没下顿，经常缺吃少穿。农村家家户户的头等大事是解决吃饭、烧柴和穿衣问题。一年收获的粮食首先要交给国家，还交最好的，不然验不上，就得拉回来。往返三十余里，回来时全程是慢上坡，拉上五六百斤，两个人累死累活，汉流肩背。</p>
+<p>那时京当镇没有粮站，要拉到青化镇。因此，都拉的是上分头的好麦。剩下的还要留足生产队，喂牲畜和喂猪的饲料，其次还得留够来年的籽种，再预留一定的储备粮，然后才按人头分配口粮。当时，没有水利条件，也很少施有化肥，粮食产量又低，靠天吃饭，就连一些柴火（玉米杆，高粱杆）都按人口分配。那时我们都小，哥哥也没有十岁，都是些能吃饭不能干活的人，一点忙也给母亲帮不上，为了不让我们饿肚子，母亲真是黑不当黑，明不当明，一天到晚总有忙不完的事。除了每天到生产队做活外，收工回来洗衣，做饭，拾柴火……母亲从未闲过。记得，忙毕，雨后就有雨水泡胀的，收割时撒落的碗豆和麦粿，白天我们拿上缸子、碗，没有草帽，头顶烈日，母亲把我们几个领到田间，地头，拾胀碗豆和麦粿。晚上，我们兄弟睡了，母亲把拾回来的麦粿收拾干净，放到队窝里墩（也就是砸）成麦仁，用簸箕簸净……一熬就是多半夜，第二天就能熬浠饭。白天抽个空，母亲又把拾回来的胀碗豆收拾净，放到锅里给我们炒熟，（炒时放点盐吃起来再香不过了）。母亲抓几把分给我们，装进衣服兜兜，我吃几粿在嘴里，品尝着那一股股碗豆的清香，好长时间也舍不得咽下。有时连着阴天地湿，还能多拾几天，直到芽长的不能吃了才撂过。</p>
+<p>一到冬季，母亲就得提前动手，早早把柴割的赞下，不然下一场大雪把山一封，既是有点粮食，也没法吃呀。因此，母亲起早贪黑，常要去离家二十多里的，大小石沟山上割柴火。劳累一天，又饥又渴，回家刚撂下柴火担子，又开始做饭。记得有一次，母亲把饭做好，我们几个狼吞虎咽的就吃了起来，母亲实在是太累了，把饭舀碗里凉着，歇会儿在吃，没想到哥哥吃完自己的，看见，误以为是做的多了剩下的，倒了半碗也吃了。过了一会儿母亲去吃饭时，只见成了半碗，问我饭泥：我说哥哥吃了。母亲望了望睡下的哥哥，啥也没说，端起那半碗饭吃完，像是没有吃饱，望这望那，再没找到一点能吃的东西，然后一连喝了两碗面汤。那时候，我们只知道自己吃饱，不知道帮母亲，也不知道疼母亲，更不知道管母亲的饥饿。后来在母亲和邻居的一次谈话中，我才知道那晚母亲确实饿着。直到今天我有时喝面汤，母亲那晚连喝两碗面汤时的情景，就出现在我眼前，不由使我心酸，落泪。有时孩子发现说：爸爸你喝面汤，怎么喝哭了？我说没哭，是汤太烫了。</p>
+<p>那时候，家里只有两间半厦房，还是老先人时期盖的，年久失修，己定到了人都不能上去收拾的地步。遇雨就漏，炕上接满盆罐，到晚上没法睡觉，找处没漏的地方，坐着打盹……如遇大雨，母亲更是提心吊胆，来回观察，通宵迖旦，不敢打盹，就怕倒塌。那时候，有时几天连盐都买不起，盖房就是想都不敢想的事，只能过一天是一天。队里一年分的粮食少，多数是些高梁，净杂5号，有一部分发生霉变（连阴雨多，在地里有的就坏了），烙的饼，蒸的粑粑馍吃起来，既苦又涩。就这也不够吃，为节省点，一顿饭只能和一点面粉，下一点玉米糁子，清汤寡水，全靠野菜，苜蓿，来添补充饥。吃面条的机会少之又少。记得南场有一户，给娃娶媳妇过事，才吃了一顿糁子（玉米糁中下面条）面。何况我们没有个啥事。做活回来一有时间，母亲常提着筐子，拿着布袋子跑到沟里，洼里，挖野菜，折槐花……经常得不到休息。到了冬季更是艰难，野菜不多，唯有蔓根（土油菜根），连叶带根，母亲常到饭里下的很多，曾记得吃起来绵绵的，甜甜的。我们兄弟四个饭量一个比一个好，挖一筐漫根，吃不了几顿就没了，害得母亲成天沟里，洼里寻找。二三月青黄不接，一年中最难熬的季节，天长饭里面食少，一顿赶不上一顿就饿了，先是吃济济菜（生长的早），接着野苜蓿。母亲挖回来洗净和些面粉，蒸菜疙瘩，做菜孔孔（有的地方叫麦饭，锅塔塔）……后来，这些菜老了，吃不成了，洋槐花也就开了，一天三顿主食基本都是洋槐花。母亲给我们做孔孔，烙槐花饼……</p>
+<div class="vspace" style="height:4.5em" aria-hidden="true"></div>
+<p>下篇</p>
+<p>母亲没有文化，脾气好，大脚能跑动。不会精打细算，更不计较个人得失，是个糊涂人。根随外婆在外行医期间，学得接骨，针灸等独门医术。常为乡邻接骨治病，很少要钱。接骨的，针灸的，给与不给采取自愿。家境好的给几毛，一半块也行，贫困的没有钱，不给了也无所谓。</p>
+<p>不论是邻居，还是庄里的或附近群众，只要有事，捏脚、捏胳膊、按摩……能帮上忙的，叫一声母亲准去，风雨不辟。记得，南场住着一位老爷爷腰疼，经常来家里让母亲治疗，每次针灸一毕，立起屁股一扭，一句感谢话也没有就走了，后来还在队里的批斗会上，说母亲的医术是资本主义尾巴，又说父亲在外期间，可能当过保长，害得父亲被住队干部关在“讲习所”里审了几天。整得方达园有好多人，好长时间接骨，治病都不敢白天来家里，都是天黑偷的来，或者是把母亲偷着叫过去，生怕有人告发。几年后的一天，是星期天我正好在家，见那位老爷爷腰疼病又犯了，猫着腰柱个棍，那个走路的枝势难看的就没法形容，挪着脚脚来到屋里，七吭八吭显得很为难的，又让母亲给他针灸，拔火罐。我想，这回母亲找个借口，肯定不会给他治疗的，前几次治疗一点回报都没有也就对了，都一个庄子的，早晨不见下午见哩，还事寻的不行，害得大伙都不得安宁，这回就让他疼着去吧。没想到母亲仍旧不厌其烦，给在腰部按摩，拔火罐；垫上祘片，蹾上艾柱，点然……一次次换着针灸的部位，啥也没说，和前几次一样，好像什么事情都没有发生过。</p>
+<p>有一年深冬，大雪纷飞，雪花飘舞，尖叫的北风扑打着糊在窗户上的麻纸，发出呼呼的响声。这是一年关中北部最冷的时节，一夜之间雪下的有一拃多厚，刚一出门，冷风飕飕直往身底钻，冻得不由人直打寒转。今天，母亲感冒了发着烧，要去西坞村给一个小伙接骨，听说昨天放羊时把手碗子列歪了，吊的叽哩嗒啦，疼的直喊叫。母亲给我们做的吃了，把炕烧了，一切安顿好就出发了。临走前我劝母亲今天不去了，一是雪厚二是天太冷，加之感冒，多数人治疗后也没个回报。母亲却说：能叫咱们也可能没有别的办法，应人事小误人事大，己定答应人家，不去咋行！何况是治病，时间上更不能担误，人家等着。</p>
+<p>傍晚时候，房檐上的雪水慢慢变成冰挂，一排排，一溜溜，密密麻麻，排列的非常整齐，明明亮亮，好玩具（小时候常拿冰棒玩），放到平日这场景，用根木棍拨打下来或吃或玩……乐趣无穷，（那年月小孩子没有玩具）。这些都是我们小孩子最喜欢耍闹的东西，可今天，天快黑了母亲还没有回来，母亲的安危使我们担优。屋里冰锅冷灶，外边寒风凛冽，总觉得心里空当当的，我们谁也没有心思玩。只是时不时地跑出跑进，望望村口，看看南巷巷那方，盼着母亲早点回来。</p>
+<p>夜幕降临，街道上己没有了行人，烟雾弥漫，寒气逼人。我们兄弟四个仍旧在门口石头上站着，等侯着母亲，谁也不想进屋。这时庄子东头终于出现一个人影，“妈妈回来了，妈妈回来了”。还没等我看清楚，弟弟一下子就认出母亲的身影，边喊边向母亲跑去。母亲走路有点拐，一看就知道是走路多引起的（老毛病了，以前经常出现）。看表情母亲红光满面，显得倒很精神（其实是走热了），我们前一阵的担优一扫而光，心情以下适坦了许多。母亲抱住弟弟亲了亲，在弟弟的屁股上轻轻的拍了一把，弟弟“夺”了妈妈的布包，转身就向家里跑。</p>
+<p>母亲点着煤油灯，从布包里取出两个玉米饼分给我们，说是接骨的给的。点然了炕，接着做饭去了。母亲一回来，房子里似乎暖和了许多。刚到门口冻得发抖的两个弟弟吃着饼，跑来跑去嚷叫着也打闹起来。后来我问母亲感冒的事，才知道给西坞那个小伙把手碗接好，还去给黄堆一个婆婆按了回脚。来回几十里走的出了些汗，感冒好了，也走黑了。</p>
+<p>母亲针灸用的艾草，家里没有钱去药店买，都是自己跑到山沟里采割，拿回家自己泡制加工。每年的端午节是采艾草的最佳时节，母亲天不亮拿着镰刀就出门，半响午才回来，总是割好多好多的艾草，放到通风透光的地方晒干，然后将艾叶捋下，揉成团包好藏起来，怕我们弄坏。我有时不解地问：做那些艾干啥？治好了多数人又不给个啥，白忙伙。母亲却说：有时候来个腰疼腿疼的病人，他们和咱们一样没钱，进不起医院，妈妈给他们用艾炙，好了就不受罪了。</p>
+<p>还见母亲经常把梳头梳下来的头发，一疙瘩一疙瘩的收拾好，放到檐墙高处的窑窝里，说有时有急用，放高处我们娃们构不着，弄不丢。+</p>
+<p>一年四季，隔三叉五的常有人来家里接骨，针炙按摩。轻重患者，远近都有。记得一次黄堆村有个人拉来一个小伙，脚列的特别历害，我看了一眼，吓得心直跳，说是放羊时歪了，先是拉到他们卫生院，医生查了查伤势说：脚碗子脱臼了，非常严重脚歪地都错位了，他们卫生院没有骨科治不了，让去县医院住院治疗。去县医院几十里路程，远都不说，可是没有那么多的钱，住不起医院呀，后来正好有人说他到我家捏过手碗，介绍过来的。母亲让那人把小伙背进屋放到坑边，看了看受伤的部位：脚尖都偏到则面子了，母亲用手轻轻一摸，小伙疼的呲牙咧嘴直喊，“疼的，疼的……”不让动，母亲让拉小伙那人把小伙抱住不让动，让小伙听话不要看，母亲摸着摸着鼓足劲捏住脚尖看准位置，乘小伙没注意在拧的同时猛一㧥：“咯噔”一下，在响的同时小伙“哇”地一声差点疼晕过去……，当时小伙的脚在母亲的手上就能动了。刚来时，他俩人问这问那，都还怀疑母亲的技术，害怕接不好，现在服了，首先那小伙说感觉一动，那钻心的疼痛没有了，再一个，脚立马能在地上慢慢地行走了。小伙回时母亲叮咛还得几次按摩。第二天小伙来按摩我没在家，第三天見到时，看起来己和好人走路差不了多少，就是慢了点。小伙回时给了母亲两块钱，两块钱？那么大的伤势，费心劳神，打挠了几天，我谦少，母亲却说都不宽余，多少都行，就多给几块又能怎样？只救一时，救不了一世，要老天爷解决问题呢！只要风调雨顺，比啥都好。</p>
+<p>母亲用土方治烧伤和烫伤，不化钱效果好，而且还不留疤痕。有一次，我和几个小伙伴，去了父亲喂牲畜的饲养室里玩，一不小心把吕叔叔（另一个饲养员）放在背墙上的茶怀打倒了，正是夏季穿的单衣，一怀烫茶全倒在腿上，一下子烫起了几个大泡，当时，父亲不在，去给牛割草，疼的我“哇哇”大哭，边哭边往家里跑。到家母亲一看不得了，赶忙从窑窝里取下一疙瘩头发，用火烧成灰，碾细放到茶碗里，倒些香油和成湖状，找了个干净的小木棒蘸着涂抹到患处，当时疼的我，座卧不安直哼哼，母亲把我抱在怀里哄着。到半夜时分，我就觉得疼的慢了许多，随后也就睡着了。第二天醒了，还见母亲抱着，挣脱母亲的胳膊，跳下炕跑了，只听母亲叮咛说：刚换了药小心点。每天涂抹三至四次，两三天后己慢慢结痂，大约一个星期左右就基本上好了。后来村子附近人知道了，先后有好多人烧伤烫伤了，寻找母亲治疗，母亲看了看伤势，不大的，用同样的方法给治愈了，（大面积烧伤从没治过）。回报母亲的只是几双旧鞋和一半件旧衣服，一些吃的零食。</p>
+<p>岁月如梭，光阴似箭。一晃十几年过去，我们兄弟四个都长成小伙。八二年以后，农村实行了承包责任制，因地制宜，我们承包了队里三亩地种辣椒。那年父亲和母亲上了岁数，己不能下地劳动，父亲一天割些草，喂了头老牛，母亲仍然从早到晚，有做不完的杂活。那年我们兄弟四人，齐心协力，辛苦劳作，一年下来承包费除外，净挣六百多块。父亲喂的那头老牛，还生了头牛犊。此后，一连种了好几年辣椒，一年收获比一年好。就象蹬楼梯，吃甘蔗，步步高，节节甜。不但解决了穿衣吃饭问题，还盖起了六间厦房，安上玻璃门窗。从此，母亲不在为我们的吃穿而发愁，但是，我们几个的媳妇，却成了母亲操心的头等大事，经常愁得她寝食难安。今日给张三买合烟叫说李家姑娘；明天给李四称点茶叶，让问刘家姐姐……。盼着我们都早日成家。</p>
+<p>又是几十年过去，生活发生了翻天覆地变化，乡村医疗，医保机构逐步完善，乡邻们有时遇到个接骨，针灸……大多数都去了医院治疗。几年来，到母亲这儿来接骨，针灸的己是廖廖无几。几十年来，母亲给人接骨、治病，无计其数，上岁数的有的己定故去，小孩子都己长成大人。我们兄弟先后都己成家，批了新宅，盖起了小楼，按理来说父母这时该享享请福了，可是母亲为了把我们腾出来干别的事情，过好日子。她又为我们忍劳忍怨，成年累月带孩子，带了大的带岁的，给这个带了给那个带，一带就是几年。二零零年父亲病逝后，母亲愿一个人居住老宅，不想给就们添麻烦，仍旧过着扒锅上灶的生活。我们的小孩子慢慢的也被母亲带大，到上学的年龄都己上学，母亲没有事时，常和她的老伙伴去田间，挖野菜，拾柴火，觉摸着快到放学的时候，早早回来，给孙儿，孙女凉好开水，取出吃伙，只怕她们的孙子，孙女渴着，饿着。</p>
+<p>二零零六年二月初十，母亲因病去世，享年八十岁。母亲一生没有惊天动地的壮举，也没有流芳百世的伟业，但却把我们兄弟四人，从一尺长的嘤儿，一把屎一把尿，缺吃少穿，从那艰苦的年代，没有被饿死而拉扯成人，这养育之恩比山还重，情深似海。</p>
+<p>母亲离开我们己十几个年头，老人家含辛如苦把我们拉扯大，却没有享到几天福，没有看到我们现在的幸福生活，母亲也没有看到她视若珍宝的孙女，孙孑，接到的硕士毕业证书，和硕士录取通知书……。</p>
+<p>而我们现在的这一切，都来源于母亲的奉献，源于伟大的母爱！</p>
+<p>每次去果园，经过老宅，总在门口的大石条上默默久坐，多么希望母亲还健在，像以前一样，我们坐在石条上晒着太阳，给患者接骨，和乡邻们说着笑，拉着家常。我要给母亲说：社会发展好了，温饱早己满足，我们的日子会越来越好！</p></div></details></div>
+    </article>
+<article class="work reveal" id="w21" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2022-10-27</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：换季"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>换季</h3>
+      <p class="summary">农历十月初一给祖先上坟，作者给过世的父母烧几身纸衣。说起换季想起六七十年代：短款户年年倒欠队里，一家人冬夏就一身衣服。母亲把要来的旧棉花用弹弓打松，白天做饭拾柴，晚上点煤油灯通宵缝棉衣，一晚上只能做一个人的。有一年冷得早，全家棉衣凑齐了父母棉裤还没着落，母亲领哥哥到二十里外岭背山拾几天章棉花（野棉花）勉强把季换了，穿不到一个月就结成&quot;鸡蛋山&quot;。八三年包产到户后种辣椒、盖新房，再没为换季熬过一夜。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/xQzIv7-21O9m-rcH861d-g" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2022-11-22</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>农历的十月初一，是给祖先上坟的日子。有好几年都忙在工地，脱不开身，是我托妻子上的坟。今年受疫情影响，班车停发去不了工地，正好后天就是十月一，明天妻子去镇上顺便买些烧纸，纸钱，贴纸（带颜色的纸），“衣服”……回来，我给故去的父母上个坟。十月以后天冷了，让故去的老人早早换季，不要冻着。</p>
+<p>说起换季，不由使我想起六七十年代，想起父亲，想起母亲。那是个物资匮乏，靠工分吃饭的年代，家里劳力多的一年下来，好的家庭余几十块劳动款，最多的也就百八十块，就这高兴的一家老小半夜不睡觉，嚷伙着。相反吃饭人多做活人少的家庭一年下来不施一分钱，倒还欠着队里的，队里把这些家庭叫短款户，把施钱的家庭叫长款户。那时我家是队里出了名的短款户，全家六口人四个孩子父亲母亲，我们兄弟四个，哥哥也就十一二岁，我们都小，母亲经常营养不良患有贫血，不能正常参加劳动，还要照管家务和弟弟，有时还要吃药，主要劳力就是父亲一人，队里为了照顾我家，给我父亲一份特殊的活路——喂牲畜，每天十二分工，比一般活路多了二分，就是每晚都要熬夜，啥时候牛喂饱了喝足了他才能睡觉。一年四季不管天睛下雨都有工分。记得那几年一个劳动日（就是十分工）值一毛钱左右，分下的东西折成款和劳动日相抵后，年年短款，油盐酱醋怎么办就不说了，多少都能凑活，没盐的饭有些日子常吃。就一年冬季这换季经常愁得父母跑东跑西，寻张找王弄些旧棉花要块旧补钉……′</p>
+<p>那时期经常缺吃少穿，长款户还则罢了，最难熬的就是我们这些吃饭人多，做活人少的短款户了，一年也分些棉花，好的还要织布仿线，实际上分不多，少的可怜。一家人只能忍受着那无边际的饥饿与寒冷。也是因为吃尽了生活的艰难困苦，让我们这些人从骨子里就产生了顽强的意志力，超出一般人的吃苦耐劳。记得每年十冬腊月换不了季，穿不上棉衣，母亲可怜巴巴地把往年保存下来的旧棉花，和管旁人要的老套子（就是用了多年的旧棉花），摊在席子上用竹子反复打弹直到松软，不然装到衣服里不暖和而且针线也缝不过去。那时候人们都好，互相帮助，你有困难，向他伸手只要有，多少都还帮点。再不够了就用工分换，给旁人到记工员那里转些工分，旁人给些不用的旧棉花。一切准备的差不多了，白天把水弄好，晚上早早把我们堵到被窝，脱下衣服洗净凉干，母亲点着煤油灯通宵达旦，赶天亮前把棉衣缝好，白天就能穿。一晚上只能做一个人的，每人冬夏就一身衣服，有的补钉摞补钉。每年换季时节母亲是最辛苦的，一连好几天都合不上眼，晚上缝衣服白天还要做饭，干些杂活，凑合凑合冬就过去了。明年春暖花开暖和了，好换季，没有冬季那么难，晚上母亲把脱下来的棉衣拆开把棉花取出来，原回蓬好，烂掉的口子缝补一下，再洗净凉开，第二天就能穿。</p>
+<p>曾记得有一年天冷的特别早，还没到农历十月一，一场大风过后，第二天清早起来，就冻得人直抖牙齿，涝池里都结了冰，大人们还好还能撑住，我们这些岁娃一下子就冻得鼻涕，眼泪直打哆嗦。母亲撂下别的活路，首先给我们几个娃们开始做棉衣换季，我们几个娃娃一年年长大，衣服一年年就要往大改，不是布短，就是棉花不够。那个年月一切靠工分，按劳分配，没有来一分钱的路子。喂养头猪搞个家庭富业，人有时都没的吃，喂猪你就更别想，哪来的饲料！有人说：羊不吃料只吃草可以喂大，兴许一年运气好还能挣个十块八块的，油盐酱醋施肥，还能添补一下。那年父亲赊账二十二元买回来一只公绵羊羔，没病没难，在我们几个娃娃的喂养下还是长大了，就是瘦了点，到换季时节跟了几个集，买主连十八元都不掏，到冬季没有草喂，加之看能否长几个钱等着用。行情到这了没有办法，后来又跟了几个集还好最后一天回去时，碰了个实手买主，掏十八元，后来在村上人和交贸员的共同努力下，把嘴皮子能礳出泡，最终以二十一元的价格成交。喂养一年一毛没挣还赔了一元。没有钱每年的布票却用不了，用布票和工分和旁人兑换……凑合凑合，我们兄弟四个人棉衣是凑合齐了，父亲和母亲的棉裤还没啥装，再没办法了，母亲领着我和哥哥两个跑了二十多里，到岭背山上拾了几天章棉花（野棉花），才给父母免强把季换了。 谁知章棉花没丝，穿了没有一个月就成了鸡蛋山（母鸡杀了内部有好多大小不一的蛋连在一起，我们这里人称它为鸡蛋山，也就是大小不等的疙瘩湖儿），两个弟弟不懂事，听母亲说棉裤成了鸡蛋山，觉得好玩每次见父母回家跟前跟后嚷着:鸡蛋山，鸡蛋山……那个困难的时期，啥都短缺，几年也添不了一件衣服，一双鞋袜，因而，我对那个时期的换季，记忆是十分地深刻而难忘。</p>
+<p>岁月如歌，时光荏苒，到了一九八三年，农村实行承包责任制，那年父母年迈己不能参加田地的劳动，在家割草喂头老牛。我们兄弟四个己长成大小伙，包了队里三亩辣椒，经过一年的辛苦努力，承包费除外净余六百多块，喂养的那头老牛还生了头牛犊，还清了信用社的代款，还了队里的一部分短款。冬季换季时节，父母每人做了一身新棉衣，姐夫还给父亲买了一件皮大衣。我们四兄弟换的季肯定也好，就不用说了。从此后，父母再也没有为每年的换季而发过愁，熬过夜。</p>
+<p>这么多年过去了，生活发生了翻天覆地的变化，温饱早己不是人们谈论的话题。如今，衣橱衣柜挂满塞满，大人小孩冬季有棉衣，夏季有单衣  ，还兴了一种衣服，不单不棉叫二八月穿的。 什么防寒服、保暖内衣……要啥有啥， 兴个啥样子就买个啥样子，不要说上街赶会，平时在家里妇女儿童都穿的花枝招展，象只蝴蝶。过时的不管好坏——撇了，反正没人要，撇多了影响环境，也不雅观，有人就塞进炕洞，好办法，一烧了之。因为都是化纤见火就着，而且速度快没想到有人还把炕烧失火了，造成火灾。炕洞塞看来不可取，得另想个处理办法，前几天我去果园的路上，见有人把不穿的衣服 背到壕坑里烧，有的还新新的，看成色可能洗过一两次水，大人娃娃的都有，一堆一堆的，见后也不知道烧的是对是错，烧了看着太可惜，留着又无用，送人没人要，真是“三十年河东三十年河西”， 此一时彼一时。</p>
+<p>十月一那天，我们兄弟去上坟，临走前妻子给我取了她买回一梱纸和“钱”，我问妻子：咋没有衣服？妻子说：有，买了好几身在纸里卷着呢。我说：我还以为有真衣服呢。妻子狠狠的瞪了我一眼：你还没老呢就糊涂了。噢，我恍然大悟。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w22" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2022-10-21</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：通纂"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
       <h3>通纂</h3>
-      <p class="meta">创作于 2022-10-21</p>
-      <p class="summary">传说，以前岐阳村有个老木匠叫杨荣，方园百八十里他做的木活确是出了名的，附近的同行没有一个人不佩服他，据说有一次他做的马车，在拉粪途中马受惊翻到涝池里泡了三天，捞出来修理时，打开卯榫里边还是干的，没进一滴水。</p>
-      
-      <div class="read-row"><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：通纂"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>传说，以前岐阳村有个老木匠叫杨荣，方园百八十里他做的木活确是出了名的，附近的同行没有一个人不佩服他，据说有一次他做的马车，在拉粪途中马受惊翻到涝池里泡了三天，捞出来修理时，打开卯榫里边还是干的，没进一滴水。</p>
+      <p class="summary">传说岐阳村老木匠杨荣做的马车泡涝池三天卯榫里还是干的，&quot;斜行&quot;上也极灵。有年冬他随口一句&quot;软枣干吃多了活不成&quot;，几天后傻子真死了，传的玄乎其玄。衙益富户&quot;能仁&quot;请他做大门，徒弟把通纂板当门底线锯瞎了，好板没几块只能改成接纂。老木匠编出一套&quot;你这院不能安通纂，说了对你不好&quot;的江湖话搪塞，能仁半信半疑找阴阳、找内行看了十年无果。十年后两人在青化北巷诊所针灸时巧遇，老木匠才说出实情——不是风水，是一时锯瞎了怕赔不起。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/AMTLJRNcC2A2jQjwGJJPQw" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2022-10-28</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>传说，以前岐阳村有个老木匠叫杨荣，方园百八十里他做的木活确是出了名的，附近的同行没有一个人不佩服他，据说有一次他做的马车，在拉粪途中马受惊翻到涝池里泡了三天，捞出来修理时，打开卯榫里边还是干的，没进一滴水。</p>
 <p>老木匠不只是木活做出了名，“斜门”上在这附近，十里八乡也是数着的。说是有一年冬季，邻村有一个傻子拿一梱软枣干在他们村边吃，正碰上老木匠等人去沟里抬木枓，见傻子吃那么多软枣干，老木匠就随口对傻子说:“不能吃了，吃完就活不成了”。说来也巧几天以后那个傻子还真给死了，说是肚子给痛死的。此后那几个和老木匠抬木枓的人，见人就说老木匠前几天见到傻子时，就知道傻子活不长了，快要死了。给他们说，他们都听得清清楚楚，老木匠在这方面看的可准了……如何如何，一传十，十传百，添枝加叶，放盐调醋说得是玄乎其玄、有睸有眼，是真是假谁也就说不准了，反正耳音是惯大了。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>岐阳东边有个村庄叫衙益，有一富户人家姓吕，主人精明能干好强，自小他爷就给起小名叫能仁。三伏天，他伐了门前的大青槐树，解成门板准备做一合大车门。几年以后，木板已干到，经多方打听了解，决定让岐阳老木匠来做。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>初夏的一天，风和日丽，艳阳高照，老木匠和徒弟娃带着工具，兴致冲冲应约来到能仁老汉家开始做大门。经过多半响的忙忙碌碌，门枓基本排好，徒弟娃收拾好锯子开始下枓，剩下的小枓老木匠继续，下枓前老木匠格外叮咛徒弟娃，门纂这儿长出一寸多不能锯，一定要操心。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>到吃午饭的时候了，老木匠顺便去看徒弟娃下的枓，一连看了几块都没跑线，很好，老木匠心里美丝丝的，当他看到门纂那块时，心里搁登一下，坏了，坏了，徒弟娃把线看瞎了，把门底线当门纂边线给锯了，你说这事弄的可咋收场呀，一下子把杨木匠给难住了。看那么一大磊板，翻来翻去才免强找出两块做门纂的木枓，虽说伐了一棵槐树因为树太老，中间有的地方都朽了，好板没有几块，不是有毛病就是不够尺寸。因此，未锯前老木匠就怕锯错还再三叮咛，结果还是锯瞎了，老木匠这时是又气又急，他把锯错的那块板看了又看，摸过来翻过去，不知如何是好。真是麻绳偏从细处断，房漏又蓬连阴雨，唉，事情有时候往往就是这样，你怕啥它就偏来个啥，下锯前还特意给徒弟娃交待了又交待，结果……，老木匠思来想去，最后决定错了就按错处来，走到那里就说那里的话，没办法只能做接纂。(通纂，就是从上到下是一块长板做的，接纂，就是从上到下两块板，或三块板接做而成的)</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>过了几天，能仁老汉在外面办完事，回来一看怎么是接纂而不是通纂，当时就气冲冲地指着门纂，问老木匠:“你为啥给做成接纂？”老木匠一看能仁老汉黑着脸在问，心里荒一时也不知道说啥好，望了一眼强装出一付稳重的样子，停下了手中的活儿，从衣服口袋里掏出烟㶽装了汉烟，坐在长凳上叭哒叭哒抽了起来。老木匠一㶽子抽完，第二㶽又点着的时候，老木匠望了望能仁老汉那期待回答的目光，这时站起身来拍了拍屁股上的锯沬，不紧不慢走到能仁老汉根前，轻轻的拍了拍能仁老汉的肩膀，温和地说:“先别生气，听我给你把话说完，我做了多半辈子的木活了，大门也没少做，五里一村十里一个乡俗，臭行有个臭规距，这做大门和安大门都有很多忌讳呢。我前天做纂时，把你这院子前后看了看根本就不能安个通纂。”“为啥？”能仁老汉气烘烘地追问。“这你就不问了，不碍大事，你知道有这么回事就行了，不是我不给你说，说明了与你和家人都不好，以后遇到个大小不顺心的事，都会想起它，无形中就给自己加了心理负担，还不如不让你知道，胡里胡涂也就过去了。不然以后办一些大小事本来顺当，你想起有这么个‘档档’，这么一念弄，那么一问侯，弄的弄的有时候就弄的不顺当了，咱做门、安门，一是为了安全，二是图个吉利，通纂好看接纂做好了也一样牢固好看，我说的话你若果不信有凝虑，你可以寻几个内行看看，如果有人说能安通纂，你告诉我，我带上木枓给你免费另做一合。”老木匠这么一说，真觉得还象那么回事。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>能仁老汉半信大凝，还是想不太通。可是老木匠在这“斜行”上的“本事”他也听别人说过，还是不小的，是真是假一时半会也难弄个清楚，过来过去不就是个门纂嘛，细想老木匠也不会无缘无故骗他，况且又不碍啥大事于，是也就随了老木匠说的。大门都安好半年多了，出出进进能仁老汉脑子里还没有忘掉那个通纂。总想找个人给看看。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>有一天，机会终于来了，能仁老汉家隔壁要给儿子娶媳妇看日子，请了个阴阳，事毕以后，能仁老汉把阴阳叫到他家，把屋前屋后让阴阳看了看，说明他想安个通纂大门的意思，看能安不能安。阴阳看了好大一会儿，也没看出个所以然，心里想:说能安通纂，安这新门时为啥做个接纂，说不能安看这坐字啥都好着，又找不出充足的理由，阴阳就觉得有点纳闷，问能仁老汉:“这门谁做的？”“岐阳老木匠做的。”能仁老汉回答。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>阴阳又问:“谁说你这屋大门不能安个通纂？”“这个你就不问了，你看能不能安个通纂就是了。”能仁老汉显得很难为情的回答。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>阴阳听能仁老汉这么一说，心里一下子明白了，他想:老木匠的本事我还不知道，正道斜道方达园都是数一数二的，他能做通纂，为啥不做通纂，况且通纂比接纂还省事，这就说明老木匠葫芦里还有别的东西没倒出来。阴阳，风水这行当，本来就没个深浅，有些人一辈子不论弄啥，都要叫个阴阳，顺至刮胡子都有看日子的，就信那个。反而事后这不顺当那不顺当；而有些人胡里胡涂，啥也不信，却光光园园地没个岔事儿。有些事有人弄一辈子，也弄不明白，弄不明白就不弄它，随方求园，顺其自然。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>“我看还是安个接纂好，通纂多少有点不顺当，也许我看的不准，若不心甘再找个大师傅看看。”阴阳说完走了。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>后来，能仁老汉还先后找过好几个内行看过，同样说不出个所以然，不了了之，随着时间的推移，慢慢的安通纂的欲望也就淡了，但还是没忘。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>十年后的一天，能仁老汉腰疼去青化北巷一个疹所针灸，进门见老木匠也在里边针灸，两人多年没见今日突然相遇，百感交集很是热呼。随后大夫就给他们分别把针扎上。没事，他俩个老汉是无话不淡，你说东他说西说着说着又说起了十年前的门纂上。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>这时能仁老汉看似笑着，确有点悲观地对老木匠说“你看我这也老了，恐怕也活不了多少年了，一辈子屋里的事都随心所欲，要风来风，要雨得雨啥都不缺，就是大门没安个通纂，每次想起了心里总是架架的，你老兄法术大，给念弄念弄，离世前能安个通纂大门也就甘心了。”老木匠听能仁老汉这么问他，心里一酸觉得很不是兹味，感到很惭愧，连忙回答:“我有个啥法术，都是有一些人乱说呢，你喜欢了就换成个通纂，反正也不缺那几个钱”。“你说你没那个本事，那傻子娃的死，你咋看那么准？”能仁老汉有点不解地又问。老木匠解说道:“那天我见傻子拿着那么多软枣干吃，就顺便给傻子说不敢吃那么多，吃多了会把人吃死的，谁知巧合了，傻子患了肺结石，把命丟了，我有个啥本事。”</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>“那我的大门安不了通纂又是咋回事？”能仁老汉又在追问。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>“我们都一把年纪了，我也不哄你，今儿就打开窗户说亮话：给你做门的那天，我就怕徒弟娃看不懂线把纂给锯了，还特意给说了几遍，纂这儿要操心，终究给锯瞎了，有啥办法？叫徒弟娃赔，他家里就一个半摊的老母亲，穷的连个烧火棍都没有个长的。我赔吗，上有老下有小一大家子人，就靠我一人养活着，时常吃都吃不饱，拿啥咋赔，不那么说，我两从你屋里能出来吗”。老木匠认真的说。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>“哈哈哈，你那天亏当把我给哄了，要不然我看见门不是通纂是接纂那阵子，我还不把你俩给吃了。哈哈哈……”能仁老汉听老木匠这么一说，不但没有生气，反而高兴地大笑了起来。</p>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
 <p>能仁老汉接着又说:“你老兄藏的也太深了，哄了我十几年，当我每次出门进门看见接纂，就想起了你哄我的那些话，老是觉着怪怪的，无形中总觉得好像有个阴影在院里忽隐忽现的，经常弄得我心神不安，有时就像丟了魂似的。其实你老兄那天照实情说了，我也不会难为你的，再买两块板，另做就是了，反正我家里也不缺那几个钱。谁知道你确给我给了个牛笼嘴尿不满。哈哈哈……。”“从那以后，我心里也不好受，经常出门操心躲着你，只觉得没脸见你。”老木匠说。</p>
-<p>这时大夫走进来，给老木匠和能仁老汉拔了针，再一前一后给两人往腰部垫上好多蒜片，然后在蒜片上蹾上艾柱用火点然（就是艾灸），很快艾火透过蒜片，一股股暖流扩散到两人的全身，一切不舒一扫而光，只留下他俩十多年来从未有过，象今天这时的舒适和轻松，很快整个室内全沉浸在他二人的呼噜声中。</p>
-<p></p></div></details></div>
+<div class="vspace" style="height:1.5em" aria-hidden="true"></div>
+<p>这时大夫走进来，给老木匠和能仁老汉拔了针，再一前一后给两人往腰部垫上好多蒜片，然后在蒜片上蹾上艾柱用火点然（就是艾灸），很快艾火透过蒜片，一股股暖流扩散到两人的全身，一切不舒一扫而光，只留下他俩十多年来从未有过，象今天这时的舒适和轻松，很快整个室内全沉浸在他二人的呼噜声中。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w23" data-coll="散文">
+      <div class="work-meta"><span class="meta-date">2022-09-18</span><span class="chip">散文</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：箭括岭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>箭括岭</h3>
+      <p class="summary">因事去麟游班车停发，作者徒步二十华里走了一趟箭括岭。石阶、&quot;之&quot;字路爬到隋唐古道遗迹，两峰对豁处就是箭括岭，东西两峰旁立着两棵据说千年的古树。想起初中时和同学在秃山上挖黄芩，一只獾跑下山坡两人当狼吓得抱一起，割柴人才解围。如今灌木柴草如汪洋，野鸡扑棱棱飞起。过马圈岭——七十年代衙里队的山吊庄，百十亩地靠人力背回来，如今退耕还林、绿云团团。九间庙倒回沟黑龙挡唐王的传说，跟着崛山林场箭括岭工区的红砖瓦房一起藏进了刺槐和油松深处。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/O3RrrNxKHlSHT4ghXM_26w" target="_blank" rel="noopener noreferrer" title="打开原文">泾渭文苑<span class="pub-date">2022-09-20</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>箭括岭，位于岐山县京当镇北部边陲。听说岭上这几年变化甚大，虽说近居，但也无假顾及，最近，因事去麟游由于班车停发，走小路途中经过，得有一览。</p>
+<p>清晨，踏着露水，离开京当向北徒步二十华里，便到箭括岭下抬头仰望，只见岭上的树木在晨雾中欲芷还露，宛若一群害羞的姑娘扭扭怩怩。沿着山脚蜿蜒攀登，出现一条石阶小道，拾级登山，左边是林坑遍布，右边是林带绕山，走一段石路就变成“之”字路，</p>
+<p>东方的日头已有一竿子高，眷峦着青山的乳白色的晨霭渐渐退去，山上的树木在阳光的照耀下，格外翠绿。继续前行就上到隋唐古道遗迹，这遗迹宽约四至七米，高低不平，坑坑洼洼，行走很是艰难，经过一段地艰难跋涉，来到一个两峰相交的豁口，就是箭括岭。这时，就觉得有一股凉风扑面而来，很是凉快。记得小时候和大人们上到岭上，觉得很适服就坐下休息，这时大人就会把你拉起来说，背过岭这儿风大，走热的人会感冒的。这左右对峙的两座山峰就是箭括岭的东峰和西峰。豁口东边长有两棵古树，据说己有干年，枝繁叶茂也掩饰不住千百年来，风吹雨打留下的沧桑。</p>
+<p>己是几十年没有上山，上了岭仿佛“一佛出世，二佛涅槃”，腿也好象不是自己的，不听使唤了，于是一屁股坐在地上。向南远望：广袤无垠的田野，绿一块，黄一块，如同织锦一般。转身向北看，是无边无际的群山，山恋起伏绵延。路旁花草丛生，蜂飞蝶舞，散发着一股淡淡的幽香。和我以前来这里见到的情景大不相同了，记得念初中时，星期天曾和同学来这里挖黄苓（一种中药材），烈日灼人，举目四望，一座座秃山，一条条荒岭，就连棵遮荫凉的树都没有，忽然，一只獾从山坡上往下跑，我俩站在这里看得很清楚(我俩以为是狼)，当时就连点躲藏的灌木也没有，我俩害怕的抱在一起。幸好有个割柴人从这里经过，才解了我们的“围”，后来我们目送它跑得很远很远，直到翻梁消失。</p>
+<p>这时，一陈急促的“哞哞哞”鹿叫声，把我驰骋的神经牵了回来。急忙观看，只见灌木柴草就像汪洋，茅草随着风浪此起彼伏，对面山坡上，除几只受惊的野鸡从林中飞起外，别的什么也看不见，不过时不时地能听见一些动物的鸣叫，和走动时的声响。</p>
+<p>过了岭，向北继续前行，看见路西边有块大石头，石头向西半山腰处有条通往九间庙，马圈岭的路。生产队那些年物资紧缺，群众缺吃少穿，粮少柴也少得出奇，就是有点粮没柴烧也不行，经济情况好一点的买些煤，作个添补，大多数人没办法只能钻山砍柴禾，有穷人没穷山，这话一点不假，只要你上山，不论是割柴还是挖药，或多或少从没让人空过。这路上不要说别人，光我走的次数多得都记不清了。那时，每逢星期天我和哥哥来这里割柴，哥哥会割柴，他蹲下不慌不忙一会儿就割了几抱抱，我这儿割一把那边割一把，满山跑就找不到柴禾。太阳己定偏西我一梱都没割够，这时手脚麻利一点的人已担着柴禾一闪一闪，陆续地往回走了。哥哥把他的担子也扎好了，过来给我帮忙，一会的功夫我的柴梱也收拾好了，哥哥担两梱我背一梱，随着割柴的人流往回走。那些年上山割柴的，挖药的，还是割笆条的，黑天白日经常有人走，把路踏的又宽又光，现在己是多年没有人走了，荊棘纵横成了兽路。</p>
+<p>箭括岭西峰北边，有一道山梁叫马圈岭也属箭括岭犯围之内，很早以前是京当镇交界行政村的一个组，有百十来亩耕地，两间瓦房和四间矛草屋。上世纪七十年代初，经我队队长建议、交界村干部协商，双方达成一致，同意马圈岭给衙里队耕种，交界村将夲组王、李两户每户两人的户口迁入衙里队居住。从此，马圈岭就成了衙里队的山吊庄，同时也成了我们衙里上山割柴人的辟难所。山庄主要以种小麦，玉米为主，有时也种一些五谷杂粮。队里在山庄有一个领导，他根据季节的变化和农事的闲忙，制定做活人员的多少，上山时自带粮馍，各吃各的，一个锅灶，轮换着做，一个吃了另一个做，柴火大家拾。百十来亩地，那时很少施有化肥，就那四五头牲口和做活人员的粪便压点粪土，广种薄收，今儿分些玉米，明日分些洋芋，说不定后天又会分些萝卜……啥都有可能，隔三叉五的就要跑一回山，那时候没有车子也没有大路，全靠人力往回背，一年下来分到的东西不多，跑山的回数却不少，力吃尽而收获甚微，后来换种药材，同样劳民伤财，得不偿失。</p>
+<p>那几年，岭上岭下前山后山，到处是人，不是割柴，就是挖药，放牛，放羊，不要说长树木，就茅草长的几乎连只兔子也藏不住。改革开放以后，农村实行了承包责任制，因地制宜，群众改变了作务方向，在种粮的基础上种一些经济作物，没几年群众的生活水平就提高了，人们上山的次数也慢慢地少了，山吊庄没人重视，后来响应国家政策都退耕还林了。现在看过去，马圈岭上绿云团团，油松刺槐挨着兰天。不要说藏只兔子，就大象进去也难看得见。</p>
+<p>到沟底有一条幽深的林荫道，越往里走光线就越暗，都是些三四把粗，五六米高的刺槐，看样子管理得好，棵棵树长得很茂盛把上空罩得见天不露，有几只叫不上名字的长尾鸟，不知是因见到人进了它的林子，或许别的缘故叽叽喳喳叫个不停，林子里空气湿润，泥土味儿十分浓烈。出了林荫道，面前是一块滩地，地里的萍芋、豆角、向日葵绿阴遮敝，陏陏葱葱。地块靠路边盖有一座红砖瓦房，大门边挂着一块木牌，上面写着“岐山县崛山林场箭括岭工区”。职工去干活，门上锁着锁，房前房后收拾地很干净，房前一排油松，青翠挺拔。记得林场原来是在半山腰的破庙里，现在看上去全是树木，那座庙不知道是日久失修，遇雨倒塌了，还是让树木给淹没了，连片瓦也看不见。随着油锯的声音，望过去见南弯那方，有几个职工正在伐矿柱。在离林场不远的山脚下，有一口清泉，泉边小草掩映，湛蓝的天衬着清澈的水，白云从水底怱怱掠过，偶尔还有小鸟惊起“咯咯”地飞去。北边沟口上，绿柳袅袅，山花蓼蓼。随着小道，一阵七拐八拐地又钻进一条林萌道，这条比前边的那条更深，更暗，潮湿的泥土味更浓。</p>
+<p>出了林萌道就是倒回沟口，以前，倒回沟也有三户吊庄，现在连一个吊庄的影子也找不见，沟上沟下全是油松、刺槐，树枝随风婆娑起舞，格外耀眼，似乎向大然炫耀她们主人的绿化功绩。相传在很早以前，唐王前去麟游九成宫辟署，当路过这里时，沟内突然乌云突起，直奔沟口而来，刹时间电闪雷鸣，遍地生火，黑烟和着乌云，遮得天睧地暗，就在这时随着一道电光，从云缝降下一条黑色巨龙，挡住了唐王的去路。唐王见此情景，对随从的大臣说道：“莫怕，此物成精了，要官来了”。说罢又对黑龙说：“分你个黑龙太王，哪里来的回哪里去”。说完黑龙架着云雾又从这沟里飞进了。此后山火灭了，唐王也走了，可这山里的草木被烧得再也没有长得起来，百姓们看到这火后残景，也很痛苦，为了记住那场灾难的始末，便给这沟起名倒回沟。</p>
+<p>以前这一带石白土红，树稀林小，鸟兽不多。多年来树木总是护不住，栽不活，年复一年，树木仍旧长不起来，林场设在庙里。据说三中全会以后，在党和政府的领导下，林场职工技术员积极配合，人民群众大力开展植树造林运动，首先使这一带天然林木的乱砍乱伐现象停止了下来，并逐步在东山、西山、九间庙等地，开始了刺槐林和油松林的绿化工作。从此这箭括岭好似云开雾散，面貌年年更新，植树成活，面积年年扩大，林场不仅解决了住房问题，还走上了伐木支援国家建设的道路。</p>
+<p>走着想着，不觉已到大石板，不免回过头又环顾了一遍岭上的景色。是啊，箭括岭是变了，绿了，看势头这只仅仅是个开始，更绿的还在后头。</p></div></details></div>
+    </article>
+<article class="work reveal" id="w24" data-coll="小小说">
+      <div class="work-meta"><span class="meta-date">2022-08-09</span><span class="chip">小小说</span><button type="button" class="tts-btn" hidden aria-pressed="false" aria-label="朗读：夜游吕家屋"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></svg><span class="tts-label">朗读</span></button></div>
+      <h3>夜游吕家屋</h3>
+      <p class="summary">三十年前深秋，京当镇京当村。作者暮色里进了吕家看电视，院子被刚收的玉米棒子和辣角堆得严严实实，屋里灯火通明，人们围坐啦呱。五老汉做了几十年木活，讲从前&quot;早晨萝卜菜就糁子，上午高梁面打搅团&quot;对比如今家家吃得好；李老汉不服气说给小儿结婚前买了组合柜、沙发、电视机；吕家大娘&quot;揭底&quot;说他前几年结婚时嫁妆还是借亲戚的。一个小孙子插嘴说爷爷再等几天要给他买录音机，众人笑作一团。</p>
+      <div class="bottom-row"><a class="pub-chip pub-chip--link" href="https://mp.weixin.qq.com/s/i1gVBB0Xa0VJXzr7DgX_ZQ" target="_blank" rel="noopener noreferrer" title="打开原文">鲁茅文学<span class="pub-date">2022-08-13</span><svg class="pub-ext" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a><details><summary>阅读全文 <span aria-hidden>▾</span></summary><div class="body"><p>这是在岐山县京当镇京当村。</p>
+<p>三十年前深秋的一个晚上，我到一户姓吕的村民家里看电视，生动的感受到人们富裕的喜悦。</p>
+<p>我在暮色苍茫中来到吕家的时侯，老远就听见屋里传出人们爽朗的笑声。进门一看，宽敞的院子被刚收的玉米棒子和辣角堆得严严实实。房子里灯火通明，人们啦呱得挺热火。</p>
+<p>五老汉坐在沙发上乐呵呵地说：“我做了几十年木活，常到咱们这一带转，谁家的情况不知道，过去无论到谁家，早晨萝卜菜就糁子，上午高梁面打搅团。如今都变了，一家比一家吃得香，吃得好，一家比一家吃得花样多；那几年大伙也去做木活，材料大都是些短杠杠，烂板板，就这样一小件家具还凑合着。可现在不一样了，放着光光的桐木板还嫌不好，还要到街上买进口五合板，一做就是两三件大衣柜、高低柜和写字台。”</p>
+<p>“𠰻算啥咧！”坐在炕边上的一位姓李的老汉有点不服气地说:“十一月我准备给我小儿结婚，前一向，我让小俩口到蔡家坡买了一套组合柜，回来的第二天我又打发去县里买了一套沙发、一台电视机，这，一件才算一件哩！”</p>
+<p>“他叔这个日鬼精精，如今富了卖牌开了。可前几年记得你给大娃结婚时，嫁妆还是借下亲戚的哩！”吕家大娘“揭底”了。</p>
+<p>这时吕家大叔接上了话茬：</p>
+<p>“那几年连个车子也买不起，一年到秋季分下的䄭秆（指玉米秆，高梁秆）常要靠人用绳一捆捆地往回背，哪还有钱置那些箱箱柜柜。”“我爷说再等几天给我屋买录音机呢！”大叔说到这里，不知那个孙子插了这一句，大伙顿时都被小家伙惹笑了，然后大叔又说:“现在我过的光景虽说还不如旁人，可我和𠰻几年相比好得多了，不但有了架子车、自行车、高低柜、大衣柜，就连电视机也有了。”</p>
+<p>房子里的人你说一阵，他说一阵，越说越来劲，越啦话越长、笑越多。不知是因房子里太严，还是人多，总觉得热呼呼地，仿佛进入春天一般。</p></div></details></div>
     </article></div>
   </section>
 
-  <section aria-label="创作历程">
+  
+
+  <section class="reveal" id="sec-timeline" aria-label="创作历程">
     <h2>创作历程</h2>
-    <section class="tl-year"><h4>2022</h4><ul><li><time>2022-10-21</time> <a href="#w0">通纂</a></li></ul></section>
+    <section class="tl-year"><h4>2026</h4><ul><li><time>2026-05-18</time> <a href="#w0">西壕槐香</a><span class="tl-pub">发表于《中乡美视角》</span></li><li><time>2026-03-19</time> <a href="#w1">苜蓿花</a><span class="tl-pub">发表于《泾渭文苑》</span></li></ul></section>
+<section class="tl-year"><h4>2025</h4><ul><li><time>2025-12-24</time> <a href="#w2">七绝五首</a><span class="tl-pub">发表于《大秦文萃》</span></li><li><time>2025-12-24</time> <a href="#w3">七绝四首</a><span class="tl-pub">发表于《丝路都市文化汇》</span></li><li><time>2025-12-24</time> <a href="#w4">未圆的梦</a><span class="tl-pub">发表于《大秦文萃》</span></li><li><time>2025-12-24</time> <a href="#w5">西塬旧梦</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2025-12-24</time> <a href="#w6">说媒（组诗五首）</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2025-08-01</time> <a href="#w7">格律诗三首</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2025-08-01</time> <a href="#w8">七律·毛围巾</a><span class="tl-pub">发表于《丝路都市文化汇》</span></li></ul></section>
+<section class="tl-year"><h4>2024</h4><ul><li><time>2024-12-20</time> <a href="#w9">上坟</a><span class="tl-pub">发表于《鲁茅文学》</span></li><li><time>2024-01-18</time> <a href="#w10">七盘岭有个无底洞</a><span class="tl-pub">发表于《泾渭文苑》</span></li></ul></section>
+<section class="tl-year"><h4>2023</h4><ul><li><time>2023-11-18</time> <a href="#w11">往事回忆</a><span class="tl-pub">发表于《鲁茅文学》</span></li><li><time>2023-09-03</time> <a href="#w12">磨面</a><span class="tl-pub">发表于《大秦文萃》</span></li><li><time>2023-08-28</time> <a href="#w13">一把理发推</a><span class="tl-pub">发表于《大秦文萃》</span></li><li><time>2023-06-03</time> <a href="#w14">吃西瓜</a><span class="tl-pub">发表于《鲁茅文学》</span></li><li><time>2023-05-12</time> <a href="#w15">春游小柴沟</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2023-04-14</time> <a href="#w16">基坑支护</a><span class="tl-pub">发表于《鲁茅文学》</span></li><li><time>2023-02-19</time> <a href="#w17">上坳人的吃水与驮水路</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2023-01-11</time> <a href="#w18">一封没有起诉的状子</a><span class="tl-pub">发表于《鲁茅文学》</span></li><li><time>2023-01-08</time> <a href="#w19">糁子面</a><span class="tl-pub">发表于《鲁茅文学》</span></li></ul></section>
+<section class="tl-year"><h4>2022</h4><ul><li><time>2022-12-27</time> <a href="#w20">母亲</a><span class="tl-pub">发表于《鲁茅文学》</span></li><li><time>2022-10-27</time> <a href="#w21">换季</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2022-10-21</time> <a href="#w22">通纂</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2022-09-18</time> <a href="#w23">箭括岭</a><span class="tl-pub">发表于《泾渭文苑》</span></li><li><time>2022-08-09</time> <a href="#w24">夜游吕家屋</a><span class="tl-pub">发表于《鲁茅文学》</span></li></ul></section>
   </section>
 
-  <footer>本页面由 LitFerry 墨渡于 2026-10-14 生成，仅展示作者公开信息。</footer>
+  <footer>本页面由 LitFerry 墨渡于 2026-10-15 生成，仅展示作者公开信息。</footer>
 </div>
+
 <div class="tts-bar" hidden role="region" aria-label="朗读控制">
   <div class="tts-bar-inner">
     <span class="tts-now" aria-live="polite"></span>
@@ -307,7 +944,8 @@
     var spans = [];
     for (var i = 0; i < ps.length; i++) {
       var p = ps[i];
-      var parts = (p.textContent || '').replace(/\s+/g, ' ').match(/[^。！？；.!?\n]+[。！？.;!?]?/g) || [];
+      // 断句边界含段内软回车（换行符）：诗歌逐行各自成句，朗读不会把两行拼成一句连读
+      var parts = (p.textContent || '').replace(/[ 	]+/g, ' ').match(/[^。！？；.!?\n]+[。！？.;!?\n]?/g) || [];
       p.textContent = '';
       for (var j = 0; j < parts.length; j++) {
         var s = parts[j].trim(); if (!s) continue;
@@ -412,6 +1050,137 @@
   var btns = document.querySelectorAll('.tts-btn');
   for (var i = 0; i < btns.length; i++) { btns[i].hidden = false; }
   window.addEventListener('beforeunload', function () { try { synth.cancel(); } catch (e) {} });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.querySelector('.progress-bar');
+  function updateProgress() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    if (bar && max > 0) bar.style.width = ((h.scrollTop / max) * 100).toFixed(1) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  var reduced = false;
+  try { reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var reveals = document.querySelectorAll('.reveal');
+  if (reduced || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < reveals.length; i++) { reveals[i].className += ' revealed'; }
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    for (var j = 0; j < entries.length; j++) {
+      if (entries[j].isIntersecting) { entries[j].target.classList.add('revealed'); io.unobserve(entries[j].target); }
+    }
+  }, { threshold: 0.1, rootMargin: '0px 0px -16px 0px' });
+  for (var k = 0; k < reveals.length; k++) io.observe(reveals[k]);
+})();
+</script>
+<script>
+(function () {
+  // 作品分集（V2.8 伪多页）：同一份单文件内用 hidden 过滤卡片与首页专属区块，营造「换页」观感；不拆多 HTML、不重新渲染
+  var nav = document.querySelector('.coll-nav');
+  if (!nav) return;
+  var tabs = Array.prototype.slice.call(nav.querySelectorAll('.coll-tab'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.work[data-coll]'));
+  var homeOnly = ['sec-featured', 'sec-photos', 'sec-timeline'].map(function (id) { return document.getElementById(id); }).filter(Boolean);
+  var worksSec = document.getElementById('works');
+  var h2 = worksSec ? worksSec.querySelector('h2') : null;
+  var defTitle = h2 ? h2.textContent : '';
+  function reduced() { try { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+
+  function apply(idx) {
+    var tab = tabs[idx] || tabs[0];
+    var key = tab.getAttribute('data-coll') || '';
+    var isHome = idx === 0;
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].className = 'coll-tab' + (i === idx ? ' is-active' : '');
+      if (i === idx) tabs[i].setAttribute('aria-current', 'true'); else tabs[i].removeAttribute('aria-current');
+    }
+    for (var j = 0; j < homeOnly.length; j++) { homeOnly[j].hidden = !isHome; }
+    for (var c = 0; c < cards.length; c++) {
+      var show = isHome || cards[c].getAttribute('data-coll') === key;
+      cards[c].hidden = !show;
+      // 之前被隐藏而未触发过揭示的卡片，切换后立即可见，不留 opacity:0 死卡片
+      if (show) cards[c].classList.add('revealed');
+    }
+    if (h2) h2.textContent = isHome ? defTitle : (tab.getAttribute('data-title') || defTitle);
+    var hash = tab.getAttribute('data-hash') || '#works';
+    try { history.replaceState(null, '', hash); } catch (e) {}
+  }
+
+  nav.addEventListener('click', function (e) {
+    var t = e.target;
+    var tab = t && t.closest ? t.closest('.coll-tab') : null;
+    if (!tab) return;
+    e.preventDefault();
+    var idx = tabs.indexOf(tab);
+    if (idx < 0) return;
+    apply(idx);
+    if (worksSec) worksSec.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  // 深链：分享/刷新带着 #coll-N 时恢复到对应分集页
+  var m = /#coll-(\d+)/.exec(location.hash || '');
+  if (m) { var n = parseInt(m[1], 10); if (n > 0 && n < tabs.length) apply(n); }
+})();
+</script>
+<script>
+(function () {
+  var lb = document.querySelector('.lb');
+  if (!lb) return;
+  var figs = Array.prototype.slice.call(document.querySelectorAll('.ph'));
+  if (!figs.length) return;
+  var img = lb.querySelector('.lb-img');
+  var capEl = lb.querySelector('.lb-cap');
+  var cntEl = lb.querySelector('.lb-count');
+  var native = typeof lb.showModal === 'function';
+  var idx = 0, lastBtn = null;
+
+  function render() {
+    var fig = figs[idx]; if (!fig) return;
+    var src = fig.querySelector('img'); if (!src) return;
+    // 复用同一张已解码的 data URI（内联图体积大，重复解码会卡）；克隆一份反而翻倍内存
+    img.src = src.getAttribute('src') || '';
+    img.alt = src.getAttribute('alt') || '';
+    var btn = fig.querySelector('.ph-btn');
+    var cap = btn ? (btn.getAttribute('data-cap') || '') : '';
+    capEl.textContent = cap;
+    capEl.hidden = !cap;
+    cntEl.textContent = (idx + 1) + ' / ' + figs.length;
+  }
+  function open(i, btn) {
+    idx = i; lastBtn = btn || null; render();
+    if (native) lb.showModal(); else { lb.setAttribute('open', ''); lb.focus && lb.focus(); }
+  }
+  function close() {
+    if (native) { lb.close(); return; } // 原生 dialog 关闭后自动把焦点还给原触发元素
+    lb.removeAttribute('open');
+    if (lastBtn && lastBtn.focus) lastBtn.focus();
+  }
+  function move(d) { idx = (idx + d + figs.length) % figs.length; render(); }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var btn = t && t.closest ? t.closest('.ph-btn') : null;
+    if (!btn) return;
+    var i = figs.indexOf(btn.closest('.ph'));
+    if (i >= 0) open(i, btn);
+  });
+  lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+  lb.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { move(-1); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { move(1); e.preventDefault(); }
+  });
+  lb.addEventListener('click', function (e) {
+    var t = e.target;
+    var b = t && t.closest ? t.closest('[data-lb]') : null;
+    if (!b) return;
+    var act = b.getAttribute('data-lb');
+    if (act === 'prev') move(-1); else if (act === 'next') move(1); else close();
+  });
 })();
 </script>
 </body>
